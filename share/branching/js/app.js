@@ -40,13 +40,14 @@
   });
 
   /* ---------- Счётчик просмотров (GoatCounter) ---------- */
-  fetch("https://indapanno.goatcounter.com/counter/TOTAL.json")
+  var counterPath = encodeURIComponent(window.location.pathname);
+  fetch("https://indapanno.goatcounter.com/counter/" + counterPath + ".json")
     .then(function (r) { return r.ok ? r.json() : null; })
     .then(function (data) {
       if (!data) return;
       var count = parseInt(String(data.count).replace(/\D/g, ""), 10);
       if (count > 0) {
-        document.getElementById("visit-count").textContent = count;
+        document.getElementById("visit-count").textContent = String(count).padStart(3, "0");
         document.getElementById("visit-counter").hidden = false;
       }
     })
