@@ -47,7 +47,7 @@
       if (!data) return;
       var count = parseInt(String(data.count).replace(/\D/g, ""), 10);
       if (count > 0) {
-        document.getElementById("visit-count").textContent = String(count).padStart(3, "0");
+        document.getElementById("visit-count").textContent = count;
         document.getElementById("visit-counter").hidden = false;
       }
     })

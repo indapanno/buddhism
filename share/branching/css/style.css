@@ -456,11 +456,6 @@ main {
   color: var(--link-color);
 }
 
-.visit-counter {
-  margin-top: 0.5rem;
-  font-size: 0.7rem;
-}
-
 @media (min-width: 640px) {
   .site-header { padding: 1.4rem 1.5rem 1.1rem; }
   main { padding: 1.2rem 1.5rem 2.5rem; }
