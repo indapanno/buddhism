@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>Ветвление буддизма — образовательная веб-демонстрация</title>
+<meta name="description" content="Интерактивный проводник по истории расколов и школ буддизма — от паринирваны Будды Шакьямуни до наших дней.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600;700&family=Noto+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-top">
+    <button id="menu-toggle" type="button" class="menu-toggle" aria-expanded="false" aria-controls="nav-drawer" aria-label="Открыть меню всех событий">
+      <span></span><span></span><span></span>
+    </button>
+    <h1>Ветвление буддизма</h1>
+    <div class="header-controls">
+      <label class="control">
+        <span class="control-label">Язык</span>
+        <select id="lang-select">
+          <option value="ru">Русский</option>
+          <option value="th" disabled>ไทย (скоро)</option>
+        </select>
+      </label>
+      <label class="control">
+        <span class="control-label">Тема</span>
+        <select id="theme-select">
+          <option value="system" selected>Системная</option>
+          <option value="light">Светлая</option>
+          <option value="dark">Тёмная</option>
+        </select>
+      </label>
+    </div>
+  </div>
+  <h2>Образовательная, интерактивная веб-демонстрация</h2>
+  <p class="intro-note">
+    Вы находитесь в интерактивном проводнике по истории ветвления буддизма — от Будды Шакьямуни
+    до сотен современных школ. Всего в проводнике <strong id="intro-count">55</strong> событий.
+    Сейчас перед вами первое событие: паринирвана Будды, точка, с которой всё началось. У каждого
+    события есть причина и результат — это ответ на вопрос «почему буддизм стал ветвиться».
+    Пролистайте карточку вниз и нажмите на дочернее событие, чтобы пойти дальше по ветке — так,
+    шаг за шагом, можно проследить путь к любой из современных школ, включая тхераваду, дзен или
+    гелуг. Либо откройте меню (☰) в шапке страницы и сразу перейдите к любому из событий.
+  </p>
+  <button id="reset-visited" type="button" class="reset-btn">Сбросить изученные события</button>
+</header>
+
+<div id="nav-backdrop" class="nav-backdrop" hidden></div>
+<nav id="nav-drawer" class="nav-drawer" aria-label="Все события" hidden>
+  <div class="nav-drawer-header">
+    <span>Все события</span>
+    <button id="nav-close" type="button" aria-label="Закрыть меню">✕</button>
+  </div>
+  <div id="nav-tree" class="nav-tree"></div>
+</nav>
+
+<main>
+  <p id="loading">Загрузка данных…</p>
+
+  <nav id="breadcrumb" class="breadcrumb" aria-label="Путь по дереву событий"></nav>
+
+  <article id="event-card" class="event-card" hidden></article>
+
+  <section id="children-section" class="children-section" hidden>
+    <h3 id="children-heading">Дочерние события</h3>
+    <div id="children-list" class="children-list"></div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>
+    Создано монахом Индапаньо из лесного монастыря Тхавон Нимит в провинции Накхон Найок, Таиланд. Август 2026 года.
+    Данная веб-демонстрация является дополнительным материалом к
+    <a href="https://max.ru/channel_buddhism/AaAdvLu5AbQ" target="_blank" rel="noopener">публикации о ветвлении буддизма</a>,
+    которая вышла в публичном канале «Разобраться в буддизме» в мессенджере Макс.
+    Версия веб-приложения: 1.0.0 ·
+    <a href="https://github.com/indapanno/buddhism/blob/main/docs/for-researchers/ru.md" target="_blank" rel="noopener">исследователям и разработчикам</a>.
+  </p>
+  <p id="visit-counter" class="visit-counter" hidden>Просмотров: <span id="visit-count">0</span></p>
+  <script data-goatcounter="https://indapanno.goatcounter.com/count"
+          async src="//gc.zgo.at/count.js"></script>
+</footer>
+
+<script src="js/app.js"></script>
+</body>
+</html>

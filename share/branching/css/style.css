@@ -1,0 +1,594 @@
+:root {
+  --font-display: 'Noto Serif', Georgia, serif;
+  --font-body: 'Noto Sans', -apple-system, sans-serif;
+
+  --bg: #14110F;
+  --bg-elevated: #1D1915;
+  --bg-highlight: #241D16;
+  --text: #EDE6D9;
+  --text-secondary: #9C9285;
+  --accent: #D98E3E;
+  --accent-deep: #8B3A2E;
+  --border: #322B23;
+  --link-color: #C9A227;
+}
+
+html[data-theme="light"] {
+  --bg: #F7F3EC;
+  --bg-elevated: #FFFFFF;
+  --bg-highlight: #FBF3E5;
+  --text: #2A2420;
+  --text-secondary: #6B6255;
+  --accent: #C77A2E;
+  --accent-deep: #8B3A2E;
+  --border: #E2D9C8;
+  --link-color: #A9761F;
+}
+
+* { box-sizing: border-box; }
+
+[hidden] {
+  display: none !important;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(1.4rem, 5vw, 2rem);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+h2 {
+  font-size: clamp(0.85rem, 3vw, 1rem);
+  font-weight: 400;
+  color: var(--text-secondary);
+  margin-top: 0.35rem;
+}
+
+.intro-note {
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  margin: 0.7rem 0 0;
+  padding-top: 0.6rem;
+  border-top: 1px dashed var(--border);
+}
+
+.reset-btn {
+  margin-top: 0.6rem;
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.4rem 0.7rem;
+  font-family: var(--font-body);
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.reset-btn:hover {
+  border-color: var(--accent-deep);
+  color: var(--accent-deep);
+}
+
+.site-header {
+  padding: 1.1rem 1rem 0.9rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.menu-toggle {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  margin-right: 0.2rem;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 1px;
+}
+
+.menu-toggle:hover {
+  border-color: var(--accent);
+}
+
+h1 {
+  flex: 1;
+}
+
+.header-controls {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.control {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  gap: 0.15rem;
+}
+
+.control select {
+  background: var(--bg-elevated);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.3rem 0.4rem;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+}
+
+main {
+  padding: 0.9rem 1rem 2rem;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+#loading {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+/* --- Хлебные крошки --- */
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.breadcrumb button {
+  background: none;
+  border: none;
+  color: var(--link-color);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 0.15rem 0.2rem;
+  text-align: left;
+}
+
+.breadcrumb button:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb .current {
+  color: var(--text-secondary);
+  padding: 0.15rem 0.2rem;
+}
+
+.breadcrumb .sep {
+  color: var(--text-secondary);
+  opacity: 0.5;
+}
+
+.breadcrumb button.visited {
+  opacity: 0.55;
+}
+
+.breadcrumb .branch-count {
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+}
+
+/* --- Карточка события --- */
+.event-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.1rem 1.1rem 1.3rem;
+}
+
+.event-eyebrow {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  margin-bottom: 0.4rem;
+}
+
+.event-title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0 0 0.6rem;
+}
+
+.status-block {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 8px;
+  border: 1px solid;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8rem;
+  margin-bottom: 0.9rem;
+}
+
+.status-block.unvisited {
+  background: rgba(122, 140, 74, 0.14);
+  border-color: #6B7F3A;
+  color: var(--text);
+}
+
+.status-block.visited {
+  background: rgba(139, 58, 46, 0.14);
+  border-color: var(--accent-deep);
+  color: var(--text);
+}
+
+.event-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 0.9rem;
+}
+
+.event-date-line {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.event-date-note {
+  display: block;
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--text-secondary);
+  margin-top: 0.15rem;
+  font-weight: 400;
+}
+
+.event-place-line {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* Причина / Результат — главный акцент */
+.highlight-block {
+  background: var(--bg-highlight);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 0.7rem 0.9rem;
+  margin: 0.8rem 0;
+}
+
+.highlight-block.result {
+  border-left-color: var(--accent-deep);
+}
+
+.highlight-label {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 0.3rem;
+}
+
+.highlight-block.result .highlight-label {
+  color: var(--accent-deep);
+}
+
+.highlight-text {
+  font-size: 0.96rem;
+  line-height: 1.55;
+}
+
+/* Обычные поля */
+.field-block {
+  margin: 0.9rem 0;
+}
+
+.field-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.field-text {
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.field-list {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* Сетка мета-полей */
+.meta-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem 0.9rem;
+  margin: 1rem 0;
+  padding: 0.8rem;
+  background: var(--bg);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+
+.meta-item .field-label {
+  margin-bottom: 0.15rem;
+}
+
+.meta-item .field-text {
+  font-size: 0.82rem;
+}
+
+/* Примечание */
+.note-block {
+  background: var(--bg);
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  padding: 0.7rem 0.9rem;
+  margin: 0.9rem 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.note-block .field-label {
+  color: var(--text-secondary);
+}
+
+/* Источники */
+.sources-block {
+  margin-top: 1.1rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--border);
+}
+
+.sources-block .field-list {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+/* --- Дочерние события --- */
+.children-section {
+  margin-top: 1.3rem;
+}
+
+.children-section h3 {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  font-weight: 400;
+}
+
+.children-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.child-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 0.6rem 0.8rem;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-body);
+  width: 100%;
+  color: var(--text);
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.child-row:hover {
+  border-color: var(--accent);
+}
+
+.child-row .child-date {
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.child-row .child-name {
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  line-height: 1.35;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.leaf-note {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 1rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.site-footer a {
+  color: var(--link-color);
+}
+
+.visit-counter {
+  margin-top: 0.5rem;
+  font-size: 0.7rem;
+}
+
+@media (min-width: 640px) {
+  .site-header { padding: 1.4rem 1.5rem 1.1rem; }
+  main { padding: 1.2rem 1.5rem 2.5rem; }
+  .site-footer { padding: 1.25rem 1.5rem; }
+  .event-card { padding: 1.5rem 1.6rem 1.7rem; }
+}
+
+/* --- Бургер-меню: выезжающая панель со всеми событиями --- */
+.nav-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 40;
+}
+
+.nav-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 92%;
+  max-width: none;
+  background: var(--bg-elevated);
+  border-right: 1px solid var(--border);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 4px 0 24px rgba(0,0,0,0.3);
+}
+
+.nav-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-display);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.nav-drawer-header button {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0.2rem 0.4rem;
+}
+
+.nav-tree {
+  overflow-y: auto;
+  padding: 0.6rem 0.8rem 1.5rem;
+  min-width: 0;
+}
+
+.nav-tree ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 0.8rem;
+  border-left: 1px solid var(--border);
+  min-width: 0;
+}
+
+.nav-tree ul ul ul ul ul {
+  padding-left: 0.45rem;
+}
+
+.nav-tree > ul {
+  padding-left: 0;
+  border-left: none;
+}
+
+.nav-tree li {
+  margin: 0.1rem 0;
+  min-width: 0;
+}
+
+.nav-tree .nav-item {
+  cursor: pointer;
+  list-style: none;
+  padding: 0.35rem 0.4rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  min-width: 0;
+  overflow-wrap: break-word;
+  display: block;
+  color: var(--text);
+  background: none;
+  border: none;
+  text-align: left;
+  font-family: var(--font-body);
+  width: 100%;
+}
+
+.nav-tree .nav-item:hover {
+  background: var(--bg);
+}
+
+.nav-tree .visited {
+  opacity: 0.5;
+}
+
+/* --- Плитки дочерних событий: статус посещения --- */
+.child-row.visited-tile {
+  opacity: 0.6;
+}
+
+.child-status {
+  font-size: 0.72rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 6px;
+  margin-top: 0.1rem;
+  width: 100%;
+}
+
+.child-status.unvisited {
+  background: rgba(122, 140, 74, 0.14);
+  color: var(--text);
+}
+
+.child-status.visited {
+  background: rgba(139, 58, 46, 0.14);
+  color: var(--text);
+}
+
+.event-index {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.3rem;
+}
