@@ -1,6 +1,12 @@
 (function () {
   "use strict";
 
+  var S = window.UI_STRINGS || {};
+
+  function fmtNum(n) {
+    return S.formatNumber ? S.formatNumber(n) : String(n);
+  }
+
   /* ---------- Тема ---------- */
   var THEME_KEY = "buddhism-theme";
   var themeSelect = document.getElementById("theme-select");
@@ -30,13 +36,18 @@
 
   initTheme();
 
-  /* ---------- Язык (пока только ru активен) ---------- */
+  /* ---------- Язык ---------- */
   var LANG_KEY = "buddhism-lang";
   var langSelect = document.getElementById("lang-select");
   var savedLang = localStorage.getItem(LANG_KEY) || "ru";
   langSelect.value = savedLang;
   langSelect.addEventListener("change", function () {
     localStorage.setItem(LANG_KEY, langSelect.value);
+    var pages = { ru: "index.html", th: "th.html" };
+    var target = pages[langSelect.value];
+    if (target) {
+      window.location.href = target + window.location.hash;
+    }
   });
 
   /* ---------- Счётчик просмотров (GoatCounter) ---------- */
@@ -47,14 +58,14 @@
       if (!data) return;
       var count = parseInt(String(data.count).replace(/\D/g, ""), 10);
       if (count > 0) {
-        document.getElementById("visit-count").textContent = count;
+        document.getElementById("visit-count").textContent = fmtNum(count);
         document.getElementById("visit-counter").hidden = false;
       }
     })
     .catch(function () {});
 
   /* ---------- Данные и навигация ---------- */
-  var DATA_URL = "json/ru.json";
+  var DATA_URL = (window.APP_CONFIG && window.APP_CONFIG.dataUrl) || "json/ru.json";
   var byId = {};
   var childrenOf = {};
   var rootId = null;
@@ -62,7 +73,7 @@
 
   fetch(DATA_URL)
     .then(function (r) {
-      if (!r.ok) throw new Error("Не удалось загрузить " + DATA_URL);
+      if (!r.ok) throw new Error(S.fetchError + DATA_URL);
       return r.json();
     })
     .then(function (raw) {
@@ -70,12 +81,12 @@
       indexData(raw);
       totalEvents = raw.length;
       var introCountEl = document.getElementById("intro-count");
-      if (introCountEl) introCountEl.textContent = totalEvents;
+      if (introCountEl) introCountEl.textContent = fmtNum(totalEvents);
       window.addEventListener("hashchange", renderFromHash);
       renderFromHash();
     })
     .catch(function (err) {
-      document.getElementById("loading").textContent = "Ошибка загрузки данных: " + err.message;
+      document.getElementById("loading").textContent = S.loadError + err.message;
       console.error(err);
     });
 
@@ -183,7 +194,7 @@
         breadcrumbEl.appendChild(sep);
       }
       var isLast = idx === chain.length - 1;
-      var label = byId[nodeId]["название"] || ("Событие " + nodeId);
+      var label = byId[nodeId]["название"] || (S.eventPrefix + nodeId);
       var branchCount = (childrenOf[nodeId] || []).length;
       if (isLast) {
         var span = document.createElement("span");
@@ -198,7 +209,7 @@
         if (branchCount > 1) {
           var badge = document.createElement("span");
           badge.className = "branch-count";
-          badge.textContent = " ×" + branchCount;
+          badge.textContent = " ×" + fmtNum(branchCount);
           btn.appendChild(badge);
         }
         btn.addEventListener("click", (function (targetId) {
@@ -224,12 +235,12 @@
 
     var indexLine = document.createElement("div");
     indexLine.className = "event-index";
-    indexLine.textContent = "Событие " + ev.id + " из " + totalEvents;
+    indexLine.textContent = S.eventPrefix + fmtNum(ev.id) + S.eventOfMiddle + fmtNum(totalEvents);
     cardEl.appendChild(indexLine);
 
     var statusBlock = document.createElement("div");
     statusBlock.className = "status-block " + (wasVisited ? "visited" : "unvisited");
-    statusBlock.textContent = wasVisited ? "Вы уже изучали данное событие" : "Вы ещё не изучали данное событие";
+    statusBlock.textContent = wasVisited ? S.visitedYes : S.visitedNo;
     cardEl.appendChild(statusBlock);
 
     var meta = document.createElement("div");
@@ -256,22 +267,22 @@
     cardEl.appendChild(meta);
 
     if (ev["причина"]) {
-      cardEl.appendChild(highlightBlock("Причина", ev["причина"], "cause"));
+      cardEl.appendChild(highlightBlock(S.cause, ev["причина"], "cause"));
     }
 
     if (ev["результат"]) {
-      cardEl.appendChild(highlightBlock("Результат", ev["результат"], "result"));
+      cardEl.appendChild(highlightBlock(S.result, ev["результат"], "result"));
     }
 
     if (ev["ключевые_фигуры"] && ev["ключевые_фигуры"].length) {
-      cardEl.appendChild(fieldBlockList("Ключевые фигуры", ev["ключевые_фигуры"]));
+      cardEl.appendChild(fieldBlockList(S.keyFigures, ev["ключевые_фигуры"]));
     }
 
     var metaFields = [
-      ["Время существования", ev["время_существования"]],
-      ["Статус на 2026 год", ev["статус_на_2026"]],
-      ["Регион распространения сегодня", ev["регион_распространения_сегодня"]],
-      ["Число последователей (2026)", ev["число_последователей_2026"] === null || ev["число_последователей_2026"] === undefined ? "нет данных" : String(ev["число_последователей_2026"])]
+      [S.lifespan, ev["время_существования"]],
+      [S.status2026, ev["статус_на_2026"]],
+      [S.regionToday, ev["регион_распространения_сегодня"]],
+      [S.followers2026, ev["число_последователей_2026"] === null || ev["число_последователей_2026"] === undefined ? S.noData : fmtNum(ev["число_последователей_2026"])]
     ];
     var grid = document.createElement("div");
     grid.className = "meta-grid";
@@ -296,7 +307,7 @@
       note2.className = "note-block";
       var nlbl = document.createElement("div");
       nlbl.className = "field-label";
-      nlbl.textContent = "Примечание";
+      nlbl.textContent = S.note;
       var ntxt = document.createElement("div");
       ntxt.className = "field-text";
       ntxt.textContent = ev["примечание"];
@@ -306,7 +317,7 @@
     }
 
     if (ev["источники"] && ev["источники"].length) {
-      var srcBlock = fieldBlockList("Источники", ev["источники"]);
+      var srcBlock = fieldBlockList(S.sources, ev["источники"]);
       srcBlock.className += " sources-block";
       cardEl.appendChild(srcBlock);
     }
@@ -349,15 +360,15 @@
     childrenListEl.innerHTML = "";
 
     if (kids.length === 0) {
-      childrenHeading.textContent = "Конечная точка ветви";
+      childrenHeading.textContent = S.leafHeading;
       var note = document.createElement("p");
       note.className = "leaf-note";
-      note.textContent = "У этого события нет дочерних событий в дереве.";
+      note.textContent = S.leafText;
       childrenListEl.appendChild(note);
       return;
     }
 
-    childrenHeading.textContent = "Дочерние события (" + kids.length + ")";
+    childrenHeading.textContent = S.childrenHeading + " (" + fmtNum(kids.length) + ")";
     kids.forEach(function (childId) {
       var child = byId[childId];
       var childVisited = visitedSet.has(childId);
@@ -371,11 +382,11 @@
 
       var nameSpan = document.createElement("span");
       nameSpan.className = "child-name";
-      nameSpan.textContent = child["название"] || ("Событие " + childId);
+      nameSpan.textContent = child["название"] || (S.eventPrefix + childId);
 
       var statusSpan = document.createElement("span");
       statusSpan.className = "child-status " + (childVisited ? "visited" : "unvisited");
-      statusSpan.textContent = childVisited ? "Вы уже изучали данное событие" : "Вы ещё не изучали данное событие";
+      statusSpan.textContent = childVisited ? S.visitedYes : S.visitedNo;
 
       row.appendChild(dateSpan);
       row.appendChild(nameSpan);
@@ -428,7 +439,7 @@
 
   function buildNavNode(id) {
     var ev = byId[id];
-    var label = ev.id + ". " + (ev["название"] || ("Событие " + id));
+    var label = fmtNum(ev.id) + ". " + (ev["название"] || (S.eventPrefix + id));
     var isVisited = visitedSet.has(id);
     var kids = childrenOf[id] || [];
     var li = document.createElement("li");
