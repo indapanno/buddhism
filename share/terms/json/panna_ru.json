@@ -1,0 +1,40 @@
+{
+  "id": "panna",
+  "term_ru": "Панья",
+  "term_iast": "paññā",
+  "origin": {
+    "type": "введён впервые",
+    "source_tradition": "",
+    "attestation_before_term": "",
+    "etymology_versions": []
+  },
+  "dating": [
+    {
+      "type": "традиционная",
+      "value": "период проповеднической деятельности Будды",
+      "comment": ""
+    }
+  ],
+  "attribution": {
+    "traditional": "Будда Шакьямуни",
+    "academic": "не оспаривается как факт раннего использования",
+    "consensus": "полный"
+  },
+  "recorded_by": "составители Сутта-питаки",
+  "school_tradition": "доканонический / общебуддийский пласт",
+  "reason_introduced": "Тестовый термин для проверки пагинации.",
+  "interpretation": "Мудрость, прямое прозрение в природу вещей — третья ступень практики, завершающая сила-самадхи-панья.",
+  "language": "пали",
+  "sources": [
+    {
+      "status": "основной",
+      "title": "тестовая запись, источник не проверен",
+      "location": "",
+      "transmission_tradition": "",
+      "language": "пали",
+      "source_type": "",
+      "discrepancies": ""
+    }
+  ],
+  "later_mentions": []
+}

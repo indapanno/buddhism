@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Как добавить термин — Навигатор по палийским терминам</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&family=Noto+Serif:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script src="js/theme.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-top">
+    <button id="menu-toggle" class="menu-toggle" aria-label="Меню"><span></span><span></span><span></span></button>
+    <h1 id="page-title">Как добавить термин</h1>
+    <div class="header-controls">
+      <div class="control">
+        <label for="lang-select">ภาษา</label>
+        <select id="lang-select">
+          <option value="ru">Русский</option>
+          <option value="thai">ภาษาไทย</option>
+        </select>
+      </div>
+      <div class="control">
+        <label for="theme-select">Тема</label>
+        <select id="theme-select">
+          <option value="system">Системная</option>
+          <option value="light">Светлая</option>
+          <option value="dark">Тёмная</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <p class="header-intro">Заметили, что интересного вам термина здесь ещё нет? Вот как его предложить — без специальных технических знаний.</p>
+  <div class="search-box">
+    <input id="search-input" class="search-input" type="text" placeholder="Поиск термина…" autocomplete="off">
+    <div id="search-suggestions" class="search-suggestions" hidden></div>
+  </div>
+</header>
+
+<div id="nav-backdrop" class="nav-backdrop" hidden></div>
+<div id="nav-drawer" class="nav-drawer" hidden>
+  <div class="nav-drawer-header">
+    <span>Меню</span>
+    <button id="nav-drawer-close" aria-label="Закрыть">✕</button>
+  </div>
+  <ul id="nav-menu-list" class="nav-menu-list"></ul>
+</div>
+
+<main>
+  <nav class="breadcrumb">
+    <a href="nav_ru.html">Навигатор по терминам</a>
+    <span class="sep">/</span>
+    <span class="current">Как добавить термин</span>
+  </nav>
+
+  <div class="term-card">
+    <h2>Если вы читатель канала</h2>
+    <p class="field-text">Сначала проверьте поиском на главной странице, что такого термина ещё нет — возможно, он уже добавлен.</p>
+    <ol>
+      <li>Откройте <a href="https://github.com/indapanno/buddhism/tree/main/share/terms/json">папку с терминами на GitHub</a>. Нужен бесплатный аккаунт GitHub — если его нет, регистрация занимает пару минут.</li>
+      <li>Нажмите кнопку <b>Fork</b> — это создаст вашу личную копию репозитория, в которой можно свободно редактировать файлы, не затрагивая основной сайт.</li>
+      <li>В своей копии создайте новый файл с именем вида <b>ваш_термин_ru.json</b> (латиницей, без пробелов — например, <b>karuna_ru.json</b>).</li>
+      <li>Заполните файл по образцу — откройте любой существующий файл (например, <a href="https://github.com/indapanno/buddhism/blob/main/share/terms/json/dukkha_ru.json">dukkha_ru.json</a>) как шаблон структуры и скопируйте его формат. Бесплатный ИИ (например, Claude или ChatGPT) может помочь заполнить поля по образцу, если рассказать ему историю термина.</li>
+      <li>Сохраните файл — GitHub сам предложит кнопку <b>Create pull request</b> («Предложить изменения»).</li>
+      <li>Дождитесь проверки. После одобрения термин появится в навигаторе.</li>
+    </ol>
+
+    <h2>Для администратора сайта</h2>
+    <p class="field-text">Создать <b>&lt;id&gt;_ru.json</b> по действующей схеме в <b>share/terms/json/</b>, скопировать HTML-шаблон карточки под тем же именем, обновить <b>json/index_ru.json</b>, закоммитить и запушить.</p>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <p>
+    Создано монахом Индапаньо из лесного монастыря Тхавон Нимит в провинции Накхон Найок, Таиланд. Сентябрь 2026 года.
+    Навигатор по истории палийских терминов является дополнительным материалом к публикациям о буддизме, которые выходят
+    в публичном канале <a href="https://max.ru/channel_buddhism">«Разобраться в буддизме»</a> в мессенджере Макс.
+    Терминов в навигаторе: <span id="term-count">…</span>.
+    Версия веб-приложения: 1.0.0.
+    <a href="docs/for-researchers/ru.md">Исследователям и разработчикам</a>.
+    <span class="view-count-wrap" hidden>Просмотров: <span id="view-count">0</span>.</span>
+  </p>
+</footer>
+
+<script data-goatcounter="https://indapanno.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script src="js/lang.js"></script>
+<script src="js/search.js"></script>
+<script src="js/burger-menu.js"></script>
+<script src="js/footer-counter.js"></script>
+<script src="js/term-count.js"></script>
+</body>
+</html>
