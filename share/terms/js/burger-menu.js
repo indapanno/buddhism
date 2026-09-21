@@ -6,6 +6,7 @@
 var BURGER_UI_STRINGS = {
   ru: {
     menuTitle: 'Меню',
+    navHome: 'Навигатор',
     addTerm: 'Добавить термин',
     translateTerm: 'Перевести термин'
   },
@@ -33,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var strings = BURGER_UI_STRINGS[lang] || BURGER_UI_STRINGS.ru;
 
   var items = [
+    { href: 'nav_' + lang + '.html', text: strings.navHome },
     { href: 'how-to-add-term_' + lang + '.html', text: strings.addTerm },
     { href: 'how-to-translate-term_' + lang + '.html', text: strings.translateTerm }
   ];
