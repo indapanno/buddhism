@@ -1,0 +1,15 @@
+{
+  "id": "test-automation",
+  "term_ru": "Тест автоматизации",
+  "term_iast": "test-automation",
+  "origin": { "type": "введён впервые", "source_tradition": "", "attestation_before_term": "", "etymology_versions": [] },
+  "dating": [],
+  "attribution": {},
+  "recorded_by": "",
+  "school_tradition": "",
+  "reason_introduced": "Проверка автоматической сборки при первом реальном запуске.",
+  "interpretation": "Технический тестовый термин, будет удалён после проверки автоматизации.",
+  "language": "пали",
+  "sources": [],
+  "later_mentions": []
+}
