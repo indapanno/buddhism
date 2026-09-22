@@ -2,12 +2,12 @@
   "terms": [
     {
       "id": "anapanasati",
-      "term_ru": "Анапанасати",
+      "term_ru": "Анапанасати (осознанность дыхания)",
       "later_count": 0
     },
     {
       "id": "anatta",
-      "term_ru": "Анатта",
+      "term_ru": "Анатта (не-я)",
       "later_count": 0
     },
     {
@@ -47,7 +47,7 @@
     },
     {
       "id": "paticcasamuppada",
-      "term_ru": "Пратитьясамуппада",
+      "term_ru": "Пратитьясамуппада (взаимозависимое возникновение)",
       "later_count": 0
     },
     {
@@ -67,8 +67,13 @@
     },
     {
       "id": "sunnata",
-      "term_ru": "Суннята",
+      "term_ru": "Суннята (пустотность)",
       "later_count": 2
+    },
+    {
+      "id": "test-automation",
+      "term_ru": "Тест автоматизации",
+      "later_count": 0
     },
     {
       "id": "upekkha",
