@@ -21,59 +21,14 @@
       "later_count": 2
     },
     {
-      "id": "karuna",
-      "term_ru": "Каруна",
-      "later_count": 0
-    },
-    {
-      "id": "metta",
-      "term_ru": "Метта",
-      "later_count": 0
-    },
-    {
-      "id": "mudita",
-      "term_ru": "Мудита",
-      "later_count": 0
-    },
-    {
-      "id": "nibbana",
-      "term_ru": "Ниббана",
-      "later_count": 0
-    },
-    {
-      "id": "panna",
-      "term_ru": "Панья",
-      "later_count": 0
-    },
-    {
       "id": "paticcasamuppada",
       "term_ru": "Пратитьясамуппада (взаимозависимое возникновение)",
-      "later_count": 0
-    },
-    {
-      "id": "samadhi",
-      "term_ru": "Самадхи",
-      "later_count": 0
-    },
-    {
-      "id": "sangha",
-      "term_ru": "Сангха",
-      "later_count": 0
-    },
-    {
-      "id": "sila",
-      "term_ru": "Сила",
       "later_count": 0
     },
     {
       "id": "sunnata",
       "term_ru": "Суннята (пустотность)",
       "later_count": 2
-    },
-    {
-      "id": "upekkha",
-      "term_ru": "Упекха",
-      "later_count": 0
     }
   ]
 }
