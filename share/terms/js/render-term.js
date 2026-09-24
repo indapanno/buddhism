@@ -16,7 +16,23 @@ var TERM_UI_STRINGS = {
     missingTranslationLinkText: 'пошаговой инструкции', langNameOfSelf: 'русский',
     titlePrefix: 'История и значение термина',
     headerIntro: function (b) { return 'История палийского слова ' + b + ': кто, когда и зачем его впервые ввёл в обращение, что оно значило тогда и как менялось со временем.'; }
-  }, thai: {}
+  },
+  thai: {
+    origin: 'ที่มา', originType: 'ประเภท', sourceTradition: 'ประเพณีต้นทาง',
+    attestationBefore: 'หลักฐานก่อนเกิดคำศัพท์', etymologyVersions: 'ทฤษฎีรากศัพท์',
+    dating: 'การกำหนดอายุ', attribution: 'การระบุที่มา', traditional: 'ตามประเพณี', academic: 'ทางวิชาการ',
+    consensus: 'ความเห็นพ้อง', recordedBy: 'ผู้บันทึกเป็นลายลักษณ์อักษร', schoolTradition: 'นิกาย/ประเพณี',
+    attributionHint: 'แสดงว่าทราบแน่ชัดเพียงใดว่าใครและเมื่อใดเป็นผู้ริเริ่มใช้คำนี้ ตำนานตามประเพณีสอดคล้องกับข้อสรุปทางวิชาการหรือไม่ หรือยังเป็นประเด็นที่ถกเถียงกันอยู่',
+    reasonIntroduced: 'เหตุผลในการบัญญัติคำ', interpretation: 'ความหมาย', language: 'ภาษา', sources: 'แหล่งที่มา',
+    introEntry: 'การบัญญัติคำศัพท์', laterSection: 'พัฒนาการของคำศัพท์',
+    dateUpdated: 'วันที่ปรับปรุง', updatedBy: 'ผู้ปรับปรุง', reasonForUpdate: 'เหตุผลในการปรับปรุง', whatIsNew: 'สิ่งที่เพิ่มขึ้นใหม่',
+    missingTranslation: function (b, l) {
+      return 'ขณะนี้ยังไม่มีคำแปลของคำศัพท์ ' + b + ' เป็นภาษา' + l + ' คุณสามารถแปลคำศัพท์ ' + b + ' เป็นภาษา' + l + 'ได้อย่างมีคุณภาพภายใน 5 นาที โดยไม่ต้องมีความรู้พิเศษ ด้วยความช่วยเหลือของ AI ฟรี วิธีทำสามารถดูได้จาก ';
+    },
+    missingTranslationLinkText: 'คำแนะนำทีละขั้นตอน', langNameOfSelf: 'ไทย',
+    titlePrefix: 'ประวัติและความหมายของคำศัพท์',
+    headerIntro: function (b) { return 'ประวัติของคำภาษาบาลี ' + b + ': ใครเป็นผู้ใช้คำนี้เป็นครั้งแรก เมื่อใด และเพื่ออะไร คำนี้เคยหมายถึงอะไร และมีความหมายเปลี่ยนแปลงไปอย่างไรตามกาลเวลา'; }
+  }
 };
 
 function escapeHtml(s){ if(s===undefined||s===null) return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }

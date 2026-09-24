@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
     .then(function (res) { return res.json(); })
     .then(function (data) {
       var terms = data.terms || [];
-      el.textContent = terms.length;
+      el.textContent = lang === 'thai' && window.toThaiNumerals ? window.toThaiNumerals(terms.length) : terms.length;
     })
     .catch(function () {
       el.textContent = '';

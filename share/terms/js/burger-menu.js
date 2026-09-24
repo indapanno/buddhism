@@ -11,7 +11,10 @@ var BURGER_UI_STRINGS = {
     translateTerm: 'Перевести термин'
   },
   thai: {
-    // Заполняется на этапе тайской локализации
+    menuTitle: 'เมนู',
+    navHome: 'หน้าหลัก',
+    addTerm: 'เพิ่มคำศัพท์',
+    translateTerm: 'แปลคำศัพท์'
   }
 };
 

@@ -7,18 +7,29 @@ const TERMS_DIR = path.join(REPO_ROOT, 'share/terms');
 const JSON_DIR = path.join(TERMS_DIR, 'json');
 const SITE_BASE_URL = 'https://indapanno.github.io/buddhism/share/terms/';
 const PAGE_SIZE = 10;
+const LANGS = ['ru', 'thai'];
 
 const {
-  renderTimeline, boldTerm, escapeHtml, capitalize, TERM_UI_STRINGS
+  renderTimeline, renderMissingTranslation, boldTerm, escapeHtml, capitalize, TERM_UI_STRINGS
 } = require(path.join(TERMS_DIR, 'js/render-term.js'));
+const { toThaiNumerals } = require(path.join(TERMS_DIR, 'js/thai-numerals.js'));
 
 function readTemplate(name) {
   return fs.readFileSync(path.join(TERMS_DIR, name), 'utf8');
 }
 
-const CARD_TEMPLATE = readTemplate('_template_ru.html');
-const NAV_TEMPLATE = readTemplate('_template_nav_ru.html');
-const strings = TERM_UI_STRINGS.ru;
+const TEMPLATES = { ru: readTemplate('_template_ru.html'), thai: readTemplate('_template_thai.html') };
+const NAV_TEMPLATES = { ru: readTemplate('_template_nav_ru.html'), thai: readTemplate('_template_nav_thai.html') };
+const LOADING_TEXT = { ru: 'Загрузка…', thai: 'กำลังโหลด…' };
+const TITLE_PLACEHOLDER = {
+  ru: '<title>История и значение термина</title>',
+  thai: '<title>ประวัติและความหมายของคำศัพท์</title>'
+};
+const NAV_TITLE_TEXT = { ru: 'Навигатор по палийским терминам', thai: 'นำทางคำศัพท์บาลี' };
+const IAST_PLACEHOLDER = {
+  ru: '<h2 id="term-iast-btn" class="term-iast-btn" hidden role="button" tabindex="0" aria-label="Скопировать транслитерацию IAST"></h2>',
+  thai: '<h2 id="term-iast-btn" class="term-iast-btn" hidden role="button" tabindex="0" aria-label="คัดลอกอักษรโรมัน IAST"></h2>'
+};
 
 function replaceOnce(html, oldStr, newStr, id, label) {
   const count = html.split(oldStr).length - 1;
@@ -28,171 +39,193 @@ function replaceOnce(html, oldStr, newStr, id, label) {
   return html.split(oldStr).join(newStr);
 }
 
-// 1. Читаем все *_ru.json (кроме index_ru.json)
-const jsonFiles = fs.readdirSync(JSON_DIR).filter(f => f.endsWith('_ru.json') && !f.startsWith('index'));
-const terms = jsonFiles.map(filename => {
-  const id = filename.replace(/_ru\.json$/, '');
-  const data = JSON.parse(fs.readFileSync(path.join(JSON_DIR, filename), 'utf8'));
-  return { id, data };
+// 1. Читаем JSON по каждому языку
+function loadTerms(lang) {
+  const suffix = '_' + lang + '.json';
+  const files = fs.readdirSync(JSON_DIR).filter(f => f.endsWith(suffix) && !f.startsWith('index'));
+  const map = {};
+  files.forEach(filename => {
+    const id = filename.slice(0, -suffix.length);
+    map[id] = JSON.parse(fs.readFileSync(path.join(JSON_DIR, filename), 'utf8'));
+  });
+  return map;
+}
+
+const dataByLang = { ru: loadTerms('ru'), thai: loadTerms('thai') };
+const allIds = Array.from(new Set([...Object.keys(dataByLang.ru), ...Object.keys(dataByLang.thai)])).sort();
+console.log('Всего терминов (любой язык):', allIds.length);
+
+// 2. index_<lang>.json — только реально переведённые на этот язык термины
+LANGS.forEach(lang => {
+  const nameKey = lang === 'thai' ? 'term_thai' : 'term_ru';
+  const ids = Object.keys(dataByLang[lang]).sort();
+  const indexTerms = ids.map(id => ({
+    id: id,
+    [nameKey]: dataByLang[lang][id][nameKey],
+    later_count: (dataByLang[lang][id].later_mentions || []).length
+  }));
+  fs.writeFileSync(path.join(JSON_DIR, 'index_' + lang + '.json'), JSON.stringify({ terms: indexTerms }, null, 2) + '\n', 'utf8');
+  console.log('index_' + lang + '.json обновлён:', indexTerms.length, 'терминов');
 });
-terms.sort((a, b) => a.id.localeCompare(b.id));
 
-// 2. index_ru.json
-const indexTerms = terms.map(t => ({
-  id: t.id,
-  term_ru: t.data.term_ru,
-  later_count: (t.data.later_mentions || []).length
-}));
-fs.writeFileSync(path.join(JSON_DIR, 'index_ru.json'), JSON.stringify({ terms: indexTerms }, null, 2) + '\n', 'utf8');
-console.log('index_ru.json обновлён:', indexTerms.length, 'терминов');
-
-// 3. Сниппет для навигации (обрезанные толкование + причина введения)
+// 3. Сниппет для навигации
 function buildSnippet(data) {
   const parts = [data.interpretation, data.reason_introduced].filter(Boolean);
   let text = parts.join(' ');
   if (!text) return '';
   text = capitalize(text);
   const MAX = 130;
-  if (text.length > MAX) {
-    text = text.slice(0, MAX).replace(/\s+\S*$/, '') + '…';
-  }
+  if (text.length > MAX) text = text.slice(0, MAX).replace(/\s+\S*$/, '') + '…';
   return text;
 }
 
-// 4. Карточки терминов
-function buildCardHtml(id, data) {
-  const termName = data.term_ru || id;
-  const iast = data.term_iast || '';
-  let html = CARD_TEMPLATE;
+// 4. Карточки терминов — для КАЖДОГО известного id на КАЖДОМ языке
+// (если данных для языка нет — страница "перевод отсутствует")
+function buildCardHtml(lang, id, data) {
+  const strings = TERM_UI_STRINGS[lang];
+  const loading = LOADING_TEXT[lang];
+  let html = TEMPLATES[lang];
 
-  html = replaceOnce(html,
-    '<title>История и значение термина</title>',
+  const termName = data ? (data.term_ru || data.term_thai || id) : id;
+  const iast = data ? (data.term_iast || '') : '';
+
+  html = replaceOnce(html, TITLE_PLACEHOLDER[lang],
     '<title>' + escapeHtml(strings.titlePrefix + ' ' + termName + (iast ? ' (' + iast + ')' : '')) + '</title>',
-    id, 'title');
+    lang + '/' + id, 'title');
 
-  html = replaceOnce(html,
-    '<h1 id="page-title">Загрузка…</h1>',
-    '<h1 id="page-title">' + boldTerm(termName) + '</h1>',
-    id, 'h1');
+  html = replaceOnce(html, '<h1 id="page-title">' + loading + '</h1>',
+    '<h1 id="page-title">' + boldTerm(termName) + '</h1>', lang + '/' + id, 'h1');
 
-  const iastOld = '<h2 id="term-iast-btn" class="term-iast-btn" hidden role="button" tabindex="0" aria-label="Скопировать транслитерацию IAST"></h2>';
+  const iastOld = IAST_PLACEHOLDER[lang];
   const iastNew = iast
-    ? '<h2 id="term-iast-btn" class="term-iast-btn" role="button" tabindex="0" aria-label="Скопировать транслитерацию IAST" data-copy-text="' + escapeHtml(iast) + '">' + escapeHtml(iast) + '</h2>'
+    ? iastOld.replace(' hidden', '').replace('></h2>', ' data-copy-text="' + escapeHtml(iast) + '">' + escapeHtml(iast) + '</h2>')
     : iastOld;
-  html = replaceOnce(html, iastOld, iastNew, id, 'iast');
+  html = replaceOnce(html, iastOld, iastNew, lang + '/' + id, 'iast');
 
-  html = replaceOnce(html,
-    '<p class="header-intro" id="header-intro">Загрузка…</p>',
-    '<p class="header-intro" id="header-intro">' + strings.headerIntro(boldTerm(termName)) + '</p>',
-    id, 'header-intro');
+  html = replaceOnce(html, '<p class="header-intro" id="header-intro">' + loading + '</p>',
+    '<p class="header-intro" id="header-intro">' + strings.headerIntro(boldTerm(termName)) + '</p>', lang + '/' + id, 'header-intro');
 
-  html = replaceOnce(html,
-    '<span class="current" id="breadcrumb-current"></span>',
-    '<span class="current" id="breadcrumb-current">' + boldTerm(termName) + '</span>',
-    id, 'breadcrumb');
+  html = replaceOnce(html, '<span class="current" id="breadcrumb-current"></span>',
+    '<span class="current" id="breadcrumb-current">' + boldTerm(termName) + '</span>', lang + '/' + id, 'breadcrumb');
 
-  html = replaceOnce(html,
-    '<div id="term-content">\n    <p id="loading">Загрузка…</p>\n  </div>',
-    '<div id="term-content">' + renderTimeline(strings, data) + '</div>',
-    id, 'term-content');
+  const contentHtml = data
+    ? renderTimeline(strings, data)
+    : renderMissingTranslation(strings, id, strings.langNameOfSelf, 'how-to-translate-term_' + lang + '.html');
+
+  html = replaceOnce(html, '<div id="term-content">\n    <p id="loading">' + loading + '</p>\n  </div>',
+    '<div id="term-content">' + contentHtml + '</div>', lang + '/' + id, 'term-content');
 
   return html;
 }
 
-let cardCount = 0;
-for (const { id, data } of terms) {
-  const html = buildCardHtml(id, data);
-  fs.writeFileSync(path.join(TERMS_DIR, id + '_ru.html'), html, 'utf8');
-  cardCount++;
+const cardCounts = { ru: 0, thai: 0 };
+allIds.forEach(id => {
+  LANGS.forEach(lang => {
+    const data = dataByLang[lang][id];
+    const html = buildCardHtml(lang, id, data);
+    fs.writeFileSync(path.join(TERMS_DIR, id + '_' + lang + '.html'), html, 'utf8');
+    cardCounts[lang]++;
+  });
+});
+console.log('Карточек собрано: ru=' + cardCounts.ru + ', thai=' + cardCounts.thai);
+
+// 5. Навигационные страницы — по каждому языку, только реально переведённые термины
+function navFilename(lang, page) {
+  const base = 'nav_' + lang;
+  return page === 1 ? base + '.html' : base + '_' + page + '.html';
 }
-console.log('Карточек собрано:', cardCount);
 
-// 5. Навигационные страницы (постраничные, настоящие отдельные файлы)
-const sortedForNav = terms.slice().sort((a, b) => (a.data.term_ru || '').localeCompare(b.data.term_ru || '', 'ru'));
-const totalPages = Math.max(1, Math.ceil(sortedForNav.length / PAGE_SIZE));
-
-function navFilename(page) {
-  return page === 1 ? 'nav_ru.html' : 'nav_ru_' + page + '.html';
-}
-
-function buildPaginationHtml(page) {
+function buildPaginationHtml(lang, page, totalPages) {
   if (totalPages <= 1) return '';
+  const backText = lang === 'thai' ? '← ย้อนกลับ' : '← Назад';
+  const nextText = lang === 'thai' ? 'ถัดไป →' : 'Далее →';
+  const digits = n => (lang === 'thai' ? toThaiNumerals(n) : String(n));
   const parts = [];
-  if (page > 1) parts.push('<a href="' + navFilename(page - 1) + '" class="page-link">← Назад</a>');
+  if (page > 1) parts.push('<a href="' + navFilename(lang, page - 1) + '" class="page-link">' + backText + '</a>');
   for (let p = 1; p <= totalPages; p++) {
     parts.push(p === page
-      ? '<span class="page-current">' + p + '</span>'
-      : '<a href="' + navFilename(p) + '" class="page-link">' + p + '</a>');
+      ? '<span class="page-current">' + digits(p) + '</span>'
+      : '<a href="' + navFilename(lang, p) + '" class="page-link">' + digits(p) + '</a>');
   }
-  if (page < totalPages) parts.push('<a href="' + navFilename(page + 1) + '" class="page-link">Далее →</a>');
+  if (page < totalPages) parts.push('<a href="' + navFilename(lang, page + 1) + '" class="page-link">' + nextText + '</a>');
   return '<nav class="pagination" aria-label="Страницы">' + parts.join('') + '</nav>';
 }
 
-for (let page = 1; page <= totalPages; page++) {
-  const start = (page - 1) * PAGE_SIZE;
-  const pageTerms = sortedForNav.slice(start, start + PAGE_SIZE);
+const totalPagesByLang = {};
 
-  const items = pageTerms.map(({ id, data }) => {
-    const name = escapeHtml(data.term_ru || id);
-    const laterCount = (data.later_mentions || []).length;
-    const badge = laterCount > 0 ? ' <span class="count-badge">+' + laterCount + '</span>' : '';
-    const snippet = buildSnippet(data);
-    const snippetHtml = snippet ? '<div class="nav-snippet">' + escapeHtml(snippet) + '</div>' : '';
-    return '<li><a href="' + id + '_ru.html">' + name + badge + snippetHtml + '</a></li>';
-  }).join('');
+LANGS.forEach(lang => {
+  const nameKey = lang === 'thai' ? 'term_thai' : 'term_ru';
+  const items = Object.keys(dataByLang[lang]).map(id => ({ id, data: dataByLang[lang][id] }));
+  const sorted = items.slice().sort((a, b) => (a.data[nameKey] || '').localeCompare(b.data[nameKey] || '', lang === 'thai' ? 'th' : 'ru'));
+  const totalPages = Math.max(1, Math.ceil(sorted.length / PAGE_SIZE));
+  totalPagesByLang[lang] = totalPages;
 
-  let html = NAV_TEMPLATE;
+  for (let page = 1; page <= totalPages; page++) {
+    const start = (page - 1) * PAGE_SIZE;
+    const pageTerms = sorted.slice(start, start + PAGE_SIZE);
 
-  html = replaceOnce(html,
-    '<ul id="term-list" class="term-list">\n    <li>Загрузка…</li>\n  </ul>',
-    '<ul id="term-list" class="term-list">' + items + '</ul>' + buildPaginationHtml(page),
-    'nav p' + page, 'term-list');
+    const liHtml = pageTerms.map(({ id, data }) => {
+      const name = escapeHtml(data[nameKey] || id);
+      const laterCount = (data.later_mentions || []).length;
+      const badgeNum = lang === 'thai' ? toThaiNumerals(laterCount) : laterCount;
+      const badge = laterCount > 0 ? ' <span class="count-badge">+' + badgeNum + '</span>' : '';
+      const snippet = buildSnippet(data);
+      const snippetHtml = snippet ? '<div class="nav-snippet">' + escapeHtml(snippet) + '</div>' : '';
+      return '<li><a href="' + id + '_' + lang + '.html">' + name + badge + snippetHtml + '</a></li>';
+    }).join('');
 
-  const canonicalUrl = SITE_BASE_URL + navFilename(page);
-  let linkTags = '<link rel="canonical" href="' + canonicalUrl + '">';
-  if (page > 1) linkTags += '\n<link rel="prev" href="' + SITE_BASE_URL + navFilename(page - 1) + '">';
-  if (page < totalPages) linkTags += '\n<link rel="next" href="' + SITE_BASE_URL + navFilename(page + 1) + '">';
-  html = replaceOnce(html,
-    '<link rel="stylesheet" href="css/style.css">',
-    '<link rel="stylesheet" href="css/style.css">\n' + linkTags,
-    'nav p' + page, 'canonical');
-
-  if (page > 1) {
+    let html = NAV_TEMPLATES[lang];
+    const loadingLi = '<li>' + LOADING_TEXT[lang] + '</li>';
     html = replaceOnce(html,
-      '<title>Навигатор по палийским терминам</title>',
-      '<title>Навигатор по палийским терминам — страница ' + page + '</title>',
-      'nav p' + page, 'title');
-  }
+      '<ul id="term-list" class="term-list">\n    ' + loadingLi + '\n  </ul>',
+      '<ul id="term-list" class="term-list">' + liHtml + '</ul>' + buildPaginationHtml(lang, page, totalPages),
+      lang + ' nav p' + page, 'term-list');
 
-  fs.writeFileSync(path.join(TERMS_DIR, navFilename(page)), html, 'utf8');
-}
-console.log('Навигационных страниц собрано:', totalPages);
+    const canonicalUrl = SITE_BASE_URL + navFilename(lang, page);
+    let linkTags = '<link rel="canonical" href="' + canonicalUrl + '">';
+    if (page > 1) linkTags += '\n<link rel="prev" href="' + SITE_BASE_URL + navFilename(lang, page - 1) + '">';
+    if (page < totalPages) linkTags += '\n<link rel="next" href="' + SITE_BASE_URL + navFilename(lang, page + 1) + '">';
+    html = replaceOnce(html, '<link rel="stylesheet" href="css/style.css">',
+      '<link rel="stylesheet" href="css/style.css">\n' + linkTags, lang + ' nav p' + page, 'canonical');
 
-// 6. Уборка: удаляем осиротевшие карточки (JSON удалён) и лишние страницы пагинации
-const knownIds = new Set(terms.map(t => t.id));
-const existingHtmlFiles = fs.readdirSync(TERMS_DIR).filter(f =>
-  f.endsWith('_ru.html') && !f.startsWith('nav_ru') && !f.startsWith('_template') && !f.startsWith('how-to-')
-);
-let removedCards = 0;
-for (const file of existingHtmlFiles) {
-  const id = file.replace(/_ru\.html$/, '');
-  if (!knownIds.has(id)) {
-    fs.unlinkSync(path.join(TERMS_DIR, file));
-    removedCards++;
-    console.log('Удалён осиротевший файл:', file);
-  }
-}
-if (removedCards) console.log('Удалено осиротевших карточек:', removedCards);
+    if (page > 1) {
+      const pageSuffix = lang === 'thai' ? (' — หน้า ' + toThaiNumerals(page)) : (' — страница ' + page);
+      html = replaceOnce(html, '<title>' + NAV_TITLE_TEXT[lang] + '</title>',
+        '<title>' + NAV_TITLE_TEXT[lang] + pageSuffix + '</title>', lang + ' nav p' + page, 'title');
+    }
 
-const existingNavFiles = fs.readdirSync(TERMS_DIR).filter(f => /^nav_ru(_\d+)?\.html$/.test(f));
-let removedNavPages = 0;
-for (const file of existingNavFiles) {
-  const m = file.match(/^nav_ru(?:_(\d+))?\.html$/);
-  const pageNum = m[1] ? parseInt(m[1], 10) : 1;
-  if (pageNum > totalPages) {
-    fs.unlinkSync(path.join(TERMS_DIR, file));
-    removedNavPages++;
-    console.log('Удалена устаревшая страница пагинации:', file);
+    fs.writeFileSync(path.join(TERMS_DIR, navFilename(lang, page)), html, 'utf8');
   }
-}
-if (removedNavPages) console.log('Удалено устаревших страниц пагинации:', removedNavPages);
+  console.log('Навигационных страниц (' + lang + ') собрано:', totalPages);
+});
+
+// 6. Уборка: осиротевшие карточки и лишние страницы пагинации
+LANGS.forEach(lang => {
+  const suffix = '_' + lang + '.html';
+  const existingHtmlFiles = fs.readdirSync(TERMS_DIR).filter(f =>
+    f.endsWith(suffix) && !f.startsWith('nav_') && !f.startsWith('_template') && !f.startsWith('how-to-')
+  );
+  let removedCards = 0;
+  existingHtmlFiles.forEach(file => {
+    const id = file.slice(0, -suffix.length);
+    if (!allIds.includes(id)) {
+      fs.unlinkSync(path.join(TERMS_DIR, file));
+      removedCards++;
+      console.log('Удалён осиротевший файл:', file);
+    }
+  });
+  if (removedCards) console.log('Удалено осиротевших карточек (' + lang + '):', removedCards);
+
+  const existingNavFiles = fs.readdirSync(TERMS_DIR).filter(f => new RegExp('^nav_' + lang + '(_\\d+)?\\.html$').test(f));
+  let removedNavPages = 0;
+  existingNavFiles.forEach(file => {
+    const m = file.match(new RegExp('^nav_' + lang + '(?:_(\\d+))?\\.html$'));
+    const pageNum = m[1] ? parseInt(m[1], 10) : 1;
+    if (pageNum > totalPagesByLang[lang]) {
+      fs.unlinkSync(path.join(TERMS_DIR, file));
+      removedNavPages++;
+      console.log('Удалена устаревшая страница пагинации:', file);
+    }
+  });
+  if (removedNavPages) console.log('Удалено устаревших страниц пагинации (' + lang + '):', removedNavPages);
+});

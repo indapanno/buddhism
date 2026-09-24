@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>วิธีเพิ่มคำศัพท์ — นำทางคำศัพท์บาลี</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&family=Noto+Serif:wght@400;600;700&family=Noto+Sans+Thai:wght@400;600;700&family=Noto+Serif+Thai:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script src="js/theme.js"></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-top">
+    <button id="menu-toggle" class="menu-toggle" aria-label="เมนู"><span></span><span></span><span></span></button>
+    <h1 id="page-title">วิธีเพิ่มคำศัพท์</h1>
+    <div class="header-controls">
+      <div class="control">
+        <label for="lang-select">Язык</label>
+        <select id="lang-select">
+          <option value="ru">Русский</option>
+          <option value="thai">ภาษาไทย</option>
+        </select>
+      </div>
+      <div class="control">
+        <label for="theme-select">ธีม</label>
+        <select id="theme-select">
+          <option value="system">ตามระบบ</option>
+          <option value="light">สว่าง</option>
+          <option value="dark">มืด</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <p class="header-intro">พบว่ายังไม่มีคำศัพท์ที่คุณสนใจใช่ไหม? นี่คือวิธีเสนอคำศัพท์ใหม่ — โดยไม่ต้องมีความรู้ด้านเทคนิค</p>
+  <div class="search-box">
+    <input id="search-input" class="search-input" type="text" placeholder="ค้นหาคำศัพท์…" autocomplete="off">
+    <div id="search-suggestions" class="search-suggestions" hidden></div>
+  </div>
+</header>
+
+<div id="nav-backdrop" class="nav-backdrop" hidden></div>
+<div id="nav-drawer" class="nav-drawer" hidden>
+  <div class="nav-drawer-header">
+    <span>เมนู</span>
+    <button id="nav-drawer-close" aria-label="ปิด">✕</button>
+  </div>
+  <ul id="nav-menu-list" class="nav-menu-list"></ul>
+</div>
+
+<main>
+  <nav class="breadcrumb">
+    <a href="nav_thai.html">นำทางคำศัพท์</a>
+    <span class="sep">/</span>
+    <span class="current">วิธีเพิ่มคำศัพท์</span>
+  </nav>
+
+  <div class="term-card">
+    <h2>สำหรับผู้อ่านช่อง</h2>
+    <p class="field-text">ก่อนอื่นตรวจสอบด้วยการค้นหาในหน้าหลักว่ายังไม่มีคำศัพท์นี้อยู่แล้ว</p>
+    <ol>
+      <li>เปิด <a href="https://github.com/indapanno/buddhism/tree/main/share/terms/json">โฟลเดอร์คำศัพท์บน GitHub</a> ต้องมีบัญชี GitHub ฟรี — หากยังไม่มี การสมัครใช้เวลาเพียงไม่กี่นาที</li>
+      <li>กดปุ่ม <b>Fork</b> เพื่อสร้างสำเนาส่วนตัวของ repository ที่คุณสามารถแก้ไขได้อย่างอิสระโดยไม่กระทบเว็บไซต์หลัก</li>
+      <li>ในสำเนาของคุณ สร้างไฟล์ใหม่ชื่อ <b>ชื่อคำศัพท์_thai.json</b> (ตัวอักษรละติน ไม่มีช่องว่าง — เช่น <b>karuna_thai.json</b>)</li>
+      <li>กรอกข้อมูลตามตัวอย่าง — เปิดไฟล์ที่มีอยู่แล้ว (เช่น <a href="https://github.com/indapanno/buddhism/blob/main/share/terms/json/dukkha_thai.json">dukkha_thai.json</a>) เป็นแม่แบบโครงสร้าง และคัดลอกรูปแบบ AI ฟรี (เช่น Claude หรือ ChatGPT) สามารถช่วยกรอกข้อมูลตามตัวอย่างได้ หากคุณเล่าประวัติคำศัพท์ให้ฟัง</li>
+      <li>บันทึกไฟล์ — GitHub จะแสดงปุ่ม <b>Create pull request</b> ให้เอง</li>
+      <li>รอการตรวจสอบ หลังจากได้รับการอนุมัติ คำศัพท์จะปรากฏในตัวนำทาง</li>
+    </ol>
+
+    <h2>สำหรับผู้ดูแลเว็บไซต์</h2>
+    <p class="field-text">สร้าง <b>&lt;id&gt;_thai.json</b> ตามโครงสร้างที่ใช้อยู่ใน <b>share/terms/json/</b> แล้ว commit และ push</p>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <p>
+    สร้างโดยพระอินทปัญโญ จากวัดป่าถ้ำวนนิมิต จังหวัดนครนายก ประเทศไทย เดือนกันยายน ๒๐๒๖.
+    ตัวนำทางประวัติคำศัพท์บาลีเป็นเนื้อหาเสริมสำหรับโพสต์เกี่ยวกับพระพุทธศาสนาที่เผยแพร่ในช่องสาธารณะ
+    <a href="https://max.ru/channel_buddhism">«ทำความเข้าใจพระพุทธศาสนา»</a> บนแอปพลิเคชันแม็กซ์ (Max).
+    จำนวนคำศัพท์ในตัวนำทาง: <span id="term-count">…</span>.
+    เวอร์ชันเว็บแอปพลิเคชัน: ๑.๐.๐.
+    <a href="docs/for-researchers/thai.md">สำหรับนักวิจัยและนักพัฒนา</a>.
+    <span class="view-count-wrap" hidden>จำนวนการเข้าชม: <span id="view-count">0</span>.</span>
+  </p>
+</footer>
+
+<script data-goatcounter="https://indapanno.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script src="js/thai-numerals.js"></script>
+<script src="js/lang.js"></script>
+<script src="js/search.js"></script>
+<script src="js/burger-menu.js"></script>
+<script src="js/footer-counter.js"></script>
+<script src="js/term-count.js"></script>
+</body>
+</html>

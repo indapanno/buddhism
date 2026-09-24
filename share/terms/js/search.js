@@ -5,6 +5,14 @@
 
 var SEARCH_MAX_SUGGESTIONS = 8;
 
+var SEARCH_UI_STRINGS = {
+  ru: function (shown, total) { return 'Показаны первые ' + shown + ' из ' + total + ' — уточните запрос'; },
+  thai: function (shown, total) {
+    var toThai = window.toThaiNumerals || function (n) { return n; };
+    return 'แสดง ' + toThai(shown) + ' จากทั้งหมด ' + toThai(total) + ' รายการ — โปรดระบุคำค้นหาให้ชัดเจนขึ้น';
+  }
+};
+
 function getCurrentLang() {
   var path = window.location.pathname;
   var filename = path.substring(path.lastIndexOf('/') + 1);
@@ -56,7 +64,8 @@ document.addEventListener('DOMContentLoaded', function () {
     if (matches.length > SEARCH_MAX_SUGGESTIONS) {
       var note = document.createElement('div');
       note.className = 'search-empty';
-      note.textContent = 'Показаны первые ' + SEARCH_MAX_SUGGESTIONS + ' из ' + matches.length + ' — уточните запрос';
+      var noteFn = SEARCH_UI_STRINGS[lang] || SEARCH_UI_STRINGS.ru;
+      note.textContent = noteFn(SEARCH_MAX_SUGGESTIONS, matches.length);
       suggestions.appendChild(note);
     }
     suggestions.hidden = false;

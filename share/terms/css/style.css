@@ -667,3 +667,9 @@ main {
   margin-top: 0.25rem;
   line-height: 1.4;
 }
+
+/* --- Тайские шрифты: переопределение для тайских страниц (html lang="th") --- */
+html[lang="th"] {
+  --font-display: 'Noto Serif Thai', 'Noto Serif', Georgia, serif;
+  --font-body: 'Noto Sans Thai', 'Noto Sans', -apple-system, sans-serif;
+}
