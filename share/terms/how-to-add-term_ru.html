@@ -61,8 +61,18 @@
     <ol>
       <li>Откройте <a href="https://github.com/indapanno/buddhism/tree/main/share/terms/json">папку с терминами на GitHub</a>. Нужен бесплатный аккаунт GitHub — если его нет, регистрация занимает пару минут.</li>
       <li>Нажмите кнопку <b>Fork</b> — это создаст вашу личную копию репозитория, в которой можно свободно редактировать файлы, не затрагивая основной сайт.</li>
-      <li>В своей копии создайте новый файл с именем вида <b>ваш_термин_ru.json</b> (латиницей, без пробелов — например, <b>karuna_ru.json</b>).</li>
-      <li>Заполните файл по образцу — откройте любой существующий файл (например, <a href="https://github.com/indapanno/buddhism/blob/main/share/terms/json/dukkha_ru.json">dukkha_ru.json</a>) как шаблон структуры и скопируйте его формат. Бесплатный ИИ (например, Claude или ChatGPT) может помочь заполнить поля по образцу, если рассказать ему историю термина.</li>
+      <li>Введите термин в поле ниже и нажмите «Скопировать промт» — готовый промт с вашим термином окажется в буфере обмена. Вставьте его в любой бесплатный ИИ (например, Claude, ChatGPT или Gemini) — и получите готовый JSON.
+        <div class="term-prompt-widget">
+          <label class="term-prompt-label" for="term-prompt-input">Термин на русском</label>
+          <div class="term-prompt-row">
+            <input id="term-prompt-input" class="term-prompt-input" type="text" placeholder="например, карума" autocomplete="off">
+            <button id="term-prompt-copy-btn" class="term-prompt-btn" type="button" data-copied-text="Скопировано! ✓" disabled aria-disabled="true">Скопировать промт</button>
+          </div>
+          <p class="term-prompt-hint">Затем вставьте промт в любой бесплатный ИИ и получите готовый JSON.</p>
+          <div id="term-prompt-status" class="term-prompt-status" role="status" aria-live="polite"></div>
+        </div>
+      </li>
+      <li>В своей копии репозитория создайте новый файл с именем вида <b>ваш_термин_ru.json</b> (латиницей, без пробелов — например, <b>karuna_ru.json</b>) и вставьте в него JSON, полученный от ИИ, целиком, без изменений.</li>
       <li>Сохраните файл — GitHub сам предложит кнопку <b>Create pull request</b> («Предложить изменения»).</li>
       <li>Дождитесь проверки. После одобрения термин появится в навигаторе.</li>
     </ol>
@@ -90,5 +100,7 @@
 <script src="js/burger-menu.js"></script>
 <script src="js/footer-counter.js"></script>
 <script src="js/term-count.js"></script>
+<script src="js/term-prompt-ru.js"></script>
+<script src="js/term-prompt-widget.js"></script>
 </body>
 </html>

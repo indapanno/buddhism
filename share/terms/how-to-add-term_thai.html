@@ -61,8 +61,18 @@
     <ol>
       <li>เปิด <a href="https://github.com/indapanno/buddhism/tree/main/share/terms/json">โฟลเดอร์คำศัพท์บน GitHub</a> ต้องมีบัญชี GitHub ฟรี — หากยังไม่มี การสมัครใช้เวลาเพียงไม่กี่นาที</li>
       <li>กดปุ่ม <b>Fork</b> เพื่อสร้างสำเนาส่วนตัวของ repository ที่คุณสามารถแก้ไขได้อย่างอิสระโดยไม่กระทบเว็บไซต์หลัก</li>
-      <li>ในสำเนาของคุณ สร้างไฟล์ใหม่ชื่อ <b>ชื่อคำศัพท์_thai.json</b> (ตัวอักษรละติน ไม่มีช่องว่าง — เช่น <b>karuna_thai.json</b>)</li>
-      <li>กรอกข้อมูลตามตัวอย่าง — เปิดไฟล์ที่มีอยู่แล้ว (เช่น <a href="https://github.com/indapanno/buddhism/blob/main/share/terms/json/dukkha_thai.json">dukkha_thai.json</a>) เป็นแม่แบบโครงสร้าง และคัดลอกรูปแบบ AI ฟรี (เช่น Claude หรือ ChatGPT) สามารถช่วยกรอกข้อมูลตามตัวอย่างได้ หากคุณเล่าประวัติคำศัพท์ให้ฟัง</li>
+      <li>กรอกคำศัพท์ในช่องด้านล่าง แล้วกด «คัดลอกพรอมต์» — พรอมต์พร้อมคำศัพท์ของคุณจะถูกคัดลอกไปยังคลิปบอร์ด นำไปวางใน AI ฟรีตัวใดก็ได้ (เช่น Claude, ChatGPT หรือ Gemini) แล้วคุณจะได้ JSON ที่พร้อมใช้งาน
+        <div class="term-prompt-widget">
+          <label class="term-prompt-label" for="term-prompt-input">คำศัพท์เป็นภาษาไทย</label>
+          <div class="term-prompt-row">
+            <input id="term-prompt-input" class="term-prompt-input" type="text" placeholder="เช่น กรุณา" autocomplete="off">
+            <button id="term-prompt-copy-btn" class="term-prompt-btn" type="button" data-copied-text="คัดลอกแล้ว! ✓" disabled aria-disabled="true">คัดลอกพรอมต์</button>
+          </div>
+          <p class="term-prompt-hint">จากนั้นนำพรอมต์ไปวางใน AI ฟรีตัวใดก็ได้ แล้วคุณจะได้ JSON ที่พร้อมใช้งาน</p>
+          <div id="term-prompt-status" class="term-prompt-status" role="status" aria-live="polite"></div>
+        </div>
+      </li>
+      <li>ในสำเนา repository ของคุณ สร้างไฟล์ใหม่ชื่อ <b>ชื่อคำศัพท์_thai.json</b> (ตัวอักษรละติน ไม่มีช่องว่าง — เช่น <b>karuna_thai.json</b>) แล้ววาง JSON ที่ได้จาก AI ลงไปทั้งหมดโดยไม่แก้ไข</li>
       <li>บันทึกไฟล์ — GitHub จะแสดงปุ่ม <b>Create pull request</b> ให้เอง</li>
       <li>รอการตรวจสอบ หลังจากได้รับการอนุมัติ คำศัพท์จะปรากฏในตัวนำทาง</li>
     </ol>
@@ -91,5 +101,7 @@
 <script src="js/burger-menu.js"></script>
 <script src="js/footer-counter.js"></script>
 <script src="js/term-count.js"></script>
+<script src="js/term-prompt-thai.js"></script>
+<script src="js/term-prompt-widget.js"></script>
 </body>
 </html>

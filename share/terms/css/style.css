@@ -673,3 +673,83 @@ html[lang="th"] {
   --font-display: 'Noto Serif Thai', 'Noto Serif', Georgia, serif;
   --font-body: 'Noto Sans Thai', 'Noto Sans', -apple-system, sans-serif;
 }
+
+/* --- Виджет генерации промта для добавления термина --- */
+.term-prompt-widget {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg-elevated);
+}
+
+.term-prompt-label {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.term-prompt-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.term-prompt-input {
+  flex: 1 1 220px;
+  min-width: 0;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.6rem 0.75rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  min-height: 44px;
+}
+
+.term-prompt-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.term-prompt-btn {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 1.1rem;
+  border-radius: 8px;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: var(--bg-elevated);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.term-prompt-btn:hover:not(:disabled) { opacity: 0.9; }
+
+.term-prompt-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.term-prompt-hint {
+  margin-top: 0.6rem;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--text-muted, var(--text));
+  opacity: 0.75;
+}
+
+.term-prompt-status {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
