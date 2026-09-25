@@ -86,7 +86,7 @@ function buildCardHtml(lang, id, data) {
   const loading = LOADING_TEXT[lang];
   let html = TEMPLATES[lang];
 
-  const termName = data ? (data.term_ru || data.term_thai || id) : id;
+  const termName = data ? capitalize(data.term_ru || data.term_thai || id) : id;
   const iast = data ? (data.term_iast || '') : '';
 
   html = replaceOnce(html, TITLE_PLACEHOLDER[lang],
@@ -165,7 +165,7 @@ LANGS.forEach(lang => {
     const pageTerms = sorted.slice(start, start + PAGE_SIZE);
 
     const liHtml = pageTerms.map(({ id, data }) => {
-      const name = escapeHtml(data[nameKey] || id);
+      const name = escapeHtml(capitalize(data[nameKey] || id));
       const laterCount = (data.later_mentions || []).length;
       const badgeNum = lang === 'thai' ? toThaiNumerals(laterCount) : laterCount;
       const badge = laterCount > 0 ? ' <span class="count-badge">+' + badgeNum + '</span>' : '';

@@ -6,6 +6,7 @@ var TERM_UI_STRINGS = {
     consensus: 'Консенсус', recordedBy: 'Кем письменно зафиксировано', schoolTradition: 'Школа/традиция',
     attributionHint: 'Показывает, насколько точно известно, кто и когда впервые ввёл термин в оборот: совпадает ли легенда традиции с выводами современной науки, или здесь есть научный спор.',
     reasonIntroduced: 'Причина введения', interpretation: 'Толкование', language: 'Язык', sources: 'Источники',
+    composition: 'Из каких слов состоит', compositionNote: 'Как части складываются в смысл',
     introEntry: 'Введение термина', laterSection: 'Развитие термина',
     dateUpdated: 'Дата обновления', updatedBy: 'Кто обновил', reasonForUpdate: 'Причина обновления', whatIsNew: 'Что нового',
     missingTranslation: function (b, l) {
@@ -24,6 +25,7 @@ var TERM_UI_STRINGS = {
     consensus: 'ความเห็นพ้อง', recordedBy: 'ผู้บันทึกเป็นลายลักษณ์อักษร', schoolTradition: 'นิกาย/ประเพณี',
     attributionHint: 'แสดงว่าทราบแน่ชัดเพียงใดว่าใครและเมื่อใดเป็นผู้ริเริ่มใช้คำนี้ ตำนานตามประเพณีสอดคล้องกับข้อสรุปทางวิชาการหรือไม่ หรือยังเป็นประเด็นที่ถกเถียงกันอยู่',
     reasonIntroduced: 'เหตุผลในการบัญญัติคำ', interpretation: 'ความหมาย', language: 'ภาษา', sources: 'แหล่งที่มา',
+    composition: 'คำนี้ประกอบด้วยคำใดบ้าง', compositionNote: 'ความหมายเมื่อรวมกัน',
     introEntry: 'การบัญญัติคำศัพท์', laterSection: 'พัฒนาการของคำศัพท์',
     dateUpdated: 'วันที่ปรับปรุง', updatedBy: 'ผู้ปรับปรุง', reasonForUpdate: 'เหตุผลในการปรับปรุง', whatIsNew: 'สิ่งที่เพิ่มขึ้นใหม่',
     missingTranslation: function (b, l) {
@@ -92,6 +94,14 @@ function renderSources(strings, sources) {
   return '<div class="sources-block">'+listBlock(strings.sources, items)+'</div>';
 }
 
+function renderComposition(strings, tc) {
+  if (!tc || !tc.is_compound || !tc.components || !tc.components.length) return '';
+  var items = tc.components.map(function(c){ return c.part_iast + ' — ' + c.part_meaning; });
+  var html = listBlock(strings.composition, items);
+  if (tc.note) html += fieldBlock(strings.compositionNote, tc.note);
+  return '<div class="group-block group-composition">' + html + '</div>';
+}
+
 // "Введение термина" / "Развитие термина" — заголовки СНАРУЖИ карточек.
 function renderTimeline(strings, data) {
   var later = data.later_mentions || [];
@@ -100,6 +110,7 @@ function renderTimeline(strings, data) {
   html += '<div class="timeline-section-heading timeline-intro-heading">' + escapeHtml(strings.introEntry) + '</div>';
   html += '<div class="timeline-entry"><div class="term-card">';
   if (data.interpretation) html += '<div class="highlight-block"><div class="highlight-label">'+escapeHtml(strings.interpretation)+'</div><div class="highlight-text">'+escapeHtml(capitalize(data.interpretation))+'</div></div>';
+  html += renderComposition(strings, data.term_composition);
   html += renderAttribution(strings, data.attribution);
   if (data.reason_introduced) html += '<div class="highlight-block reason"><div class="highlight-label">'+escapeHtml(strings.reasonIntroduced)+'</div><div class="highlight-text">'+escapeHtml(capitalize(data.reason_introduced))+'</div></div>';
   html += renderOrigin(strings, data.origin);
