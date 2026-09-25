@@ -1,43 +1,8 @@
 {
   "terms": [
     {
-      "id": "anapanasati",
-      "term_ru": "Анапанасати (осознанность дыхания)",
-      "later_count": 0
-    },
-    {
-      "id": "anatta",
-      "term_ru": "Анатта (не-я)",
-      "later_count": 0
-    },
-    {
-      "id": "arahant",
-      "term_ru": "Архат",
-      "later_count": 0
-    },
-    {
       "id": "dukkha",
       "term_ru": "Дукха",
-      "later_count": 2
-    },
-    {
-      "id": "kayagatasati",
-      "term_ru": "кайягатасати (осознанность тела)",
-      "later_count": 0
-    },
-    {
-      "id": "paticcasamuppada",
-      "term_ru": "Пратитьясамуппада (взаимозависимое возникновение)",
-      "later_count": 0
-    },
-    {
-      "id": "satipatthana",
-      "term_ru": "Сатипаттхана (основы осознанности)",
-      "later_count": 1
-    },
-    {
-      "id": "sunnata",
-      "term_ru": "Суннята (пустотность)",
       "later_count": 2
     }
   ]
