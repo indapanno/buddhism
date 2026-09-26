@@ -61,7 +61,7 @@ LANGS.forEach(lang => {
   const ids = Object.keys(dataByLang[lang]).sort();
   const indexTerms = ids.map(id => ({
     id: id,
-    [nameKey]: dataByLang[lang][id][nameKey],
+    [nameKey]: capitalize(dataByLang[lang][id][nameKey]),
     later_count: (dataByLang[lang][id].later_mentions || []).length
   }));
   fs.writeFileSync(path.join(JSON_DIR, 'index_' + lang + '.json'), JSON.stringify({ terms: indexTerms }, null, 2) + '\n', 'utf8');
