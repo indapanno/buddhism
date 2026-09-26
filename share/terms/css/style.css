@@ -759,3 +759,8 @@ html[lang="th"] {
   overflow-wrap: anywhere;
   word-break: break-word;
 }
+
+.term-card .field-text a,
+.term-card li a {
+  color: var(--link-color);
+}
