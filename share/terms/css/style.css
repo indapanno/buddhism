@@ -753,3 +753,9 @@ html[lang="th"] {
   overflow: hidden;
   clip: rect(0 0 0 0);
 }
+
+/* --- Перенос длинных строк внутри code (напр. примеры GitHub-адресов) --- */
+.term-card code {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
