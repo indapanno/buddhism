@@ -1,11 +1,6 @@
 {
   "terms": [
     {
-      "id": "avijja",
-      "term_thai": "อวิชชา (ความไม่รู้ตามความเป็นจริง)",
-      "later_count": 1
-    },
-    {
       "id": "dukkha",
       "term_thai": "ทุกข์",
       "later_count": 2
