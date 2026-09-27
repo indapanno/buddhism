@@ -1,6 +1,11 @@
 {
   "terms": [
     {
+      "id": "ariya",
+      "term_ru": "Ария",
+      "later_count": 2
+    },
+    {
       "id": "dukkha",
       "term_ru": "Дуккха",
       "later_count": 1
