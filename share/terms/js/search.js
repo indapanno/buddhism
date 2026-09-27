@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var dir = getDirPath();
   var terms = [];
 
-  fetch(dir + 'json/index_' + lang + '.json')
+  fetch(dir + '../json/index_' + lang + '.json')
     .then(function (res) { return res.json(); })
     .then(function (data) { terms = data.terms || []; })
     .catch(function () { terms = []; });

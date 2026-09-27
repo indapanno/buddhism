@@ -2,7 +2,7 @@
 
 Технический документ. Описывает архитектуру, схему данных и способ развёртывания
 статического сайта. Для инструкции по добавлению термина через веб-интерфейс см.
-[how-to-add-term_ru.html](../../how-to-add-term_ru.html).
+[how-to-add-term_ru.html](../../html/how-to-add-term_ru.html).
 
 ## Технический стек
 
@@ -33,14 +33,15 @@ share/terms/
 ├── _template_thai.html
 ├── _template_nav_ru.html     # шаблон страницы навигатора
 ├── _template_nav_thai.html
-├── <id>_ru.html               # ГЕНЕРИРУЕТСЯ из шаблона + JSON, не редактировать
-├── <id>_thai.html
-├── nav_ru.html, nav_ru_2.html, …   # ГЕНЕРИРУЕТСЯ, пагинация по 10 терминов/стр
-├── nav_thai.html, …
-├── how-to-add-term_ru.html    # статичный, вручную
-├── how-to-add-term_thai.html
-├── how-to-translate-term_ru.html
-├── how-to-translate-term_thai.html
+├── html/                      # все страницы сайта (пути к css/js — на уровень выше)
+│   ├── <id>_ru.html            # ГЕНЕРИРУЕТСЯ из шаблона + JSON, не редактировать
+│   ├── <id>_thai.html
+│   ├── nav_ru.html, nav_ru_2.html, …   # ГЕНЕРИРУЕТСЯ, пагинация по 10 терминов/стр
+│   ├── nav_thai.html, …
+│   ├── how-to-add-term_ru.html    # статичный, вручную
+│   ├── how-to-add-term_thai.html
+│   ├── how-to-translate-term_ru.html
+│   └── how-to-translate-term_thai.html
 └── docs/for-researchers/ru.md, thai.md   # этот документ
 
 .github/

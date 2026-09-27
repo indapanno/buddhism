@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
     return '<nav class="pagination" aria-label="Страницы">' + parts.join('') + '</nav>';
   }
 
-  fetch(dir + 'json/index_' + lang + '.json')
+  fetch(dir + '../json/index_' + lang + '.json')
     .then(function (res) { return res.json(); })
     .then(function (data) {
       var terms = (data.terms || []).slice().sort(function (a, b) {

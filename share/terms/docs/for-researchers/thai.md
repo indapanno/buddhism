@@ -2,7 +2,7 @@
 
 เอกสารทางเทคนิค อธิบายสถาปัตยกรรม โครงสร้างข้อมูล และวิธีการติดตั้งเว็บไซต์แบบ static
 สำหรับคำแนะนำการเพิ่มคำศัพท์ผ่านหน้าเว็บ โปรดดู
-[how-to-add-term_thai.html](../../how-to-add-term_thai.html)
+[how-to-add-term_thai.html](../../html/how-to-add-term_thai.html)
 
 ## เทคโนโลยีที่ใช้
 
@@ -33,14 +33,15 @@ share/terms/
 ├── _template_thai.html
 ├── _template_nav_ru.html     # แม่แบบหน้านำทาง
 ├── _template_nav_thai.html
-├── <id>_ru.html               # สร้างอัตโนมัติจากแม่แบบ + JSON ห้ามแก้ด้วยมือ
-├── <id>_thai.html
-├── nav_ru.html, nav_ru_2.html, …   # สร้างอัตโนมัติ แบ่งหน้าละ 10 คำศัพท์
-├── nav_thai.html, …
-├── how-to-add-term_ru.html    # ไฟล์คงที่ แก้ไขด้วยมือ
-├── how-to-add-term_thai.html
-├── how-to-translate-term_ru.html
-├── how-to-translate-term_thai.html
+├── html/                      # หน้าเว็บทั้งหมด (path ของ css/js อยู่สูงขึ้นหนึ่งระดับ)
+│   ├── <id>_ru.html            # สร้างอัตโนมัติจากแม่แบบ + JSON ห้ามแก้ด้วยมือ
+│   ├── <id>_thai.html
+│   ├── nav_ru.html, nav_ru_2.html, …   # สร้างอัตโนมัติ แบ่งหน้าละ 10 คำศัพท์
+│   ├── nav_thai.html, …
+│   ├── how-to-add-term_ru.html    # ไฟล์คงที่ แก้ไขด้วยมือ
+│   ├── how-to-add-term_thai.html
+│   ├── how-to-translate-term_ru.html
+│   └── how-to-translate-term_thai.html
 └── docs/for-researchers/ru.md, thai.md   # เอกสารนี้
 
 .github/

@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var lang = match ? match[1] : 'ru';
   var dir = path.substring(0, path.lastIndexOf('/') + 1);
 
-  fetch(dir + 'json/index_' + lang + '.json')
+  fetch(dir + '../json/index_' + lang + '.json')
     .then(function (res) { return res.json(); })
     .then(function (data) {
       var terms = data.terms || [];

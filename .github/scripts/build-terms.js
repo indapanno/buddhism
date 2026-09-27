@@ -4,8 +4,11 @@ const path = require('path');
 const SCRIPT_DIR = __dirname;
 const REPO_ROOT = path.resolve(SCRIPT_DIR, '../..');
 const TERMS_DIR = path.join(REPO_ROOT, 'share/terms');
+const HTML_DIR = path.join(TERMS_DIR, 'html');
 const JSON_DIR = path.join(TERMS_DIR, 'json');
-const SITE_BASE_URL = 'https://indapanno.github.io/buddhism/share/terms/';
+if (!fs.existsSync(HTML_DIR)) fs.mkdirSync(HTML_DIR, { recursive: true });
+
+const SITE_BASE_URL = 'https://indapanno.github.io/buddhism/share/terms/html/';
 const PAGE_SIZE = 10;
 const LANGS = ['ru', 'thai'];
 
@@ -123,7 +126,7 @@ allIds.forEach(id => {
   LANGS.forEach(lang => {
     const data = dataByLang[lang][id];
     const html = buildCardHtml(lang, id, data);
-    fs.writeFileSync(path.join(TERMS_DIR, id + '_' + lang + '.html'), html, 'utf8');
+    fs.writeFileSync(path.join(HTML_DIR, id + '_' + lang + '.html'), html, 'utf8');
     cardCounts[lang]++;
   });
 });
@@ -194,7 +197,7 @@ LANGS.forEach(lang => {
         '<title>' + NAV_TITLE_TEXT[lang] + pageSuffix + '</title>', lang + ' nav p' + page, 'title');
     }
 
-    fs.writeFileSync(path.join(TERMS_DIR, navFilename(lang, page)), html, 'utf8');
+    fs.writeFileSync(path.join(HTML_DIR, navFilename(lang, page)), html, 'utf8');
   }
   console.log('Навигационных страниц (' + lang + ') собрано:', totalPages);
 });
@@ -202,27 +205,27 @@ LANGS.forEach(lang => {
 // 6. Уборка: осиротевшие карточки и лишние страницы пагинации
 LANGS.forEach(lang => {
   const suffix = '_' + lang + '.html';
-  const existingHtmlFiles = fs.readdirSync(TERMS_DIR).filter(f =>
+  const existingHtmlFiles = fs.readdirSync(HTML_DIR).filter(f =>
     f.endsWith(suffix) && !f.startsWith('nav_') && !f.startsWith('_template') && !f.startsWith('how-to-')
   );
   let removedCards = 0;
   existingHtmlFiles.forEach(file => {
     const id = file.slice(0, -suffix.length);
     if (!allIds.includes(id)) {
-      fs.unlinkSync(path.join(TERMS_DIR, file));
+      fs.unlinkSync(path.join(HTML_DIR, file));
       removedCards++;
       console.log('Удалён осиротевший файл:', file);
     }
   });
   if (removedCards) console.log('Удалено осиротевших карточек (' + lang + '):', removedCards);
 
-  const existingNavFiles = fs.readdirSync(TERMS_DIR).filter(f => new RegExp('^nav_' + lang + '(_\\d+)?\\.html$').test(f));
+  const existingNavFiles = fs.readdirSync(HTML_DIR).filter(f => new RegExp('^nav_' + lang + '(_\\d+)?\\.html$').test(f));
   let removedNavPages = 0;
   existingNavFiles.forEach(file => {
     const m = file.match(new RegExp('^nav_' + lang + '(?:_(\\d+))?\\.html$'));
     const pageNum = m[1] ? parseInt(m[1], 10) : 1;
     if (pageNum > totalPagesByLang[lang]) {
-      fs.unlinkSync(path.join(TERMS_DIR, file));
+      fs.unlinkSync(path.join(HTML_DIR, file));
       removedNavPages++;
       console.log('Удалена устаревшая страница пагинации:', file);
     }
