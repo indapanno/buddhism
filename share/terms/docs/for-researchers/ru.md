@@ -29,10 +29,11 @@ share/terms/
 │   ├── search.js, lang.js, theme.js, burger-menu.js,
 │   │   footer-counter.js, term-count.js, thai-numerals.js
 ├── css/style.css
-├── _template_ru.html         # шаблон карточки — редактируется вручную
-├── _template_thai.html
-├── _template_nav_ru.html     # шаблон страницы навигатора
-├── _template_nav_thai.html
+├── template/                  # шаблоны — редактируются вручную
+│   ├── _template_ru.html      # шаблон карточки
+│   ├── _template_thai.html
+│   ├── _template_nav_ru.html  # шаблон страницы навигатора
+│   └── _template_nav_thai.html
 ├── html/                      # все страницы сайта (пути к css/js — на уровень выше)
 │   ├── <id>_ru.html            # ГЕНЕРИРУЕТСЯ из шаблона + JSON, не редактировать
 │   ├── <id>_thai.html

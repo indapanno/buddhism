@@ -29,10 +29,11 @@ share/terms/
 │   ├── search.js, lang.js, theme.js, burger-menu.js,
 │   │   footer-counter.js, term-count.js, thai-numerals.js
 ├── css/style.css
-├── _template_ru.html         # แม่แบบการ์ด — แก้ไขด้วยมือ
-├── _template_thai.html
-├── _template_nav_ru.html     # แม่แบบหน้านำทาง
-├── _template_nav_thai.html
+├── template/                  # แม่แบบ — แก้ไขด้วยมือ
+│   ├── _template_ru.html      # แม่แบบการ์ด
+│   ├── _template_thai.html
+│   ├── _template_nav_ru.html  # แม่แบบหน้านำทาง
+│   └── _template_nav_thai.html
 ├── html/                      # หน้าเว็บทั้งหมด (path ของ css/js อยู่สูงขึ้นหนึ่งระดับ)
 │   ├── <id>_ru.html            # สร้างอัตโนมัติจากแม่แบบ + JSON ห้ามแก้ด้วยมือ
 │   ├── <id>_thai.html
