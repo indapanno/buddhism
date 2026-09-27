@@ -1,6 +1,11 @@
 {
   "terms": [
     {
+      "id": "dukkha",
+      "term_ru": "Дуккха",
+      "later_count": 1
+    },
+    {
       "id": "dukkhaariyasacca",
       "term_ru": "Дуккха-ариясатья",
       "later_count": 1
