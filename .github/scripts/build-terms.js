@@ -5,6 +5,7 @@ const SCRIPT_DIR = __dirname;
 const REPO_ROOT = path.resolve(SCRIPT_DIR, '../..');
 const TERMS_DIR = path.join(REPO_ROOT, 'share/terms');
 const HTML_DIR = path.join(TERMS_DIR, 'html');
+const TEMPLATE_DIR = path.join(TERMS_DIR, 'template');
 const JSON_DIR = path.join(TERMS_DIR, 'json');
 if (!fs.existsSync(HTML_DIR)) fs.mkdirSync(HTML_DIR, { recursive: true });
 
@@ -18,7 +19,7 @@ const {
 const { toThaiNumerals } = require(path.join(TERMS_DIR, 'js/thai-numerals.js'));
 
 function readTemplate(name) {
-  return fs.readFileSync(path.join(TERMS_DIR, name), 'utf8');
+  return fs.readFileSync(path.join(TEMPLATE_DIR, name), 'utf8');
 }
 
 const TEMPLATES = { ru: readTemplate('_template_ru.html'), thai: readTemplate('_template_thai.html') };
