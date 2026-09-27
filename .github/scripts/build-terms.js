@@ -188,8 +188,8 @@ LANGS.forEach(lang => {
     let linkTags = '<link rel="canonical" href="' + canonicalUrl + '">';
     if (page > 1) linkTags += '\n<link rel="prev" href="' + SITE_BASE_URL + navFilename(lang, page - 1) + '">';
     if (page < totalPages) linkTags += '\n<link rel="next" href="' + SITE_BASE_URL + navFilename(lang, page + 1) + '">';
-    html = replaceOnce(html, '<link rel="stylesheet" href="css/style.css">',
-      '<link rel="stylesheet" href="css/style.css">\n' + linkTags, lang + ' nav p' + page, 'canonical');
+    html = replaceOnce(html, '<link rel="stylesheet" href="../css/style.css">',
+      '<link rel="stylesheet" href="../css/style.css">\n' + linkTags, lang + ' nav p' + page, 'canonical');
 
     if (page > 1) {
       const pageSuffix = lang === 'thai' ? (' — หน้า ' + toThaiNumerals(page)) : (' — страница ' + page);
