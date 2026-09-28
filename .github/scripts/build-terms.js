@@ -233,3 +233,63 @@ LANGS.forEach(lang => {
   });
   if (removedNavPages) console.log('Удалено устаревших страниц пагинации (' + lang + '):', removedNavPages);
 });
+
+// 7. sitemap.xml — только реально существующие переводы
+// (заглушки «перевод отсутствует» в карту не попадают: это тонкие страницы).
+// lastmod намеренно не указываем: в GitHub Actions git-даты файлов недостоверны.
+(function buildSitemap() {
+  const HREFLANG = { ru: 'ru', thai: 'th' }; // код тайского языка в hreflang — «th», не «thai»
+  const SITEMAP_PATH = path.join(TERMS_DIR, 'sitemap.xml');
+  const xmlEscape = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const cardFile = (id, lang) => id + '_' + lang + '.html';
+
+  const entries = [];
+
+  // Карточки: по каждому языку, где перевод действительно есть.
+  allIds.forEach(id => {
+    const present = LANGS.filter(lang => dataByLang[lang][id]);
+    present.forEach(lang => {
+      const alternates = present.length > 1
+        ? present.map(l => ({ hreflang: HREFLANG[l], file: cardFile(id, l) }))
+        : [];
+      entries.push({ file: cardFile(id, lang), alternates });
+    });
+  });
+
+  // Навигатор: только языки, где есть хотя бы один термин.
+  const navLangs = LANGS.filter(lang => Object.keys(dataByLang[lang]).length > 0);
+  navLangs.forEach(lang => {
+    for (let page = 1; page <= totalPagesByLang[lang]; page++) {
+      const alternates = (page === 1 && navLangs.length > 1)
+        ? navLangs.map(l => ({ hreflang: HREFLANG[l], file: navFilename(l, 1) }))
+        : [];
+      entries.push({ file: navFilename(lang, page), alternates });
+    }
+  });
+
+  entries.sort((a, b) => (a.file < b.file ? -1 : a.file > b.file ? 1 : 0));
+
+  entries.forEach(e => {
+    if (!fs.existsSync(path.join(HTML_DIR, e.file))) {
+      console.warn('sitemap: файл не найден на диске, но попал в карту:', e.file);
+    }
+  });
+  if (entries.length > 50000) console.warn('sitemap: больше 50 000 адресов — нужен индекс карт сайта');
+
+  const lines = [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">'
+  ];
+  entries.forEach(e => {
+    lines.push('  <url>');
+    lines.push('    <loc>' + xmlEscape(SITE_BASE_URL + e.file) + '</loc>');
+    e.alternates.forEach(a => {
+      lines.push('    <xhtml:link rel="alternate" hreflang="' + a.hreflang + '" href="' + xmlEscape(SITE_BASE_URL + a.file) + '"/>');
+    });
+    lines.push('  </url>');
+  });
+  lines.push('</urlset>', '');
+
+  fs.writeFileSync(SITEMAP_PATH, lines.join('\n'), 'utf8');
+  console.log('sitemap.xml: адресов записано:', entries.length);
+})();
