@@ -217,6 +217,14 @@ function buildPaginationHtml(lang, page, totalPages) {
 
 const totalPagesByLang = {};
 
+// SEO страниц навигатора: описание сайта (общее для всех страниц; у страниц 2+ добавляется номер).
+const NAV_DESCRIPTION = {
+  ru: 'Навигатор по истории палийских терминов: как появлялись и менялись ключевые слова буддийского учения — кто ввёл термин, когда и с какими смыслами он дошёл до нас.',
+  thai: 'ตัวนำทางประวัติศัพท์บาลี: ดูว่าคำสำคัญในคำสอนของพระพุทธศาสนาเกิดขึ้นและเปลี่ยนความหมายมาอย่างไร ใครเป็นผู้บัญญัติ เมื่อใด และมีความหมายอย่างไรในแต่ละยุค'
+};
+const NAV_HREFLANG_CODE = { ru: 'ru', thai: 'th' };
+const NAV_OG_LOCALE = { ru: 'ru_RU', thai: 'th_TH' };
+
 LANGS.forEach(lang => {
   const nameKey = lang === 'thai' ? 'term_thai' : 'term_ru';
   const items = Object.keys(dataByLang[lang]).map(id => ({ id, data: dataByLang[lang][id] }));
@@ -246,14 +254,40 @@ LANGS.forEach(lang => {
       lang + ' nav p' + page, 'term-list');
 
     const canonicalUrl = SITE_BASE_URL + navFilename(lang, page);
-    let linkTags = '<link rel="canonical" href="' + canonicalUrl + '">';
-    if (page > 1) linkTags += '\n<link rel="prev" href="' + SITE_BASE_URL + navFilename(lang, page - 1) + '">';
-    if (page < totalPages) linkTags += '\n<link rel="next" href="' + SITE_BASE_URL + navFilename(lang, page + 1) + '">';
+    const pageSuffix = page > 1
+      ? (lang === 'thai' ? (' — หน้า ' + toThaiNumerals(page)) : (' — страница ' + page))
+      : '';
+    let linkTags;
+    if (sorted.length === 0) {
+      // Язык без единого перевода: пустой навигатор в поиск не нужен (в sitemap его тоже нет).
+      linkTags = '<meta name="robots" content="noindex">';
+    } else {
+      linkTags = '<link rel="canonical" href="' + canonicalUrl + '">';
+      if (page > 1) linkTags += '\n<link rel="prev" href="' + SITE_BASE_URL + navFilename(lang, page - 1) + '">';
+      if (page < totalPages) linkTags += '\n<link rel="next" href="' + SITE_BASE_URL + navFilename(lang, page + 1) + '">';
+      // hreflang — только для первой страницы списка и только если навигатор есть на обоих языках
+      // (пагинация у языков разная, соответствия страниц 2+ между языками нет).
+      const navLangsWithTerms = LANGS.filter(l => Object.keys(dataByLang[l]).length > 0);
+      if (page === 1 && navLangsWithTerms.length > 1) {
+        navLangsWithTerms.forEach(l => {
+          linkTags += '\n<link rel="alternate" hreflang="' + NAV_HREFLANG_CODE[l] + '" href="' + SITE_BASE_URL + navFilename(l, 1) + '">';
+        });
+        linkTags += '\n<link rel="alternate" hreflang="x-default" href="' + SITE_BASE_URL + navFilename(navLangsWithTerms[0], 1) + '">';
+      }
+      const navDesc = NAV_DESCRIPTION[lang] + (page > 1 ? (lang === 'thai' ? ' หน้า ' + toThaiNumerals(page) + '.' : ' Страница ' + page + '.') : '');
+      const navTitle = NAV_TITLE_TEXT[lang] + pageSuffix;
+      linkTags += '\n<meta name="description" content="' + escapeHtml(navDesc) + '">';
+      linkTags += '\n<meta property="og:type" content="website">';
+      linkTags += '\n<meta property="og:site_name" content="' + escapeHtml(NAV_TITLE_TEXT[lang]) + '">';
+      linkTags += '\n<meta property="og:title" content="' + escapeHtml(navTitle) + '">';
+      linkTags += '\n<meta property="og:description" content="' + escapeHtml(navDesc) + '">';
+      linkTags += '\n<meta property="og:url" content="' + canonicalUrl + '">';
+      linkTags += '\n<meta property="og:locale" content="' + NAV_OG_LOCALE[lang] + '">';
+    }
     html = replaceOnce(html, '<link rel="stylesheet" href="../css/style.css">',
       '<link rel="stylesheet" href="../css/style.css">\n' + linkTags, lang + ' nav p' + page, 'canonical');
 
     if (page > 1) {
-      const pageSuffix = lang === 'thai' ? (' — หน้า ' + toThaiNumerals(page)) : (' — страница ' + page);
       html = replaceOnce(html, '<title>' + NAV_TITLE_TEXT[lang] + '</title>',
         '<title>' + NAV_TITLE_TEXT[lang] + pageSuffix + '</title>', lang + ' nav p' + page, 'title');
     }
