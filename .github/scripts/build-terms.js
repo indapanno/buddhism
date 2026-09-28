@@ -83,6 +83,61 @@ function buildSnippet(data) {
   return text;
 }
 
+// SEO-теги в <head> карточки: canonical, hreflang, meta description, Open Graph.
+// Заглушки «перевод отсутствует» получают только noindex (в sitemap они тоже не входят).
+const HREFLANG_CODE = { ru: 'ru', thai: 'th' }; // код тайского в hreflang — «th», не «thai»
+const OG_LOCALE = { ru: 'ru_RU', thai: 'th_TH' };
+const META_DESC_MAX = { ru: 155, thai: 120 };
+
+function truncateForMeta(text, max, lang) {
+  if (text.length <= max) return text;
+  // Если в пределах лимита есть законченное предложение (не слишком короткое) — режем по нему, без «…».
+  const head = text.slice(0, max);
+  const stops = ['. ', '! ', '? ', '.» ', '.)'].map(m => head.lastIndexOf(m) + 1).filter(i => i > 0);
+  const sentenceEnd = stops.length ? Math.max(...stops) : 0;
+  if (sentenceEnd >= max * 0.6) return head.slice(0, sentenceEnd).trim();
+  let cut;
+  if (lang === 'thai' && typeof Intl !== 'undefined' && Intl.Segmenter) {
+    // В тайском нет пробелов между словами — режем по границе слова через ICU.
+    let end = 0;
+    for (const seg of new Intl.Segmenter('th', { granularity: 'word' }).segment(text)) {
+      if (seg.index + seg.segment.length > max) break;
+      end = seg.index + seg.segment.length;
+    }
+    cut = text.slice(0, end || max);
+  } else {
+    cut = text.slice(0, max).replace(/\s+\S*$/, '');
+  }
+  return cut.replace(/[\s,;:—-]+$/, '') + '…';
+}
+
+function buildMetaDescription(lang, data) {
+  const source = [data.interpretation, data.reason_introduced].find(t => t && String(t).trim());
+  if (!source) return '';
+  return truncateForMeta(capitalize(String(source).trim().replace(/\s+/g, ' ')), META_DESC_MAX[lang], lang);
+}
+
+function buildSeoTags(lang, id, data, titleText) {
+  if (!data) return '<meta name="robots" content="noindex">';
+  const urlOf = l => SITE_BASE_URL + id + '_' + l + '.html';
+  const present = LANGS.filter(l => dataByLang[l][id]);
+  const tags = ['<link rel="canonical" href="' + urlOf(lang) + '">'];
+  if (present.length > 1) {
+    present.forEach(l => tags.push('<link rel="alternate" hreflang="' + HREFLANG_CODE[l] + '" href="' + urlOf(l) + '">'));
+    tags.push('<link rel="alternate" hreflang="x-default" href="' + urlOf(present[0]) + '">');
+  }
+  const desc = buildMetaDescription(lang, data);
+  if (desc) tags.push('<meta name="description" content="' + escapeHtml(desc) + '">');
+  tags.push('<meta property="og:type" content="article">');
+  tags.push('<meta property="og:site_name" content="' + escapeHtml(NAV_TITLE_TEXT[lang]) + '">');
+  tags.push('<meta property="og:title" content="' + escapeHtml(titleText) + '">');
+  if (desc) tags.push('<meta property="og:description" content="' + escapeHtml(desc) + '">');
+  tags.push('<meta property="og:url" content="' + urlOf(lang) + '">');
+  tags.push('<meta property="og:locale" content="' + OG_LOCALE[lang] + '">');
+  present.filter(l => l !== lang).forEach(l => tags.push('<meta property="og:locale:alternate" content="' + OG_LOCALE[l] + '">'));
+  return tags.join('\n');
+}
+
 // 4. Карточки терминов — для КАЖДОГО известного id на КАЖДОМ языке
 // (если данных для языка нет — страница "перевод отсутствует")
 function buildCardHtml(lang, id, data) {
@@ -93,8 +148,9 @@ function buildCardHtml(lang, id, data) {
   const termName = data ? capitalize(data.term_ru || data.term_thai || id) : id;
   const iast = data ? (data.term_iast || '') : '';
 
+  const titleText = strings.titlePrefix + ' ' + termName + (iast ? ' (' + iast + ')' : '');
   html = replaceOnce(html, TITLE_PLACEHOLDER[lang],
-    '<title>' + escapeHtml(strings.titlePrefix + ' ' + termName + (iast ? ' (' + iast + ')' : '')) + '</title>',
+    '<title>' + escapeHtml(titleText) + '</title>',
     lang + '/' + id, 'title');
 
   html = replaceOnce(html, '<h1 id="page-title">' + loading + '</h1>',
@@ -118,6 +174,10 @@ function buildCardHtml(lang, id, data) {
 
   html = replaceOnce(html, '<div id="term-content">\n    <p id="loading">' + loading + '</p>\n  </div>',
     '<div id="term-content">' + contentHtml + '</div>', lang + '/' + id, 'term-content');
+
+  html = replaceOnce(html, '<link rel="stylesheet" href="../css/style.css">',
+    '<link rel="stylesheet" href="../css/style.css">\n' + buildSeoTags(lang, id, data, titleText),
+    lang + '/' + id, 'seo-head');
 
   return html;
 }
