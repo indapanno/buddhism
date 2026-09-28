@@ -307,11 +307,15 @@
       "additionalProperties": false,
       "required": [
         "id",
+        "parent",
+        "author_id",
         "date_updated",
         "updated_by",
         "reason_for_update",
         "what_is_new",
         "school_tradition",
+        "source_type",
+        "language",
         "source"
       ],
       "properties": {
