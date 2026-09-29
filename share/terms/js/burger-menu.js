@@ -1,5 +1,5 @@
 // Бургер-меню: кнопка + выезжающая панель с пунктами
-// ("Как добавить термин", "Как перевести термин", "Проверка JSON"). Определяет язык
+// ("Как добавить термин", "Как перевести термин"). Определяет язык
 // по имени файла текущей страницы, строит ссылки на соответствующие
 // языковые версии инструкций.
 
@@ -8,15 +8,13 @@ var BURGER_UI_STRINGS = {
     menuTitle: 'Меню',
     navHome: 'Навигатор',
     addTerm: 'Добавить термин',
-    translateTerm: 'Перевести термин',
-    checkJson: 'Проверить JSON'
+    translateTerm: 'Перевести термин'
   },
   thai: {
     menuTitle: 'เมนู',
     navHome: 'หน้าหลัก',
     addTerm: 'เพิ่มคำศัพท์',
-    translateTerm: 'แปลคำศัพท์',
-    checkJson: 'ตรวจสอบ JSON'
+    translateTerm: 'แปลคำศัพท์'
   }
 };
 
@@ -41,8 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var items = [
     { href: 'nav_' + lang + '.html', text: strings.navHome },
     { href: 'how-to-add-term_' + lang + '.html', text: strings.addTerm },
-    { href: 'how-to-translate-term_' + lang + '.html', text: strings.translateTerm },
-    { href: 'how-to-check-json_' + lang + '.html', text: strings.checkJson }
+    { href: 'how-to-translate-term_' + lang + '.html', text: strings.translateTerm }
   ];
 
   list.innerHTML = items.map(function (item) {
