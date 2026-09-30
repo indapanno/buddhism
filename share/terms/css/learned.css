@@ -154,3 +154,60 @@ html[data-theme="light"] { --learned-error: #A33A2A; }
 
 /* Ссылка внутри пояснения на навигаторе */
 .nav-intro a { color: var(--link-color); }
+
+/* Ссылка внутри пояснения на карточке термина */
+.learned-note a { color: var(--link-color); }
+
+/* --- Кнопка сброса и подтверждение --- */
+.learned-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.learned-btn:disabled:hover {
+  border-color: var(--border);
+  color: var(--text-secondary);
+}
+
+.learned-btn--danger {
+  border-color: var(--learned-error);
+  color: var(--learned-error);
+}
+
+.learned-btn--danger:hover:not(:disabled) {
+  border-color: var(--learned-error);
+  color: var(--learned-error);
+  background: var(--bg-highlight);
+}
+
+.learned-btn--danger-solid {
+  background: var(--learned-error);
+  border-color: var(--learned-error);
+  color: var(--bg-elevated);
+}
+
+.learned-btn--danger-solid:hover {
+  border-color: var(--learned-error);
+  color: var(--bg-elevated);
+  opacity: 0.9;
+}
+
+.progress-confirm {
+  margin: 0;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--learned-error);
+  border-radius: 10px;
+  background: var(--bg);
+}
+
+.progress-confirm p {
+  margin: 0 0 0.7rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.progress-confirm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}

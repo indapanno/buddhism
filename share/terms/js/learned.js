@@ -18,7 +18,8 @@
       titleDone: 'Снять отметку «Изучен»',
       noteCard: 'Личная отметка для себя. Нажмите, когда разберётесь в термине: в навигаторе он станет блёклым. Хранится только в этом браузере.',
       noteNav: 'Кнопка рядом с термином — ваша личная отметка. «Изучен» делает термин блёклым в списке и поиске. Хранится только в этом браузере.',
-      linkProgress: 'Резервная копия прогресса →'
+      linkProgress: 'Резервная копия прогресса →',
+      linkCard: 'Мой прогресс →'
     },
     thai: {
       todo: 'ยังไม่ได้เรียน',
@@ -27,7 +28,8 @@
       titleDone: 'ยกเลิกเครื่องหมาย “เรียนแล้ว”',
       noteCard: 'เครื่องหมายส่วนตัวของคุณ กดเมื่อเข้าใจคำศัพท์นี้แล้ว — ในหน้าหลักคำนี้จะจางลง บันทึกไว้ในเบราว์เซอร์นี้เท่านั้น',
       noteNav: 'ปุ่มข้างคำศัพท์คือเครื่องหมายส่วนตัวของคุณ “เรียนแล้ว” จะทำให้คำนั้นจางลงในรายการและการค้นหา บันทึกไว้ในเบราว์เซอร์นี้เท่านั้น',
-      linkProgress: 'สำรองความคืบหน้า →'
+      linkProgress: 'สำรองความคืบหน้า →',
+      linkCard: 'ความคืบหน้าของฉัน →'
     }
   };
 
@@ -75,6 +77,12 @@
   function toggle(id) { return setLearned(id, !isLearned(id)); }
 
   function all() { return read(); }
+
+  // Сбросить все отметки (кнопка на странице «Мой прогресс»)
+  function clearAll() {
+    memory = [];
+    try { window.localStorage.removeItem(KEY); } catch (e) { /* хранилище недоступно */ }
+  }
 
   // Объединение с внешним списком (для импорта). Возвращает число добавленных id.
   function merge(ids) {
@@ -131,6 +139,11 @@
       var note = document.createElement('p');
       note.className = 'learned-note';
       note.textContent = s.noteCard;
+      var cardLink = document.createElement('a');
+      cardLink.href = 'progress_' + info.lang + '.html';
+      cardLink.textContent = s.linkCard;
+      note.appendChild(document.createTextNode(' '));
+      note.appendChild(cardLink);
       bar.appendChild(btn);
       bar.appendChild(note);
     }
@@ -154,6 +167,7 @@
     set: setLearned,
     toggle: toggle,
     all: all,
+    clear: clearAll,
     merge: merge,
     refresh: refresh
   };

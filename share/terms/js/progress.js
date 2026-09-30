@@ -17,6 +17,8 @@
       importBig: 'Файл слишком большой для файла прогресса.',
       importDone: function (added, total) { return 'Загружено. Новых отметок: ' + added + '. Всего изучено: ' + total + '.'; },
       importNone: function (total) { return 'Новых отметок нет: всё из файла уже отмечено. Всего изучено: ' + total + '.'; },
+      confirmReset: function (n) { return 'Снять отметки со всех терминов (' + n + ')? Вернуть их можно только из ранее скачанного файла.'; },
+      resetDone: 'Все отметки сняты. Вернуть их можно из ранее скачанного файла.',
       noStorage: 'Не удалось запустить страницу. Обновите её или откройте в другом браузере.'
     },
     thai: {
@@ -27,6 +29,8 @@
       importBig: 'ไฟล์ใหญ่เกินไปสำหรับไฟล์ความคืบหน้า',
       importDone: function (added, total) { return 'โหลดแล้ว เครื่องหมายใหม่: ' + added + ' เรียนแล้วทั้งหมด: ' + total; },
       importNone: function (total) { return 'ไม่มีเครื่องหมายใหม่ — ทุกอย่างในไฟล์ถูกทำเครื่องหมายไว้แล้ว เรียนแล้วทั้งหมด: ' + total; },
+      confirmReset: function (n) { return 'ล้างเครื่องหมายของทุกคำศัพท์ (' + n + ') หรือไม่ คืนได้จากไฟล์ที่เคยดาวน์โหลดเท่านั้น'; },
+      resetDone: 'ล้างเครื่องหมายทั้งหมดแล้ว กู้คืนได้จากไฟล์ที่เคยดาวน์โหลด',
       noStorage: 'เริ่มหน้านี้ไม่ได้ ลองรีเฟรชหรือเปิดในเบราว์เซอร์อื่น'
     }
   };
@@ -70,6 +74,11 @@
     var importBtn = document.getElementById('progress-import-btn');
     var importInput = document.getElementById('progress-import-input');
     var statusEl = document.getElementById('progress-status');
+    var resetBtn = document.getElementById('progress-reset-btn');
+    var confirmBox = document.getElementById('progress-confirm');
+    var confirmText = document.getElementById('progress-confirm-text');
+    var confirmYes = document.getElementById('progress-confirm-yes');
+    var confirmNo = document.getElementById('progress-confirm-no');
     if (!countEl || !exportBtn || !importBtn || !importInput || !statusEl) return;
 
     var lang = pageLang();
@@ -95,6 +104,7 @@
       }
       countEl.textContent = y === null ? String(num(x)) : s.count(num(x), num(y));
       if (fillEl) fillEl.style.width = (y ? Math.round(x / y * 100) : 0) + '%';
+      if (resetBtn) resetBtn.disabled = learned.length === 0; // сбрасывать нечего
       return x;
     }
 
@@ -145,6 +155,39 @@
       reader.onerror = function () { say(s.importBad, true); importInput.value = ''; };
       reader.readAsText(file);
     });
+
+    // --- Сбросить все отметки (с подтверждением на месте кнопки) ---
+    if (resetBtn && confirmBox && confirmText && confirmYes && confirmNo) {
+      var closeConfirm = function () {
+        confirmBox.hidden = true;
+        resetBtn.hidden = false;
+      };
+
+      resetBtn.addEventListener('click', function () {
+        if (resetBtn.disabled) return;
+        confirmText.textContent = s.confirmReset(num(renderCount()));
+        resetBtn.hidden = true;
+        confirmBox.hidden = false;
+        confirmNo.focus(); // безопасный вариант по умолчанию
+      });
+
+      confirmNo.addEventListener('click', function () {
+        closeConfirm();
+        resetBtn.focus();
+      });
+
+      confirmYes.addEventListener('click', function () {
+        window.Learned.clear();
+        renderCount();
+        closeConfirm();
+        say(s.resetDone, false);
+        resetBtn.focus();
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && !confirmBox.hidden) { closeConfirm(); resetBtn.focus(); }
+      });
+    }
 
     window.addEventListener('storage', renderCount);
   });

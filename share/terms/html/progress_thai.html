@@ -75,6 +75,19 @@
       <input id="progress-import-input" type="file" accept=".json,application/json" hidden>
     </div>
 
+    <div class="progress-section">
+      <h3>ล้างเครื่องหมายทั้งหมด</h3>
+      <p class="learned-note">ล้างเครื่องหมาย “เรียนแล้ว” ของทุกคำศัพท์ในเบราว์เซอร์นี้ ไฟล์ที่เคยดาวน์โหลดจะไม่เปลี่ยน สามารถกู้คืนความคืบหน้าจากไฟล์นั้นได้</p>
+      <button id="progress-reset-btn" class="learned-btn learned-btn--danger progress-btn" type="button" disabled>ล้างเครื่องหมาย</button>
+      <div id="progress-confirm" class="progress-confirm" hidden>
+        <p id="progress-confirm-text"></p>
+        <div class="progress-confirm-actions">
+          <button id="progress-confirm-yes" class="learned-btn learned-btn--danger-solid progress-btn" type="button">ใช่ ล้างเลย</button>
+          <button id="progress-confirm-no" class="learned-btn progress-btn" type="button">ยกเลิก</button>
+        </div>
+      </div>
+    </div>
+
     <p id="progress-status" class="progress-status" role="status" aria-live="polite"></p>
 
     <p class="info-tooltip">ข้อมูลถูกเก็บไว้ในเบราว์เซอร์นี้เท่านั้น ดาวน์โหลดไฟล์ทุกครั้งหลังเรียนคำศัพท์ใหม่</p>
