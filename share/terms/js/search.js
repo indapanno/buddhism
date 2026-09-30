@@ -59,7 +59,9 @@ document.addEventListener('DOMContentLoaded', function () {
       var badge = (term.later_count && term.later_count > 0)
         ? ' <span class="count-badge">+' + term.later_count + '</span>'
         : '';
-      return '<a href="' + term.id + '_' + lang + '.html">' + name + badge + '</a>';
+      // Изученные термины (отметка из learned.js) показываем блёклыми
+      var learnedClass = (window.Learned && window.Learned.isLearned(term.id)) ? ' class="is-learned"' : '';
+      return '<a href="' + term.id + '_' + lang + '.html"' + learnedClass + '>' + name + badge + '</a>';
     }).join('');
     if (matches.length > SEARCH_MAX_SUGGESTIONS) {
       var note = document.createElement('div');

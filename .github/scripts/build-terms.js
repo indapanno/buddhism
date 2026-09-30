@@ -243,7 +243,9 @@ LANGS.forEach(lang => {
       const badge = laterCount > 0 ? ' <span class="count-badge">+' + badgeNum + '</span>' : '';
       const snippet = buildSnippet(data);
       const snippetHtml = snippet ? '<div class="nav-snippet">' + escapeHtml(snippet) + '</div>' : '';
-      return '<li><a href="' + id + '_' + lang + '.html">' + name + badge + snippetHtml + '</a></li>';
+      const learnedLabel = lang === 'thai' ? 'ยังไม่ได้เรียน' : 'Не изучен';
+      return '<li class="term-item"><a href="' + id + '_' + lang + '.html">' + name + badge + snippetHtml + '</a>'
+        + '<button type="button" class="learned-btn" data-learned-id="' + escapeHtml(id) + '">' + learnedLabel + '</button></li>';
     }).join('');
 
     let html = NAV_TEMPLATES[lang];
