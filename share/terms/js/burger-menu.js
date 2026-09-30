@@ -7,12 +7,14 @@ var BURGER_UI_STRINGS = {
   ru: {
     menuTitle: 'Меню',
     navHome: 'Навигатор',
+    progress: 'Мой прогресс',
     addTerm: 'Добавить термин',
     translateTerm: 'Перевести термин'
   },
   thai: {
     menuTitle: 'เมนู',
     navHome: 'หน้าหลัก',
+    progress: 'ความคืบหน้าของฉัน',
     addTerm: 'เพิ่มคำศัพท์',
     translateTerm: 'แปลคำศัพท์'
   }
@@ -38,6 +40,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var items = [
     { href: 'nav_' + lang + '.html', text: strings.navHome },
+    { href: 'progress_' + lang + '.html', text: strings.progress },
     { href: 'how-to-add-term_' + lang + '.html', text: strings.addTerm },
     { href: 'how-to-translate-term_' + lang + '.html', text: strings.translateTerm }
   ];

@@ -303,7 +303,7 @@ LANGS.forEach(lang => {
 LANGS.forEach(lang => {
   const suffix = '_' + lang + '.html';
   const existingHtmlFiles = fs.readdirSync(HTML_DIR).filter(f =>
-    f.endsWith(suffix) && !f.startsWith('nav_') && !f.startsWith('_template') && !f.startsWith('how-to-')
+    f.endsWith(suffix) && !f.startsWith('nav_') && !f.startsWith('_template') && !f.startsWith('how-to-') && !f.startsWith('progress_')
   );
   let removedCards = 0;
   existingHtmlFiles.forEach(file => {

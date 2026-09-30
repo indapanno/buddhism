@@ -95,3 +95,62 @@ html[data-theme="light"] {
 @media (max-width: 400px) {
   .term-item > .learned-btn { min-width: 5.6rem; padding: 0 0.5rem; font-size: 0.76rem; }
 }
+
+/* --- Страница «Мой прогресс» --- */
+:root { --learned-error: #E0917F; }
+html[data-theme="light"] { --learned-error: #A33A2A; }
+
+.progress-summary {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 0.6rem;
+}
+
+.progress-bar {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  width: 0;
+  background: var(--learned);
+  transition: width 0.3s;
+}
+
+.progress-section {
+  margin-top: 1.2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.progress-section h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0 0 0.3rem;
+}
+
+.progress-section .learned-note { margin: 0 0 0.65rem; }
+
+.progress-btn {
+  min-height: 44px;
+  padding: 0 1.1rem;
+  font-size: 0.9rem;
+}
+
+.progress-status {
+  min-height: 1.3em;
+  margin: 1rem 0 0;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--learned);
+}
+
+.progress-status.is-error { color: var(--learned-error); }
+
+/* Ссылка внутри пояснения на навигаторе */
+.nav-intro a { color: var(--link-color); }
