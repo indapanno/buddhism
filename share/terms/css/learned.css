@@ -211,3 +211,45 @@ html[data-theme="light"] { --learned-error: #A33A2A; }
   flex-wrap: wrap;
   gap: 0.5rem;
 }
+
+/* --- Список изученных терминов на странице «Мой прогресс» --- */
+.progress-list {
+  list-style: none;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.progress-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.6rem 0.45rem 0.8rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.progress-row a {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--text);
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  overflow-wrap: anywhere;
+}
+
+.progress-row a:hover { color: var(--accent); }
+
+.progress-row .learned-btn {
+  flex: 0 0 auto;
+  min-width: 6.2rem;
+  min-height: 32px;
+}
+
+.progress-list-empty { margin: 0.9rem 0 0; }
+
+.progress-status a { color: var(--link-color); margin-left: 0.4rem; }

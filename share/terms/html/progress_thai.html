@@ -63,6 +63,13 @@
     <div class="progress-bar" role="presentation"><div class="progress-bar-fill" id="progress-bar-fill"></div></div>
 
     <div class="progress-section">
+      <h3>คำศัพท์ที่เรียนแล้ว</h3>
+      <p id="progress-list-empty" class="learned-note progress-list-empty" hidden>ยังไม่มีคำศัพท์ที่เรียนแล้ว ทำเครื่องหมายด้วยปุ่ม “ยังไม่ได้เรียน” ใน <a href="nav_thai.html">หน้านำทาง</a> หรือในหน้าคำศัพท์</p>
+      <ul id="progress-list" class="progress-list" hidden></ul>
+      <nav id="progress-pagination" class="pagination" aria-label="หน้า" hidden></nav>
+    </div>
+
+    <div class="progress-section">
       <h3>บันทึกเครื่องหมายเป็นไฟล์</h3>
       <p class="learned-note">ดาวน์โหลดไฟล์รายการคำศัพท์ที่เรียนแล้ว เก็บไว้กับตัวคุณ ใช้ได้เมื่อล้างเบราว์เซอร์หรือย้ายไปอุปกรณ์อื่น</p>
       <button id="progress-export-btn" class="learned-btn progress-btn" type="button">ดาวน์โหลดไฟล์</button>

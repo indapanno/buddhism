@@ -63,6 +63,13 @@
     <div class="progress-bar" role="presentation"><div class="progress-bar-fill" id="progress-bar-fill"></div></div>
 
     <div class="progress-section">
+      <h3>Изученные термины</h3>
+      <p id="progress-list-empty" class="learned-note progress-list-empty" hidden>Пока нет изученных терминов. Отмечайте их кнопкой «Не изучен» в <a href="nav_ru.html">навигаторе</a> или на странице термина.</p>
+      <ul id="progress-list" class="progress-list" hidden></ul>
+      <nav id="progress-pagination" class="pagination" aria-label="Страницы" hidden></nav>
+    </div>
+
+    <div class="progress-section">
       <h3>Сохранить отметки в файл</h3>
       <p class="learned-note">Скачает файл со списком изученных терминов. Храните его у себя: он пригодится, если очистить браузер или перейти на другое устройство.</p>
       <button id="progress-export-btn" class="learned-btn progress-btn" type="button">Скачать файл</button>
