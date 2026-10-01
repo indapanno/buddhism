@@ -175,6 +175,11 @@ function buildCardHtml(lang, id, data) {
   html = replaceOnce(html, '<div id="term-content">\n    <p id="loading">' + loading + '</p>\n  </div>',
     '<div id="term-content">' + contentHtml + '</div>', lang + '/' + id, 'term-content');
 
+  // Заглушка «перевод отсутствует»: изучать нечего, блок отметки «Изучен» не нужен
+  if (!data) {
+    html = replaceOnce(html, '  <div id="learned-bar" class="learned-bar"></div>\n', '', lang + '/' + id, 'learned-bar');
+  }
+
   html = replaceOnce(html, '<link rel="stylesheet" href="../css/style.css">',
     '<link rel="stylesheet" href="../css/style.css">\n' + buildSeoTags(lang, id, data, titleText),
     lang + '/' + id, 'seo-head');
