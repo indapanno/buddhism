@@ -42,6 +42,13 @@
   </url>
   <url>
     <loc>https://indapanno.github.io/buddhism/share/terms/html/idappaccayata_ru.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/idappaccayata_ru.html"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/idappaccayata_thai.html"/>
+  </url>
+  <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/idappaccayata_thai.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/idappaccayata_ru.html"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/idappaccayata_thai.html"/>
   </url>
   <url>
     <loc>https://indapanno.github.io/buddhism/share/terms/html/magga_ru.html</loc>
@@ -65,6 +72,9 @@
     <loc>https://indapanno.github.io/buddhism/share/terms/html/nav_thai.html</loc>
     <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/nav_ru.html"/>
     <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/nav_thai.html"/>
+  </url>
+  <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/nav_thai_2.html</loc>
   </url>
   <url>
     <loc>https://indapanno.github.io/buddhism/share/terms/html/nirodha_ru.html</loc>
