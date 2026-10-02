@@ -35,7 +35,8 @@ share/terms/
 │   ├── validator-page.js     # ตรรกะของหน้า «ตรวจสอบ JSON» (how-to-check-json_*.html)
 │   ├── learned.js            # เครื่องหมาย «เรียนแล้ว» (localStorage): ที่เก็บข้อมูล ปุ่ม และบล็อกบนการ์ด
 │   ├── progress.js           # หน้า «ความคืบหน้าของฉัน»: ตัวนับ ส่งออก/นำเข้า ล้างเครื่องหมาย
-│   ├── search.js, lang.js, theme.js, burger-menu.js,
+│   ├── lang.js               # ภาษาของหน้า (`<html lang>` → `TermsLang.get()`) และตัวสลับภาษา
+│   ├── search.js, theme.js, burger-menu.js,
 │   │   footer-counter.js, term-count.js, thai-numerals.js
 ├── css/
 │   ├── style.css
@@ -82,7 +83,7 @@ redirect จาก root ของโดเมนไปยังตัวนำ�
 
 ## สถาปัตยกรรมการ build
 
-1. Push ที่มีการเปลี่ยนแปลงใน `share/terms/json/**` จะ trigger `build-terms.yml`
+1. Push ที่มีการเปลี่ยนแปลงใน `share/terms/json/**` จะ trigger `build-terms.yml` ส่วนการแก้ไข `build-terms.js` เองหรือเทมเพลตจะไม่ trigger การ build: ให้รัน `node .github/scripts/build-terms.js` ในเครื่อง แล้ว commit ผลลัพธ์พร้อมกับการแก้ไข
 2. `build-terms.js` อ่านไฟล์ `<id>_ru.json` / `<id>_thai.json` ทั้งหมด รวม id จากทั้งสองภาษาเข้าด้วยกัน
 3. สร้างการ์ดคำศัพท์สำหรับแต่ละ id ในแต่ละภาษา (`<id>_ru.html`, `<id>_thai.html`) — หากยังไม่มีคำแปล จะแสดงข้อความ «ยังไม่มีคำแปล» พร้อมลิงก์ไปยัง `how-to-translate-term_*.html` และ `<meta name="robots" content="noindex">` การ์ดที่มีคำแปลจะได้ `canonical`, `hreflang` (ru/th/x-default หากมีคำแปลทั้งสองภาษา), `meta description` (จาก `interpretation` หรือ `reason_introduced`) และ Open Graph
 4. สร้างไฟล์ `index_ru.json` / `index_thai.json` ใหม่ (รายการสำหรับการค้นหาฝั่งไคลเอนต์: `id`, `term_ru`/`term_thai`, `later_count`)
@@ -95,6 +96,12 @@ redirect จาก root ของโดเมนไปยังตัวนำ�
 `build-terms.js`) และเบราว์เซอร์ (ปัจจุบันไม่ได้ใช้งานในหน้าที่ build แล้ว เพราะเนื้อหาถูก
 ฝังลงใน HTML ตั้งแต่ขั้นตอน build; โมดูลนี้เก็บไว้สำหรับกรณีในอนาคตที่ต้องการเรนเดอร์
 ฝั่งไคลเอนต์ เช่น live-preview ในตัวตรวจสอบ JSON)
+
+## ภาษาของหน้า
+
+- **แหล่งข้อมูลเดียว.** ภาษาของหน้ากำหนดจากแอตทริบิวต์ `<html lang>` ซึ่ง build เป็นผู้ใส่ (`ru` / `th`) `lang.js` เปิดให้ใช้เป็น `TermsLang.get()` → `'ru'` หรือ `'thai'` สคริปต์อื่น (`learned`, `search`, `burger-menu`, `term-count`, `footer-counter`, `progress`, `validator-page`) อ่านภาษาจากที่นี่ ไม่อ่านจากชื่อไฟล์ ดังนั้นชื่อหน้าอย่าง `nav_thai_2.html` จึงไม่ทำให้ภาษาผิด
+- **ตัวสลับภาษา** (`lang.js`): จากการ์ดคำศัพท์ไปที่ `<id>_<ภาษาอื่น>.html` จากหน้านำทางทุกหน้า (`nav_<ภาษา>[_N].html`) ไปที่ `nav_<ภาษาอื่น>.html` คือหน้าแรก เพราะหน้า 2 ขึ้นไปของสองภาษาไม่ตรงกัน
+- **ภาษาใหม่.** เพิ่มรหัสภาษาใน `LANG_BY_HTML_LANG` ใน `lang.js` (นอกเหนือจากขั้นตอนในหัวข้อ «การทำเครื่องหมาย «เรียนแล้ว»…»)
 
 ## โครงสร้าง JSON ของคำศัพท์
 
@@ -165,8 +172,9 @@ Node) ผ่านการเทียบผลกับ library อ้าง�
   - **ดาวน์โหลด** — ไฟล์ `pali-terms-progress-ปปปป-ดด-วว.json` รูปแบบ `{"format": "pali-terms-progress", "version": 1, "exported": "<วันที่ ISO>", "learned": ["<id>", …]}` ถ้ารายการว่างจะไม่ส่งออก
   - **โหลดจากไฟล์** — ตรวจไฟล์ (`format` ตรงกัน, `learned` เป็น array, ขนาดไม่เกิน 1 MB, ไม่เกิน 5000 id, แต่ละ id ตรงตามรูปแบบ `[A-Za-z0-9_-]{1,100}`) จากนั้น **รวม** เครื่องหมายเข้ากับของเดิม ไม่มีอะไรถูกลบ ไฟล์แปลกปลอมหรือไฟล์เสียจะถูกปฏิเสธโดยไม่เปลี่ยนแปลงอะไร
   - **ล้างเครื่องหมาย** — `Learned.clear()` หลังยืนยันตรงตำแหน่งปุ่ม (ถ้าไม่มีเครื่องหมาย ปุ่มจะใช้งานไม่ได้ กด Esc เพื่อยกเลิก) หากเปลี่ยนรูปแบบไฟล์ ให้เพิ่ม `version` และปรับ `parseProgressFile` ใน `progress.js`
+  - **รายการคำศัพท์ที่เรียนแล้ว** — เรียงตามตัวอักษร (ชื่อจาก `index_<lang>.json` เรียงตามกฎของภาษาของหน้า) หน้าละ 10 คำ เปลี่ยนหน้าได้โดยไม่โหลดซ้ำ ปุ่ม «เรียนแล้ว» ที่แถวนั้นจะยกเลิกเครื่องหมาย ลิงก์ «ย้อนกลับ» ในแถบสถานะจะยกเลิกการยกเลิกนั้น
 - **เมนูและลิงก์.** รายการ «ความคืบหน้าของฉัน» อยู่ใน `burger-menu.js` ลิงก์ไปหน้านี้อยู่ในคำอธิบายบนหน้านำทางและบนการ์ดคำศัพท์
-- **ภาษาใหม่.** ข้อความ UI อยู่ในอ็อบเจกต์ `STR` ภายใน `learned.js`, `progress.js` และ `burger-menu.js` ถ้าเพิ่มภาษาใหม่ ให้เพิ่มข้อความในทั้งสามไฟล์และสร้าง `progress_<lang>.html`
+- **ภาษาใหม่.** ข้อความ UI อยู่ในอ็อบเจกต์ `STR` ภายใน `learned.js`, `progress.js` และ `burger-menu.js` ถ้าเพิ่มภาษาใหม่ ให้เพิ่มข้อความในทั้งสามไฟล์ เพิ่มรหัสภาษาใน `LANG_BY_HTML_LANG` ใน `lang.js` และสร้าง `progress_<lang>.html`
 
 ## SEO และการ index
 
