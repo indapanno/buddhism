@@ -33,8 +33,7 @@
   };
 
   function pageLang() {
-    var f = window.location.pathname.split('/').pop();
-    return /_thai\.html$/.test(f) ? 'thai' : 'ru';
+    return window.TermsLang.get();
   }
   function fmt(s, a) { return s.replace(/\{(\d+)\}/g, function (_, i) { return a[+i]; }); }
   function el(tag, cls, text) {

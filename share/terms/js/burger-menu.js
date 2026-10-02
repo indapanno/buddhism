@@ -19,10 +19,7 @@ var BURGER_UI_STRINGS = {
 };
 
 function getPageLang() {
-  var path = window.location.pathname;
-  var filename = path.substring(path.lastIndexOf('/') + 1);
-  var match = filename.match(/_(ru|thai)\.html$/);
-  return match ? match[1] : 'ru';
+  return window.TermsLang.get();
 }
 
 document.addEventListener('DOMContentLoaded', function () {

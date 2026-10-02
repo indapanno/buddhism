@@ -34,9 +34,8 @@
   function pageInfo() {
     var path = window.location.pathname;
     var filename = path.substring(path.lastIndexOf('/') + 1);
-    var match = filename.match(/_(ru|thai)\.html$/);
     return {
-      lang: match ? match[1] : 'ru',
+      lang: window.TermsLang.get(),
       id: filename.replace(/_(ru|thai)\.html$/, '')
     };
   }

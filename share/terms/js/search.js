@@ -14,10 +14,7 @@ var SEARCH_UI_STRINGS = {
 };
 
 function getCurrentLang() {
-  var path = window.location.pathname;
-  var filename = path.substring(path.lastIndexOf('/') + 1);
-  var match = filename.match(/_(ru|thai)\.html$/);
-  return match ? match[1] : 'ru';
+  return window.TermsLang.get();
 }
 
 function getDirPath() {

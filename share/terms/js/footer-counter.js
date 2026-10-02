@@ -8,8 +8,7 @@
     if (!el) return;
 
     const path = window.location.pathname;
-    const filename = path.substring(path.lastIndexOf('/') + 1);
-    const isThai = /_thai\.html$/.test(filename);
+    const isThai = window.TermsLang.get() === 'thai';
 
     fetch('https://indapanno.goatcounter.com/counter/' + encodeURIComponent(path) + '.json')
       .then(function (res) { return res.json(); })
