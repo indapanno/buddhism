@@ -208,6 +208,7 @@ function buildPaginationHtml(lang, page, totalPages) {
   if (totalPages <= 1) return '';
   const backText = lang === 'thai' ? '← ย้อนกลับ' : '← Назад';
   const nextText = lang === 'thai' ? 'ถัดไป →' : 'Далее →';
+  const pagesLabel = lang === 'thai' ? 'หน้า' : 'Страницы';
   const digits = n => (lang === 'thai' ? toThaiNumerals(n) : String(n));
   const parts = [];
   if (page > 1) parts.push('<a href="' + navFilename(lang, page - 1) + '" class="page-link">' + backText + '</a>');
@@ -217,7 +218,7 @@ function buildPaginationHtml(lang, page, totalPages) {
       : '<a href="' + navFilename(lang, p) + '" class="page-link">' + digits(p) + '</a>');
   }
   if (page < totalPages) parts.push('<a href="' + navFilename(lang, page + 1) + '" class="page-link">' + nextText + '</a>');
-  return '<nav class="pagination" aria-label="Страницы">' + parts.join('') + '</nav>';
+  return '<nav class="pagination" aria-label="' + pagesLabel + '">' + parts.join('') + '</nav>';
 }
 
 const totalPagesByLang = {};
