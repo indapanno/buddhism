@@ -117,6 +117,16 @@
     <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/samudaya_thai.html"/>
   </url>
   <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/sanditthiko_ru.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/sanditthiko_ru.html"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/sanditthiko_thai.html"/>
+  </url>
+  <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/sanditthiko_thai.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/sanditthiko_ru.html"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/sanditthiko_thai.html"/>
+  </url>
+  <url>
     <loc>https://indapanno.github.io/buddhism/share/terms/html/sankhara_ru.html</loc>
     <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/sankhara_ru.html"/>
     <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/sankhara_thai.html"/>
