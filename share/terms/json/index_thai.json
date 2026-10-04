@@ -1,6 +1,11 @@
 {
   "terms": [
     {
+      "id": "akalika",
+      "term_thai": "อกาลิโก",
+      "later_count": 1
+    },
+    {
       "id": "ariya",
       "term_thai": "อริยะ",
       "later_count": 2
