@@ -40,10 +40,6 @@
   margin-top: 0.15rem;
 }
 
-/* Ссылка «назад к связанным терминам» над списком терминов связки */
-.bundle-back a { color: var(--link-color); text-decoration: none; }
-.bundle-back a:hover { text-decoration: underline; }
-
 /* Пустой список связок */
 .bundle-empty {
   background: var(--bg-elevated);
@@ -55,29 +51,35 @@
   color: var(--text-secondary);
 }
 
-/* Заглушка «перевод отсутствует»: инструкция по переводу */
-.bundle-stub ol {
-  margin: 0.8rem 0 0;
-  padding-left: 1.3rem;
+/* Заглушка «перевод отсутствует»: карточка term-card (как how-to-add-term), узкие экраны */
+.bundle-stub h2 { margin: 0 0 0.6rem; font-family: var(--font-display); }
+.bundle-stub ol { margin: 0.8rem 0 0; padding-left: 1.3rem; }
+.bundle-stub li { margin-bottom: 0.5rem; line-height: 1.55; }
+.bundle-stub a,
+.bundle-stub code {
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
-.bundle-stub li { margin-bottom: 0.5rem; }
-
-.bundle-stub code,
-.bundle-stub .bundle-code {
+.bundle-stub code {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 0.82rem;
   background: var(--bg-highlight);
   border: 1px solid var(--border);
   border-radius: 6px;
   padding: 0.1rem 0.35rem;
-  overflow-wrap: anywhere;
 }
 
 .bundle-stub .bundle-code {
   display: block;
   margin-top: 0.4rem;
   padding: 0.6rem 0.7rem;
+  font-size: 0.85rem;
+  background: var(--bg-highlight);
+  border: 1px solid var(--border);
+  border-radius: 6px;
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
   line-height: 1.5;
 }
