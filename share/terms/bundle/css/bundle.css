@@ -1,0 +1,83 @@
+/* Связанные термины: стили, дополняющие style.css и learned.css.
+   Список связок использует классы .term-list / .pagination из style.css;
+   здесь — только то, чего там нет. Цвета и шрифты — переменные темы. */
+
+/* Плитка связки: вся плитка — одна ссылка */
+.bundle-name {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.bundle-desc {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-top: 0.35rem;
+}
+
+.bundle-meta {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-top: 0.5rem;
+}
+
+.bundle-terms {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1.45;
+  margin-top: 0.15rem;
+}
+
+/* Ссылка «назад к связанным терминам» над списком терминов связки */
+.bundle-back a { color: var(--link-color); text-decoration: none; }
+.bundle-back a:hover { text-decoration: underline; }
+
+/* Пустой список связок */
+.bundle-empty {
+  background: var(--bg-elevated);
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  padding: 1.1rem;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* Заглушка «перевод отсутствует»: инструкция по переводу */
+.bundle-stub ol {
+  margin: 0.8rem 0 0;
+  padding-left: 1.3rem;
+}
+
+.bundle-stub li { margin-bottom: 0.5rem; }
+
+.bundle-stub code,
+.bundle-stub .bundle-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.82rem;
+  background: var(--bg-highlight);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.1rem 0.35rem;
+  overflow-wrap: anywhere;
+}
+
+.bundle-stub .bundle-code {
+  display: block;
+  margin-top: 0.4rem;
+  padding: 0.6rem 0.7rem;
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
