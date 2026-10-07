@@ -17,11 +17,6 @@ function getCurrentLang() {
   return window.TermsLang.get();
 }
 
-function getDirPath() {
-  var path = window.location.pathname;
-  return path.substring(0, path.lastIndexOf('/') + 1);
-}
-
 function escapeSearchHtml(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
@@ -32,10 +27,9 @@ document.addEventListener('DOMContentLoaded', function () {
   if (!input || !suggestions) return;
 
   var lang = getCurrentLang();
-  var dir = getDirPath();
   var terms = [];
 
-  fetch(dir + '../json/index_' + lang + '.json')
+  fetch(window.TermsLang.url('json/index_' + lang + '.json'))
     .then(function (res) { return res.json(); })
     .then(function (data) { terms = data.terms || []; })
     .catch(function () { terms = []; });
@@ -58,7 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
         : '';
       // Изученные термины (отметка из learned.js) показываем блёклыми
       var learnedClass = (window.Learned && window.Learned.isLearned(term.id)) ? ' class="is-learned"' : '';
-      return '<a href="' + term.id + '_' + lang + '.html"' + learnedClass + '>' + name + badge + '</a>';
+      return '<a href="' + window.TermsLang.url('html/' + term.id + '_' + lang + '.html') + '"' + learnedClass + '>' + name + badge + '</a>';
     }).join('');
     if (matches.length > SEARCH_MAX_SUGGESTIONS) {
       var note = document.createElement('div');
