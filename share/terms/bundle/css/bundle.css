@@ -12,7 +12,12 @@
 }
 
 .bundle-desc {
-  display: block;
+  /* не больше 3 строк; обрезка по символам делается и при сборке, это страховка для узких экранов */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
   font-family: var(--font-body);
   font-size: 0.85rem;
   font-weight: 400;

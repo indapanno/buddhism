@@ -122,13 +122,16 @@ function pagination(lang, base, page, total) {
   return '<nav class="pagination" aria-label="' + st.pages + '">' + parts.join('') + '</nav>';
 }
 
-// Как buildSnippet в build-terms.js (сниппет термина в списке)
+// Обрезка как в сниппетах навигатора (buildSnippet в build-terms.js):
+// до 130 символов по границе слова, в конце «…»
+const CLIP_LENGTH = 130;
+function clip(text) {
+  return text.length > CLIP_LENGTH ? text.slice(0, CLIP_LENGTH).replace(/\s+\S*$/, '') + '…' : text;
+}
+
 function snippet(data) {
-  let text = [data.interpretation, data.reason_introduced].filter(Boolean).join(' ');
-  if (!text) return '';
-  text = capitalize(text);
-  if (text.length > 130) text = text.slice(0, 130).replace(/\s+\S*$/, '') + '…';
-  return text;
+  const text = [data.interpretation, data.reason_introduced].filter(Boolean).join(' ');
+  return text ? clip(capitalize(text)) : '';
 }
 
 function termName(terms, lang, id) { return capitalize(terms[lang].get(id)[NAME_KEY[lang]] || id); }
@@ -150,7 +153,7 @@ function listPages(lang, items, terms, layout) {
         const names = b.data.terms.map(id => escapeHtml(termName(terms, lang, id)));
         const shown = names.slice(0, 5).join(', ') + (names.length > 5 ? ' ' + st.more(names.length - 5) : '');
         return '<li><a href="bundle_' + b.n + '_' + lang + '.html"><span class="bundle-name">' + escapeHtml(b.data.name) + '</span>'
-          + '<span class="bundle-desc">' + escapeHtml(b.data.description) + '</span>'
+          + '<span class="bundle-desc">' + escapeHtml(clip(b.data.description)) + '</span>'
           + '<span class="bundle-meta">' + st.count(names.length) + '</span>'
           + '<span class="bundle-terms">' + shown + '</span></a></li>';
       }).join('');

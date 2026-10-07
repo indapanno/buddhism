@@ -134,6 +134,17 @@ check('.gitkeep игнорируется', makeEnv({ '.gitkeep': '' }).errors.le
   check('экранирование HTML в названии', r.read('bundles_ru.html').includes('Тема &lt;b&gt;x&lt;/b&gt;') && !r.read('bundles_ru.html').includes('<b>x</b>'));
 }
 
+// 4б. Длинное описание: в плитке обрезается, на странице связки полное
+{
+  const long = 'слово '.repeat(60).trim();
+  const r = makeEnv({ 'bundle_1_ru.json': ru(null, { description: long }), 'bundle_2_ru.json': ru(null, { description: 'Короткое описание' }) });
+  const m = r.read('bundles_ru.html').match(/<span class="bundle-desc">(.*?)<\/span>/g);
+  const text = x => x.replace(/<[^>]+>/g, '');
+  check('плитка: длинное описание обрезано с «…»', text(m[0]).length <= 131 && text(m[0]).endsWith('…') && text(m[0]).length > 100, text(m[0]).length);
+  check('плитка: короткое описание целиком, без «…»', text(m[1]) === 'Короткое описание');
+  check('страница связки: описание полное', r.read('bundle_1_ru.html').includes(long));
+}
+
 // 5. Пустое состояние и уборка
 {
   const r = makeEnv({}, { 'bundle_9_ru.html': 'old', 'bundles_ru_7.html': 'old', 'keep.txt': 'x' });
