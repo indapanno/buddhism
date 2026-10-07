@@ -282,7 +282,7 @@ if (require.main === module) {
   console.log('Связок опубликовано: ru=' + r.published.ru.length + ', thai=' + r.published.thai.length + '; заглушек: ' + r.stubs.length + '; страниц: ' + r.pages.length);
   r.errors.forEach(e => {
     console.error('ОШИБКА [' + e.code + '] ' + e.file + ': ' + e.msg);
-    if (process.env.GITHUB_ACTIONS) console.error('::error file=share/terms/bundle/json/' + e.file.split(' ')[0] + '::[' + e.code + '] ' + e.msg);
+    if (process.env.GITHUB_ACTIONS) console.log('::error file=share/terms/bundle/json/' + e.file.split(' ')[0] + '::[' + e.code + '] ' + e.msg);
   });
   if (r.errors.length) { console.error('Ошибок: ' + r.errors.length + '. Связки с ошибками не опубликованы.'); process.exitCode = 1; }
 }
