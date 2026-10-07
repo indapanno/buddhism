@@ -140,7 +140,7 @@ check('.gitkeep игнорируется', makeEnv({ '.gitkeep': '' }).errors.le
   const r = makeEnv({ 'bundle_1_ru.json': ru(null, { description: long }), 'bundle_2_ru.json': ru(null, { description: 'Короткое описание' }) });
   const m = r.read('bundles_ru.html').match(/<span class="bundle-desc">(.*?)<\/span>/g);
   const text = x => x.replace(/<[^>]+>/g, '');
-  check('плитка: длинное описание обрезано с «…»', text(m[0]).length <= 131 && text(m[0]).endsWith('…') && text(m[0]).length > 100, text(m[0]).length);
+  check('плитка: длинное описание обрезано с «…»', text(m[0]).length <= 221 && text(m[0]).endsWith('…') && text(m[0]).length > 200, text(m[0]).length);
   check('плитка: короткое описание целиком, без «…»', text(m[1]) === 'Короткое описание');
   check('страница связки: описание полное', r.read('bundle_1_ru.html').includes(long));
 }
