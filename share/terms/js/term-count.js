@@ -6,11 +6,9 @@ document.addEventListener('DOMContentLoaded', function () {
   var el = document.getElementById('term-count');
   if (!el) return;
 
-  var path = window.location.pathname;
   var lang = window.TermsLang.get();
-  var dir = path.substring(0, path.lastIndexOf('/') + 1);
 
-  fetch(dir + '../json/index_' + lang + '.json')
+  fetch(window.TermsLang.url('json/index_' + lang + '.json'))
     .then(function (res) { return res.json(); })
     .then(function (data) {
       var terms = data.terms || [];
