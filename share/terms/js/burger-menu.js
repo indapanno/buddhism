@@ -34,9 +34,9 @@ document.addEventListener('DOMContentLoaded', function () {
   var strings = BURGER_UI_STRINGS[lang] || BURGER_UI_STRINGS.ru;
 
   var items = [
-    { href: 'nav_' + lang + '.html', text: strings.navHome },
-    { href: 'progress_' + lang + '.html', text: strings.progress },
-    { href: 'how-to-add-term_' + lang + '.html', text: strings.addTerm }
+    { href: window.TermsLang.url('html/nav_' + lang + '.html'), text: strings.navHome },
+    { href: window.TermsLang.url('html/progress_' + lang + '.html'), text: strings.progress },
+    { href: window.TermsLang.url('html/how-to-add-term_' + lang + '.html'), text: strings.addTerm }
   ];
 
   list.innerHTML = items.map(function (item) {
