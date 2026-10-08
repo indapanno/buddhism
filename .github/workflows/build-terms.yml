@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'share/terms/json/**'
+  # Ручной запуск (Actions → Build terms → Run workflow): нужен после правок шаблонов
+  workflow_dispatch:
 
 jobs:
   build:
