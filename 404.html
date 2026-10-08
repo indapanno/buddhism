@@ -50,17 +50,29 @@
     return m ? m[1] : null;
   }
 
-  // 1) адрес, которого нет; 2) страница, с которой пришли (только этот же сайт); 3) неизвестно
+  // Язык, который посетитель выбрал сам кнопкой RU / ไทย (ключ пишет js/lang.js)
+  function savedLang() {
+    try {
+      var v = localStorage.getItem('terms-lang');
+      return (v === 'ru' || v === 'thai') ? v : null;
+    } catch (e) { return null; }
+  }
+
+  // Порядок: 1) адрес, которого нет; 2) страница, с которой пришли (только этот же сайт);
+  // 3) сохранённый выбор языка; 4) неизвестно — показываем оба языка
   function detectLang(loc, referrer) {
     var fromUrl = langFromPath(loc.pathname);
     if (fromUrl) return fromUrl;
     if (referrer) {
       try {
         var ref = new URL(referrer);
-        if (ref.origin === loc.origin) return langFromPath(ref.pathname);
+        if (ref.origin === loc.origin) {
+          var fromRef = langFromPath(ref.pathname);
+          if (fromRef) return fromRef;
+        }
       } catch (e) {}
     }
-    return null;
+    return savedLang();
   }
 
   // Проектный сайт на github.io живёт в подпапке /<repo>/, свой домен — в корне
