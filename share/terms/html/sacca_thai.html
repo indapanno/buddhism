@@ -31,19 +31,19 @@
     <h2 id="term-iast-btn" class="term-iast-btn" role="button" tabindex="0" aria-label="คัดลอกอักษรโรมัน IAST" data-copy-text="sacca">sacca</h2>
     <div class="header-controls">
       <div class="control">
-        <label for="lang-select">Язык</label>
-        <select id="lang-select">
-          <option value="ru">Русский</option>
-          <option value="thai">ภาษาไทย</option>
-        </select>
+        <span id="lang-label">Язык</span>
+        <div class="segmented" id="lang-switch" role="group" aria-labelledby="lang-label">
+          <a data-lang-value="ru" lang="ru">RU</a>
+          <a data-lang-value="thai" lang="th">ไทย</a>
+        </div>
       </div>
       <div class="control">
-        <label for="theme-select">ธีม</label>
-        <select id="theme-select">
-          <option value="system">ตามระบบ</option>
-          <option value="light">สว่าง</option>
-          <option value="dark">มืด</option>
-        </select>
+        <span id="theme-label">ธีม</span>
+        <div class="segmented" id="theme-switch" role="group" aria-labelledby="theme-label">
+          <button type="button" data-theme-value="system" aria-pressed="false">ตามระบบ</button>
+          <button type="button" data-theme-value="light" aria-pressed="false">สว่าง</button>
+          <button type="button" data-theme-value="dark" aria-pressed="false">มืด</button>
+        </div>
       </div>
     </div>
   </div>

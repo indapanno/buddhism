@@ -31,19 +31,19 @@
     <h2 id="term-iast-btn" class="term-iast-btn" role="button" tabindex="0" aria-label="Скопировать транслитерацию IAST" data-copy-text="cattāri ariyasaccāni">cattāri ariyasaccāni</h2>
     <div class="header-controls">
       <div class="control">
-        <label for="lang-select">ภาษา</label>
-        <select id="lang-select">
-          <option value="ru">Русский</option>
-          <option value="thai">ภาษาไทย</option>
-        </select>
+        <span id="lang-label">ภาษา</span>
+        <div class="segmented" id="lang-switch" role="group" aria-labelledby="lang-label">
+          <a data-lang-value="ru" lang="ru">RU</a>
+          <a data-lang-value="thai" lang="th">ไทย</a>
+        </div>
       </div>
       <div class="control">
-        <label for="theme-select">Тема</label>
-        <select id="theme-select">
-          <option value="system">Системная</option>
-          <option value="light">Светлая</option>
-          <option value="dark">Тёмная</option>
-        </select>
+        <span id="theme-label">Тема</span>
+        <div class="segmented" id="theme-switch" role="group" aria-labelledby="theme-label">
+          <button type="button" data-theme-value="system" aria-pressed="false">Системная</button>
+          <button type="button" data-theme-value="light" aria-pressed="false">Светлая</button>
+          <button type="button" data-theme-value="dark" aria-pressed="false">Тёмная</button>
+        </div>
       </div>
     </div>
   </div>
