@@ -12,7 +12,9 @@
 // пути работают на страницах любой глубины (html/, bundle/html/).
 // Новый язык добавляется в одном месте — в LANG_BY_HTML_LANG ниже.
 //
-// Переключатель: у карточки термина ведёт на <id>_<язык>.html, у любой
+// Переключатель: группа ссылок #lang-switch (или старый select #lang-select).
+// Явный выбор языка пишется в localStorage ('terms-lang') — читает только 404.html.
+// У карточки термина ведёт на <id>_<язык>.html, у любой
 // страницы навигатора (nav_<язык>.html, nav_<язык>_N.html) — на первую
 // страницу навигатора другого языка (страницы 2+ у языков не соответствуют
 // друг другу).
@@ -56,14 +58,56 @@
     return null;
   }
 
-  document.addEventListener('DOMContentLoaded', function () {
-    var select = document.getElementById('lang-select');
-    if (!select) return;
+  var STORAGE_KEY = 'terms-lang';
 
-    select.value = getLang();
-    select.addEventListener('change', function () {
-      var url = buildTargetUrl(select.value);
-      if (url) window.location.href = url;
-    });
+  // Явный выбор языка запоминается (используется только страницей 404).
+  function saveLang(lang) {
+    try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) {}
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    var current = getLang();
+
+    // Новая разметка: группа ссылок #lang-switch с data-lang-value.
+    var group = document.getElementById('lang-switch');
+    if (group) {
+      var links = group.querySelectorAll('[data-lang-value]');
+      for (var i = 0; i < links.length; i++) {
+        (function (a) {
+          var lang = a.getAttribute('data-lang-value');
+          if (lang === current) {
+            a.setAttribute('aria-current', 'true');
+            a.setAttribute('href', window.location.pathname);
+            a.addEventListener('click', function (e) {
+              e.preventDefault();
+              saveLang(lang);
+            });
+            return;
+          }
+          a.removeAttribute('aria-current');
+          var url = buildTargetUrl(lang);
+          if (url) {
+            a.setAttribute('href', url);
+            a.addEventListener('click', function () { saveLang(lang); });
+          } else {
+            a.removeAttribute('href');
+            a.setAttribute('aria-disabled', 'true');
+          }
+        })(links[i]);
+      }
+    }
+
+    // Старая разметка (выпадающий список) — до завершения перехода.
+    var select = document.getElementById('lang-select');
+    if (select) {
+      select.value = current;
+      select.addEventListener('change', function () {
+        var url = buildTargetUrl(select.value);
+        if (url) {
+          saveLang(select.value);
+          window.location.href = url;
+        }
+      });
+    }
   });
 })();
