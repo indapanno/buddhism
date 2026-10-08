@@ -12,7 +12,7 @@
 // пути работают на страницах любой глубины (html/, bundle/html/).
 // Новый язык добавляется в одном месте — в LANG_BY_HTML_LANG ниже.
 //
-// Переключатель: группа ссылок #lang-switch (или старый select #lang-select).
+// Переключатель: группа ссылок #lang-switch.
 // Явный выбор языка пишется в localStorage ('terms-lang') — читает только 404.html.
 // У карточки термина ведёт на <id>_<язык>.html, у любой
 // страницы навигатора (nav_<язык>.html, nav_<язык>_N.html) — на первую
@@ -95,19 +95,6 @@
           }
         })(links[i]);
       }
-    }
-
-    // Старая разметка (выпадающий список) — до завершения перехода.
-    var select = document.getElementById('lang-select');
-    if (select) {
-      select.value = current;
-      select.addEventListener('change', function () {
-        var url = buildTargetUrl(select.value);
-        if (url) {
-          saveLang(select.value);
-          window.location.href = url;
-        }
-      });
     }
   });
 })();

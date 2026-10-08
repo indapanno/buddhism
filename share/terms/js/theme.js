@@ -1,5 +1,5 @@
 // Переключатель темы: системная (по умолчанию) / светлая / тёмная.
-// Переключатель — группа кнопок #theme-switch (или старый select #theme-select).
+// Переключатель — группа кнопок #theme-switch.
 // Выбор запоминается в localStorage. "Системная" реально проверяет
 // настройку ОС через matchMedia (в CSS переменные по умолчанию — тёмные,
 // поэтому светлая тема применяется только когда ОС явно предпочитает светлую).
@@ -65,15 +65,6 @@
         var theme = btn.getAttribute('data-theme-value');
         setTheme(theme);
         markButtons(group, theme);
-      });
-    }
-
-    // Старая разметка (выпадающий список) — до завершения перехода.
-    var select = document.getElementById('theme-select');
-    if (select) {
-      select.value = getSavedTheme();
-      select.addEventListener('change', function () {
-        setTheme(select.value);
       });
     }
   });

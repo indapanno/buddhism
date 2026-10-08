@@ -85,16 +85,6 @@ h2 {
   gap: 0.15rem;
 }
 
-.control select {
-  background: var(--bg-elevated);
-  color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 0.3rem 0.4rem;
-  font-family: var(--font-body);
-  font-size: 0.8rem;
-}
-
 /* --- Сегментированные переключатели (язык — ссылки, тема — кнопки) --- */
 .segmented {
   display: inline-flex;
