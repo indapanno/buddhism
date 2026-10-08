@@ -134,10 +134,10 @@ h2 {
   cursor: default;
 }
 
-/* Светлая тема: активная кнопка — тёмный акцент и светлый текст */
+/* Светлая тема: активная кнопка — цвет ссылок и светлый текст */
 html[data-theme="light"] .segmented a[aria-current="true"],
 html[data-theme="light"] .segmented button[aria-pressed="true"] {
-  background: var(--accent-deep);
+  background: var(--link-color);
   color: #FFFFFF;
 }
 
