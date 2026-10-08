@@ -35,8 +35,9 @@ share/terms/
 │   ├── validator-page.js     # ตรรกะของหน้า «ตรวจสอบ JSON» (how-to-check-json_*.html)
 │   ├── learned.js            # เครื่องหมาย «เรียนแล้ว» (localStorage): ที่เก็บข้อมูล ปุ่ม และบล็อกบนการ์ด
 │   ├── progress.js           # หน้า «ความคืบหน้าของฉัน»: ตัวนับ ส่งออก/นำเข้า ล้างเครื่องหมาย
-│   ├── lang.js               # ภาษาของหน้า (`<html lang>` → `TermsLang.get()`) และตัวสลับภาษา
-│   ├── search.js, theme.js, burger-menu.js,
+│   ├── lang.js               # ภาษาของหน้า (`<html lang>` → `TermsLang.get()`) ลิงก์สลับภาษา `#lang-switch` และการบันทึก `terms-lang`
+│   ├── theme.js              # ตัวสลับธีม: ปุ่ม `#theme-switch` คีย์ `terms-theme` ใน localStorage
+│   ├── search.js, burger-menu.js,
 │   │   footer-counter.js, term-count.js, thai-numerals.js
 ├── css/
 │   ├── style.css
@@ -73,7 +74,7 @@ share/terms/
 ├── scripts/build-bundles.js   # สคริปต์ Node.js สำหรับ build ชุดศัพท์ที่เกี่ยวข้อง
 ├── scripts/test-bundles.js    # ชุดทดสอบของ build-bundles.js (รันใน workflow ก่อน build)
 └── workflows/
-    ├── build-terms.yml        # trigger: push เข้า share/terms/json/**
+    ├── build-terms.yml        # trigger: push เข้า share/terms/json/** หรือสั่งด้วยมือ (Actions → Build terms → Run workflow)
     └── build-bundles.yml      # trigger: push เข้า share/terms/bundle/json|template/** และหลัง build คำศัพท์
 ```
 
@@ -95,7 +96,7 @@ redirect จาก root ของโดเมนไปยังตัวนำ�
 
 ## สถาปัตยกรรมการ build
 
-1. Push ที่มีการเปลี่ยนแปลงใน `share/terms/json/**` จะ trigger `build-terms.yml` ส่วนการแก้ไข `build-terms.js` เองหรือเทมเพลตจะไม่ trigger การ build: ให้รัน `node .github/scripts/build-terms.js` ในเครื่อง แล้ว commit ผลลัพธ์พร้อมกับการแก้ไข
+1. Push ที่มีการเปลี่ยนแปลงใน `share/terms/json/**` จะ trigger `build-terms.yml` ส่วนการแก้ไข `build-terms.js` เองหรือเทมเพลตจะไม่ trigger การ build: ให้สั่ง «Build terms» ด้วยมือ (Actions → Build terms → Run workflow บอทจะ commit ผลลัพธ์ให้) หรือรัน `node .github/scripts/build-terms.js` ในเครื่อง แล้ว commit ผลลัพธ์พร้อมกับการแก้ไข
 2. `build-terms.js` อ่านไฟล์ `<id>_ru.json` / `<id>_thai.json` ทั้งหมด รวม id จากทั้งสองภาษาเข้าด้วยกัน
 3. สร้างการ์ดคำศัพท์สำหรับแต่ละ id ในแต่ละภาษา (`<id>_ru.html`, `<id>_thai.html`) — หากยังไม่มีคำแปล จะแสดงข้อความ «ยังไม่มีคำแปล» พร้อมลิงก์ไปยัง `how-to-translate-term_*.html` และ `<meta name="robots" content="noindex">` การ์ดที่มีคำแปลจะได้ `canonical`, `hreflang` (ru/th/x-default หากมีคำแปลทั้งสองภาษา), `meta description` (จาก `interpretation` หรือ `reason_introduced`) และ Open Graph
 4. สร้างไฟล์ `index_ru.json` / `index_thai.json` ใหม่ (รายการสำหรับการค้นหาฝั่งไคลเอนต์: `id`, `term_ru`/`term_thai`, `later_count`)
@@ -114,6 +115,9 @@ redirect จาก root ของโดเมนไปยังตัวนำ�
 - **แหล่งข้อมูลเดียว.** ภาษาของหน้ากำหนดจากแอตทริบิวต์ `<html lang>` ซึ่ง build เป็นผู้ใส่ (`ru` / `th`) `lang.js` เปิดให้ใช้เป็น `TermsLang.get()` → `'ru'` หรือ `'thai'` สคริปต์อื่น (`learned`, `search`, `burger-menu`, `term-count`, `footer-counter`, `progress`, `validator-page`) อ่านภาษาจากที่นี่ ไม่อ่านจากชื่อไฟล์ ดังนั้นชื่อหน้าอย่าง `nav_thai_2.html` จึงไม่ทำให้ภาษาผิด
 - **ตัวสลับภาษา** (`lang.js`): จากการ์ดคำศัพท์ไปที่ `<id>_<ภาษาอื่น>.html` จากหน้านำทางทุกหน้า (`nav_<ภาษา>[_N].html`) ไปที่ `nav_<ภาษาอื่น>.html` คือหน้าแรก เพราะหน้า 2 ขึ้นไปของสองภาษาไม่ตรงกัน
 - **ภาษาใหม่.** เพิ่มรหัสภาษาใน `LANG_BY_HTML_LANG` ใน `lang.js` (นอกเหนือจากขั้นตอนในหัวข้อ «การทำเครื่องหมาย «เรียนแล้ว»…»)
+- **มาร์กอัปของส่วนหัว** บล็อก `header-controls` มีกลุ่ม `#lang-switch` (ลิงก์ RU / ไทย) และ `#theme-switch` (ปุ่ม 3 ปุ่ม) อยู่ใน `_template_*.html`, `_layout_*.html` และหน้าที่แก้ด้วยมือ (`how-to-*`, `progress_*`) สไตล์ `.segmented` อยู่ใน `style.css` ส่วน `href` และสถานะที่เลือกอยู่ถูกกำหนดโดยสคริปต์
+- **การจำภาษา** เมื่อผู้อ่านคลิกเลือกภาษา `lang.js` จะบันทึกคีย์ `terms-lang` (`ru` / `thai`) ซึ่งอ่านโดย `404.html` เท่านั้น ลำดับการกำหนดภาษาในหน้านั้น: URL → หน้าต้นทางของเว็บไซต์เดียวกัน → `terms-lang` → แสดงทั้งสองภาษา
+- **การแก้ส่วนหัว** แก้บล็อกในแม่แบบทุกไฟล์ จากนั้นสั่ง «Build terms» ด้วยมือ (Actions → Build terms → Run workflow) และแก้หน้าที่แก้ด้วยมือ
 
 ## โครงสร้าง JSON ของคำศัพท์
 
@@ -250,8 +254,7 @@ Node) ผ่านการเทียบผลกับ library อ้าง�
 จาก `lang.js` โดยนับจากรากของ `share/terms/` จึงใช้ได้กับหน้าทุกระดับความลึก
 
 **ข้อจำกัด** ขนาดหน้า (10) ถูกกำหนดซ้ำเป็นค่าคงที่ใน `build-bundles.js` และ `build-terms.js`
-`build-bundles.js` ใช้ `render-term.js` และ `thai-numerals.js` ข้อความภาษาไทยของส่วนชุดศัพท์
-ที่เกี่ยวข้องรอเจ้าของภาษาตรวจสอบ
+`build-bundles.js` ใช้ `render-term.js` และ `thai-numerals.js`
 
 ## SEO และการ index
 
@@ -279,8 +282,6 @@ Node) ผ่านการเทียบผลกับ library อ้าง�
 
 ## ข้อจำกัดที่ทราบอยู่แล้ว
 
-- คำศัพท์ทั้งหมดที่มีอยู่ตอนนี้แปลเป็นภาษาไทยแล้ว แต่ผู้แปลไม่ใช่เจ้าของภาษา ควรให้
-  เจ้าของภาษาตรวจสอบก่อนเผยแพร่ในวงกว้าง
 - พรอมต์สำหรับให้ AI สร้างคำศัพท์ (`term-prompt-ru.js`/`-thai.js`) และ JSON Schema
   ช่วยลดแต่ไม่ได้ขจัดข้อผิดพลาดทั้งหมด — schema ตรวจแค่โครงสร้างและชนิดข้อมูล ไม่ตรวจ
   ข้อเท็จจริง AI แต่ละตัวตีความคำสั่งต่างกัน อาจมีข้อมูลผิดพลาดหรืออ้างอิงแหล่งที่มาไม่
@@ -288,7 +289,6 @@ Node) ผ่านการเทียบผลกับ library อ้าง�
 - ด่านเดียวที่กัน JSON ที่ผิดพลาดตอนนี้คือตัวตรวจสอบ ซึ่งผู้ส่งอาจข้ามไปก็ได้ (ลิงก์ไม่ได้
   บังคับให้กด) ยังไม่มีการตรวจสอบอัตโนมัติฝั่ง PR (ดู «แนวทางการพัฒนาต่อไป»)
 - เครื่องหมาย «เรียนแล้ว» อยู่ในเบราว์เซอร์ของผู้อ่านเท่านั้น ไม่มีการซิงก์ระหว่างอุปกรณ์อัตโนมัติ: ย้ายด้วยมือผ่านไฟล์ในหน้า «ความคืบหน้าของฉัน» หากล้างเบราว์เซอร์โดยยังไม่ได้ดาวน์โหลดไฟล์ เครื่องหมายจะหายไป
-- ข้อความบนปุ่ม คำอธิบาย และหน้า «ความคืบหน้าของฉัน» ภาษาไทยเขียนโดยไม่ได้ให้เจ้าของภาษาตรวจสอบ
 
 ## แนวทางการพัฒนาต่อไป
 
