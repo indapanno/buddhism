@@ -81,6 +81,16 @@
     <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/kamma_thai.html"/>
   </url>
   <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/kammacetana_ru.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/kammacetana_ru.html"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/kammacetana_thai.html"/>
+  </url>
+  <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/kammacetana_thai.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/kammacetana_ru.html"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/kammacetana_thai.html"/>
+  </url>
+  <url>
     <loc>https://indapanno.github.io/buddhism/share/terms/html/magga_ru.html</loc>
     <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/magga_ru.html"/>
     <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/magga_thai.html"/>
