@@ -23,6 +23,9 @@
       resetDone: 'Все отметки сняты. Вернуть их можно из ранее скачанного файла.',
       rowBtn: '✓ Изучен',
       rowTitle: 'Снять отметку «Изучен»',
+      rowBtnTodo: 'Не изучен',
+      rowTitleTodo: 'Отметить «Изучен»',
+      marked: function (name) { return 'Отмечено «Изучен»: «' + name + '».'; },
       prev: '← Назад',
       next: 'Далее →',
       removed: function (name) { return 'Отметка снята с «' + name + '».'; },
@@ -41,6 +44,9 @@
       resetDone: 'ล้างเครื่องหมายทั้งหมดแล้ว กู้คืนได้จากไฟล์ที่เคยดาวน์โหลด',
       rowBtn: '✓ เรียนแล้ว',
       rowTitle: 'ยกเลิกเครื่องหมาย “เรียนแล้ว”',
+      rowBtnTodo: 'ยังไม่ได้เรียน',
+      rowTitleTodo: 'ทำเครื่องหมายว่าเรียนแล้ว',
+      marked: function (name) { return 'ทำเครื่องหมาย “เรียนแล้ว” ให้ “' + name + '” แล้ว'; },
       prev: '← ก่อนหน้า',
       next: 'ถัดไป →',
       removed: function (name) { return 'ยกเลิกเครื่องหมายของ “' + name + '” แล้ว'; },
@@ -93,6 +99,9 @@
     var listEl = document.getElementById('progress-list');
     var pagEl = document.getElementById('progress-pagination');
     var emptyEl = document.getElementById('progress-list-empty');
+    var todoListEl = document.getElementById('progress-unlearned-list');
+    var todoPagEl = document.getElementById('progress-unlearned-pagination');
+    var todoEmptyEl = document.getElementById('progress-unlearned-empty');
     var resetBtn = document.getElementById('progress-reset-btn');
     var confirmBox = document.getElementById('progress-confirm');
     var confirmText = document.getElementById('progress-confirm-text');
@@ -105,10 +114,9 @@
     var num = function (n) { return lang === 'thai' && window.toThaiNumerals ? window.toThaiNumerals(n) : n; };
     var termIds = null; // id терминов текущего языка (для счётчика)
     var termNames = {}; // id -> название на текущем языке
-    var page = 1; // текущая страница списка изученных
     var PAGE_SIZE = 10;
 
-    var notice = null; // строка-сообщение в списке: {id, pos} (pos — место нажатой строки во всём списке)
+    var lists = []; // два списка: изученные и не изученные (у каждого своя страница и строка-сообщение)
 
     function clearStatuses() {
       Object.keys(statusEls).forEach(function (k) {
@@ -126,11 +134,15 @@
     }
 
     // Новое действие: убрать прежние сообщения, в том числе строку-сообщение в списке
+    function clearNotices() {
+      lists.forEach(function (l) { l.notice = null; });
+    }
+
     function resetFeedback() {
-      var had = !!notice;
-      notice = null;
+      var had = lists.some(function (l) { return !!l.notice; });
+      clearNotices();
       clearStatuses();
-      if (had) renderList();
+      if (had) renderLists();
     }
 
     if (!window.Learned) { say(statusEls.top, s.noStorage, true); return; }
@@ -160,101 +172,156 @@
       return n.charAt(0).toUpperCase() + n.slice(1);
     }
 
-    // Изученные термины текущего языка, по алфавиту
-    function learnedSorted() {
-      var ids = window.Learned.all().filter(function (id) { return termIds.indexOf(id) !== -1; });
-      ids.sort(function (a, b) {
+    function sortByName(ids) {
+      return ids.sort(function (a, b) {
         return termLabel(a).localeCompare(termLabel(b), lang === 'thai' ? 'th' : 'ru');
       });
-      return ids;
     }
 
-    function renderList() {
-      if (!listEl || !termIds) return; // список терминов ещё не загружен
-      var ids = learnedSorted();
-      var pages = Math.max(1, Math.ceil(ids.length / PAGE_SIZE));
-      if (page > pages) page = pages;
-      if (page < 1) page = 1;
+    // Изученные термины текущего языка, по алфавиту
+    function learnedSorted() {
+      return sortByName(window.Learned.all().filter(function (id) { return termIds.indexOf(id) !== -1; }));
+    }
 
-      if (emptyEl) emptyEl.hidden = ids.length > 0 || !!notice;
-      listEl.hidden = ids.length === 0 && !notice;
+    // Не изученные термины текущего языка, по алфавиту
+    function todoSorted() {
+      var learned = window.Learned.all();
+      return sortByName(termIds.filter(function (id) { return learned.indexOf(id) === -1; }));
+    }
 
-      var slice = ids.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-      var rows = slice.map(function (id) {
-        return '<li class="progress-row"><a href="' + escapeHtml(id) + '_' + lang + '.html">' + escapeHtml(termLabel(id)) + '</a>'
-          + '<button type="button" class="learned-btn is-learned" data-remove-id="' + escapeHtml(id) + '" title="' + escapeHtml(s.rowTitle) + '">' + s.rowBtn + '</button></li>';
-      });
-      if (notice) {
-        // на месте нажатой строки — сообщение со ссылкой «Вернуть»
-        rows.splice(Math.max(0, Math.min(notice.pos - (page - 1) * PAGE_SIZE, rows.length)), 0,
-          '<li class="progress-row progress-row--notice"><span class="progress-notice-text">' + escapeHtml(s.removed(termLabel(notice.id))) + '</span>'
-          + '<a href="#" data-undo-id="' + escapeHtml(notice.id) + '">' + escapeHtml(s.undo) + '</a></li>');
-      }
-      listEl.innerHTML = rows.join('');
+    // Список с пагинацией без перезагрузки страницы. cfg: элементы, ids(), кнопка строки,
+    // apply(id) — действие кнопки, revert(id) — отмена, noticeText(name) — текст сообщения.
+    function makeList(cfg) {
+      var L = { page: 1, notice: null };
 
-      if (pagEl) {
-        if (pages <= 1) {
-          pagEl.hidden = true;
-          pagEl.innerHTML = '';
-        } else {
-          var parts = [];
-          if (page > 1) parts.push('<a href="#" class="page-link" data-page="' + (page - 1) + '">' + s.prev + '</a>');
-          for (var p = 1; p <= pages; p++) {
-            parts.push(p === page
-              ? '<span class="page-current">' + num(p) + '</span>'
-              : '<a href="#" class="page-link" data-page="' + p + '">' + num(p) + '</a>');
+      L.render = function () {
+        if (!cfg.listEl || !termIds) return; // список терминов ещё не загружен
+        var ids = cfg.ids();
+        var pages = Math.max(1, Math.ceil(ids.length / PAGE_SIZE));
+        if (L.page > pages) L.page = pages;
+        if (L.page < 1) L.page = 1;
+
+        if (cfg.emptyEl) cfg.emptyEl.hidden = ids.length > 0 || !!L.notice;
+        cfg.listEl.hidden = ids.length === 0 && !L.notice;
+
+        var slice = ids.slice((L.page - 1) * PAGE_SIZE, L.page * PAGE_SIZE);
+        var rows = slice.map(function (id) {
+          return '<li class="progress-row"><a href="' + escapeHtml(id) + '_' + lang + '.html">' + escapeHtml(termLabel(id)) + '</a>'
+            + '<button type="button" class="learned-btn' + cfg.btnClass + '" data-row-id="' + escapeHtml(id) + '" title="' + escapeHtml(cfg.btnTitle) + '">' + cfg.btnText + '</button></li>';
+        });
+        if (L.notice) {
+          // на месте нажатой строки — сообщение со ссылкой «Вернуть»
+          rows.splice(Math.max(0, Math.min(L.notice.pos - (L.page - 1) * PAGE_SIZE, rows.length)), 0,
+            '<li class="progress-row progress-row--notice"><span class="progress-notice-text">' + escapeHtml(cfg.noticeText(termLabel(L.notice.id))) + '</span>'
+            + '<a href="#" data-undo-id="' + escapeHtml(L.notice.id) + '">' + escapeHtml(s.undo) + '</a></li>');
+        }
+        cfg.listEl.innerHTML = rows.join('');
+
+        if (cfg.pagEl) {
+          if (pages <= 1) {
+            cfg.pagEl.hidden = true;
+            cfg.pagEl.innerHTML = '';
+          } else {
+            var parts = [];
+            if (L.page > 1) parts.push('<a href="#" class="page-link" data-page="' + (L.page - 1) + '">' + s.prev + '</a>');
+            for (var p = 1; p <= pages; p++) {
+              parts.push(p === L.page
+                ? '<span class="page-current">' + num(p) + '</span>'
+                : '<a href="#" class="page-link" data-page="' + p + '">' + num(p) + '</a>');
+            }
+            if (L.page < pages) parts.push('<a href="#" class="page-link" data-page="' + (L.page + 1) + '">' + s.next + '</a>');
+            cfg.pagEl.innerHTML = parts.join('');
+            cfg.pagEl.hidden = false;
           }
-          if (page < pages) parts.push('<a href="#" class="page-link" data-page="' + (page + 1) + '">' + s.next + '</a>');
-          pagEl.innerHTML = parts.join('');
-          pagEl.hidden = false;
         }
+      };
+
+      // Нажатая строка могла сдвинуться из-за соседнего списка: вернуть её на то же место экрана
+      function keepOnScreen(el, topBefore) {
+        if (!el || !el.getBoundingClientRect || typeof window.scrollBy !== 'function') return;
+        var delta = el.getBoundingClientRect().top - topBefore;
+        if (delta) window.scrollBy(0, delta);
       }
-    }
 
-    if (listEl) {
-      listEl.addEventListener('click', function (e) {
-        // «Вернуть» в строке-сообщении
-        var undo = e.target.closest ? e.target.closest('a[data-undo-id]') : null;
-        if (undo) {
-          e.preventDefault();
-          var uid = undo.getAttribute('data-undo-id');
-          notice = null;
+      function focusEl(el) {
+        if (!el) return;
+        try { el.focus({ preventScroll: true }); } catch (err) { el.focus(); }
+      }
+
+      if (cfg.listEl) {
+        cfg.listEl.addEventListener('click', function (e) {
+          // «Вернуть» в строке-сообщении
+          var undo = e.target.closest ? e.target.closest('a[data-undo-id]') : null;
+          if (undo) {
+            e.preventDefault();
+            var uid = undo.getAttribute('data-undo-id');
+            var topU = undo.getBoundingClientRect ? undo.getBoundingClientRect().top : 0;
+            clearNotices();
+            clearStatuses();
+            cfg.revert(uid);
+            renderCount();
+            // вернувшийся термин должен быть виден: перейти на его страницу списка
+            var pos = termIds ? cfg.ids().indexOf(uid) : -1;
+            if (pos !== -1) L.page = Math.floor(pos / PAGE_SIZE) + 1;
+            renderLists();
+            var back = cfg.listEl.querySelector('button[data-row-id="' + uid + '"]');
+            focusEl(back);
+            keepOnScreen(back, topU);
+            return;
+          }
+          // Кнопка в строке: действие, на месте строки — сообщение
+          var btn = e.target.closest ? e.target.closest('button[data-row-id]') : null;
+          if (!btn) return;
+          var id = btn.getAttribute('data-row-id');
+          var idx = Array.prototype.indexOf.call(cfg.listEl.querySelectorAll('button[data-row-id]'), btn);
+          var topB = btn.getBoundingClientRect ? btn.getBoundingClientRect().top : 0;
+          clearNotices();
           clearStatuses();
-          window.Learned.set(uid, true);
+          cfg.apply(id);
+          L.notice = { id: id, pos: (L.page - 1) * PAGE_SIZE + idx };
           renderCount();
-          // вернувшийся термин должен быть виден: перейти на его страницу списка
-          var pos = termIds ? learnedSorted().indexOf(uid) : -1;
-          if (pos !== -1) page = Math.floor(pos / PAGE_SIZE) + 1;
-          renderList();
-          var back = listEl.querySelector('button[data-remove-id="' + uid + '"]');
-          if (back) back.focus(); // фокус не теряется
-          return;
-        }
-        // «Изучен» в строке: снять отметку, на месте строки — сообщение
-        var btn = e.target.closest ? e.target.closest('button[data-remove-id]') : null;
-        if (!btn) return;
-        var id = btn.getAttribute('data-remove-id');
-        var idx = Array.prototype.indexOf.call(listEl.querySelectorAll('button[data-remove-id]'), btn);
-        clearStatuses();
-        window.Learned.set(id, false);
-        notice = { id: id, pos: (page - 1) * PAGE_SIZE + idx };
-        renderCount();
-        renderList();
-        var link = listEl.querySelector('a[data-undo-id]');
-        if (link) link.focus();
-      });
+          renderLists();
+          var link = cfg.listEl.querySelector('a[data-undo-id]');
+          focusEl(link);
+          keepOnScreen(link, topB);
+        });
+      }
+
+      if (cfg.pagEl) {
+        cfg.pagEl.addEventListener('click', function (e) {
+          var a = e.target.closest ? e.target.closest('a[data-page]') : null;
+          if (!a) return;
+          e.preventDefault();
+          clearNotices();
+          clearStatuses();
+          L.page = parseInt(a.getAttribute('data-page'), 10) || 1;
+          renderLists();
+        });
+      }
+
+      return L;
     }
 
-    if (pagEl) {
-      pagEl.addEventListener('click', function (e) {
-        var a = e.target.closest ? e.target.closest('a[data-page]') : null;
-        if (!a) return;
-        e.preventDefault();
-        notice = null;
-        clearStatuses();
-        page = parseInt(a.getAttribute('data-page'), 10) || 1;
-        renderList();
-      });
+    var learnedList = makeList({
+      listEl: listEl, pagEl: pagEl, emptyEl: emptyEl,
+      ids: learnedSorted,
+      btnClass: ' is-learned', btnText: s.rowBtn, btnTitle: s.rowTitle,
+      apply: function (id) { window.Learned.set(id, false); },
+      revert: function (id) { window.Learned.set(id, true); },
+      noticeText: s.removed
+    });
+    var todoList = makeList({
+      listEl: todoListEl, pagEl: todoPagEl, emptyEl: todoEmptyEl,
+      ids: todoSorted,
+      btnClass: '', btnText: s.rowBtnTodo, btnTitle: s.rowTitleTodo,
+      apply: function (id) { window.Learned.set(id, true); },
+      revert: function (id) { window.Learned.set(id, false); },
+      noticeText: s.marked
+    });
+    lists = [learnedList, todoList];
+
+    function renderLists() {
+      lists.forEach(function (l) { l.render(); });
     }
 
     renderCount();
@@ -266,7 +333,7 @@
           termNames[t.id] = (lang === 'thai' ? t.term_thai : t.term_ru) || t.id;
         });
         renderCount();
-        renderList();
+        renderLists();
       })
       .catch(function () { /* счётчик останется без «из Y» */ });
 
@@ -303,7 +370,7 @@
         else {
           var added = window.Learned.merge(parsed.ids);
           var total = renderCount(); // то же число, что и в счётчике
-          renderList();
+          renderLists();
           say(statusEls.imp, added > 0 ? s.importDone(num(added), num(total)) : s.importNone(num(total)), false);
         }
         importInput.value = ''; // чтобы тот же файл можно было выбрать снова
@@ -337,7 +404,7 @@
         resetFeedback();
         window.Learned.clear();
         renderCount();
-        renderList();
+        renderLists();
         closeConfirm();
         say(statusEls.reset, s.resetDone, false);
         resetBtn.focus();
@@ -349,10 +416,10 @@
     }
 
     window.addEventListener('storage', function () {
-      notice = null;
+      clearNotices();
       clearStatuses();
       renderCount();
-      renderList();
+      renderLists();
     });
   });
 })();
