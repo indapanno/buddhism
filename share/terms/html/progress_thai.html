@@ -61,6 +61,7 @@
   <div class="term-card">
     <p class="progress-summary" id="progress-count">…</p>
     <div class="progress-bar" role="presentation"><div class="progress-bar-fill" id="progress-bar-fill"></div></div>
+    <p id="progress-status-top" class="progress-status" role="status" aria-live="polite"></p>
 
     <div class="progress-section">
       <h3>คำศัพท์ที่เรียนแล้ว</h3>
@@ -73,6 +74,7 @@
       <h3>บันทึกเครื่องหมายเป็นไฟล์</h3>
       <p class="learned-note">ดาวน์โหลดไฟล์รายการคำศัพท์ที่เรียนแล้ว เก็บไว้กับตัวคุณ ใช้ได้เมื่อล้างเบราว์เซอร์หรือย้ายไปอุปกรณ์อื่น</p>
       <button id="progress-export-btn" class="learned-btn progress-btn" type="button">ดาวน์โหลดไฟล์</button>
+      <p id="progress-status-export" class="progress-status" role="status" aria-live="polite"></p>
     </div>
 
     <div class="progress-section">
@@ -80,6 +82,7 @@
       <p class="learned-note">เลือกไฟล์ที่เคยดาวน์โหลดจากหน้านี้ เครื่องหมายในไฟล์จะถูกเพิ่มเข้ากับของเดิม ไม่มีอะไรถูกลบ</p>
       <button id="progress-import-btn" class="learned-btn progress-btn" type="button">เลือกไฟล์</button>
       <input id="progress-import-input" type="file" accept=".json,application/json" hidden>
+      <p id="progress-status-import" class="progress-status" role="status" aria-live="polite"></p>
     </div>
 
     <div class="progress-section">
@@ -93,9 +96,8 @@
           <button id="progress-confirm-no" class="learned-btn progress-btn" type="button">ยกเลิก</button>
         </div>
       </div>
+      <p id="progress-status-reset" class="progress-status" role="status" aria-live="polite"></p>
     </div>
-
-    <p id="progress-status" class="progress-status" role="status" aria-live="polite"></p>
 
     <p class="info-tooltip">ข้อมูลถูกเก็บไว้ในเบราว์เซอร์นี้เท่านั้น ดาวน์โหลดไฟล์ทุกครั้งหลังเรียนคำศัพท์ใหม่</p>
   </div>

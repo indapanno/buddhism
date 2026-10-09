@@ -143,12 +143,14 @@ html[data-theme="light"] { --learned-error: #A33A2A; }
 }
 
 .progress-status {
-  min-height: 1.3em;
-  margin: 1rem 0 0;
+  margin: 0.7rem 0 0;
   font-size: 0.85rem;
   line-height: 1.45;
   color: var(--learned);
 }
+
+/* Пустая строка статуса не занимает места (остаётся в дереве для озвучивания) */
+.progress-status:empty { margin: 0; }
 
 .progress-status.is-error { color: var(--learned-error); }
 
@@ -253,3 +255,27 @@ html[data-theme="light"] { --learned-error: #A33A2A; }
 .progress-list-empty { margin: 0.9rem 0 0; }
 
 .progress-status a { color: var(--link-color); margin-left: 0.4rem; }
+
+/* Строка-сообщение на месте нажатой строки списка («Отметка снята… Вернуть») */
+.progress-row--notice {
+  border-style: dashed;
+  border-color: var(--learned);
+}
+
+.progress-row--notice .progress-notice-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  color: var(--learned);
+  overflow-wrap: anywhere;
+}
+
+.progress-row--notice a {
+  flex: 0 0 auto;
+  padding: 0.5rem 0.3rem;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  color: var(--link-color);
+  text-decoration: underline;
+}

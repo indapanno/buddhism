@@ -1,6 +1,8 @@
 // Страница «Мой прогресс»: счётчик изученных терминов, скачивание отметок
 // в файл и загрузка из файла (с объединением, ничего не стирается).
 // Отметки хранит learned.js (window.Learned); здесь только интерфейс страницы.
+// Сообщения показываются рядом с элементом, с которым работает пользователь:
+// в строке списка (вместо нажатой строки) или в строке статуса своего раздела.
 
 (function () {
   var FORMAT = 'pali-terms-progress';
@@ -25,7 +27,6 @@
       next: 'Далее →',
       removed: function (name) { return 'Отметка снята с «' + name + '».'; },
       undo: 'Вернуть',
-      undone: function (name) { return 'Отметка возвращена: «' + name + '».'; },
       noStorage: 'Не удалось запустить страницу. Обновите её или откройте в другом браузере.'
     },
     thai: {
@@ -44,7 +45,6 @@
       next: 'ถัดไป →',
       removed: function (name) { return 'ยกเลิกเครื่องหมายของ “' + name + '” แล้ว'; },
       undo: 'ย้อนกลับ',
-      undone: function (name) { return 'คืนเครื่องหมายของ “' + name + '” แล้ว'; },
       noStorage: 'เริ่มหน้านี้ไม่ได้ ลองรีเฟรชหรือเปิดในเบราว์เซอร์อื่น'
     }
   };
@@ -84,7 +84,12 @@
     var exportBtn = document.getElementById('progress-export-btn');
     var importBtn = document.getElementById('progress-import-btn');
     var importInput = document.getElementById('progress-import-input');
-    var statusEl = document.getElementById('progress-status');
+    var statusEls = {
+      top: document.getElementById('progress-status-top'),
+      exp: document.getElementById('progress-status-export'),
+      imp: document.getElementById('progress-status-import'),
+      reset: document.getElementById('progress-status-reset')
+    };
     var listEl = document.getElementById('progress-list');
     var pagEl = document.getElementById('progress-pagination');
     var emptyEl = document.getElementById('progress-list-empty');
@@ -93,7 +98,7 @@
     var confirmText = document.getElementById('progress-confirm-text');
     var confirmYes = document.getElementById('progress-confirm-yes');
     var confirmNo = document.getElementById('progress-confirm-no');
-    if (!countEl || !exportBtn || !importBtn || !importInput || !statusEl) return;
+    if (!countEl || !exportBtn || !importBtn || !importInput || !statusEls.top || !statusEls.exp || !statusEls.imp) return;
 
     var lang = pageLang();
     var s = STR[lang] || STR.ru;
@@ -103,23 +108,32 @@
     var page = 1; // текущая страница списка изученных
     var PAGE_SIZE = 10;
 
-    function say(text, isError) {
-      statusEl.textContent = text;
-      statusEl.classList.toggle('is-error', !!isError);
+    var notice = null; // строка-сообщение в списке: {id, pos} (pos — место нажатой строки во всём списке)
+
+    function clearStatuses() {
+      Object.keys(statusEls).forEach(function (k) {
+        var el = statusEls[k];
+        if (el) { el.textContent = ''; el.classList.remove('is-error'); }
+      });
     }
 
-    // Сообщение со ссылкой «Вернуть» (отмена снятия отметки)
-    function sayUndo(text, id) {
-      statusEl.classList.remove('is-error');
-      statusEl.textContent = text + ' ';
-      var a = document.createElement('a');
-      a.href = '#';
-      a.setAttribute('data-undo-id', id);
-      a.textContent = s.undo;
-      statusEl.appendChild(a);
+    // Показать сообщение в строке статуса своего раздела (остальные очищаются)
+    function say(el, text, isError) {
+      clearStatuses();
+      if (!el) return;
+      el.textContent = text;
+      el.classList.toggle('is-error', !!isError);
     }
 
-    if (!window.Learned) { say(s.noStorage, true); return; }
+    // Новое действие: убрать прежние сообщения, в том числе строку-сообщение в списке
+    function resetFeedback() {
+      var had = !!notice;
+      notice = null;
+      clearStatuses();
+      if (had) renderList();
+    }
+
+    if (!window.Learned) { say(statusEls.top, s.noStorage, true); return; }
 
     function renderCount() {
       var learned = window.Learned.all();
@@ -146,24 +160,37 @@
       return n.charAt(0).toUpperCase() + n.slice(1);
     }
 
-    function renderList() {
-      if (!listEl || !termIds) return; // список терминов ещё не загружен
+    // Изученные термины текущего языка, по алфавиту
+    function learnedSorted() {
       var ids = window.Learned.all().filter(function (id) { return termIds.indexOf(id) !== -1; });
       ids.sort(function (a, b) {
         return termLabel(a).localeCompare(termLabel(b), lang === 'thai' ? 'th' : 'ru');
       });
+      return ids;
+    }
+
+    function renderList() {
+      if (!listEl || !termIds) return; // список терминов ещё не загружен
+      var ids = learnedSorted();
       var pages = Math.max(1, Math.ceil(ids.length / PAGE_SIZE));
       if (page > pages) page = pages;
       if (page < 1) page = 1;
 
-      if (emptyEl) emptyEl.hidden = ids.length > 0;
-      listEl.hidden = ids.length === 0;
+      if (emptyEl) emptyEl.hidden = ids.length > 0 || !!notice;
+      listEl.hidden = ids.length === 0 && !notice;
 
       var slice = ids.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-      listEl.innerHTML = slice.map(function (id) {
+      var rows = slice.map(function (id) {
         return '<li class="progress-row"><a href="' + escapeHtml(id) + '_' + lang + '.html">' + escapeHtml(termLabel(id)) + '</a>'
           + '<button type="button" class="learned-btn is-learned" data-remove-id="' + escapeHtml(id) + '" title="' + escapeHtml(s.rowTitle) + '">' + s.rowBtn + '</button></li>';
-      }).join('');
+      });
+      if (notice) {
+        // на месте нажатой строки — сообщение со ссылкой «Вернуть»
+        rows.splice(Math.max(0, Math.min(notice.pos - (page - 1) * PAGE_SIZE, rows.length)), 0,
+          '<li class="progress-row progress-row--notice"><span class="progress-notice-text">' + escapeHtml(s.removed(termLabel(notice.id))) + '</span>'
+          + '<a href="#" data-undo-id="' + escapeHtml(notice.id) + '">' + escapeHtml(s.undo) + '</a></li>');
+      }
+      listEl.innerHTML = rows.join('');
 
       if (pagEl) {
         if (pages <= 1) {
@@ -185,18 +212,36 @@
     }
 
     if (listEl) {
-      // Клик «Изучен» в строке: снять отметку, строка исчезает
       listEl.addEventListener('click', function (e) {
+        // «Вернуть» в строке-сообщении
+        var undo = e.target.closest ? e.target.closest('a[data-undo-id]') : null;
+        if (undo) {
+          e.preventDefault();
+          var uid = undo.getAttribute('data-undo-id');
+          notice = null;
+          clearStatuses();
+          window.Learned.set(uid, true);
+          renderCount();
+          // вернувшийся термин должен быть виден: перейти на его страницу списка
+          var pos = termIds ? learnedSorted().indexOf(uid) : -1;
+          if (pos !== -1) page = Math.floor(pos / PAGE_SIZE) + 1;
+          renderList();
+          var back = listEl.querySelector('button[data-remove-id="' + uid + '"]');
+          if (back) back.focus(); // фокус не теряется
+          return;
+        }
+        // «Изучен» в строке: снять отметку, на месте строки — сообщение
         var btn = e.target.closest ? e.target.closest('button[data-remove-id]') : null;
         if (!btn) return;
         var id = btn.getAttribute('data-remove-id');
         var idx = Array.prototype.indexOf.call(listEl.querySelectorAll('button[data-remove-id]'), btn);
+        clearStatuses();
         window.Learned.set(id, false);
+        notice = { id: id, pos: (page - 1) * PAGE_SIZE + idx };
         renderCount();
         renderList();
-        sayUndo(s.removed(termLabel(id)), id);
-        var left = listEl.querySelectorAll('button[data-remove-id]');
-        if (left.length) left[Math.max(0, Math.min(idx, left.length - 1))].focus(); // фокус не теряется
+        var link = listEl.querySelector('a[data-undo-id]');
+        if (link) link.focus();
       });
     }
 
@@ -205,22 +250,12 @@
         var a = e.target.closest ? e.target.closest('a[data-page]') : null;
         if (!a) return;
         e.preventDefault();
+        notice = null;
+        clearStatuses();
         page = parseInt(a.getAttribute('data-page'), 10) || 1;
         renderList();
       });
     }
-
-    // «Вернуть» в строке статуса
-    statusEl.addEventListener('click', function (e) {
-      var a = e.target.closest ? e.target.closest('a[data-undo-id]') : null;
-      if (!a) return;
-      e.preventDefault();
-      var id = a.getAttribute('data-undo-id');
-      window.Learned.set(id, true);
-      renderCount();
-      renderList();
-      say(s.undone(termLabel(id)), false);
-    });
 
     renderCount();
     fetch(pageDir() + '../json/index_' + lang + '.json')
@@ -237,8 +272,9 @@
 
     // --- Скачать ---
     exportBtn.addEventListener('click', function () {
+      resetFeedback();
       var ids = window.Learned.all().sort();
-      if (ids.length === 0) { say(s.exportEmpty, true); return; }
+      if (ids.length === 0) { say(statusEls.exp, s.exportEmpty, true); return; }
       var payload = { format: FORMAT, version: 1, exported: new Date().toISOString(), learned: ids };
       var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
       var url = URL.createObjectURL(blob);
@@ -249,7 +285,7 @@
       a.click();
       document.body.removeChild(a);
       setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
-      say(s.exportDone(num(ids.length)), false);
+      say(statusEls.exp, s.exportDone(num(ids.length)), false);
     });
 
     // --- Загрузить ---
@@ -258,20 +294,21 @@
     importInput.addEventListener('change', function () {
       var file = importInput.files && importInput.files[0];
       if (!file) return;
-      if (file.size > MAX_FILE_BYTES) { say(s.importBig, true); importInput.value = ''; return; }
+      resetFeedback();
+      if (file.size > MAX_FILE_BYTES) { say(statusEls.imp, s.importBig, true); importInput.value = ''; return; }
       var reader = new FileReader();
       reader.onload = function () {
         var parsed = parseProgressFile(String(reader.result));
-        if (!parsed.ok) { say(s.importBad, true); }
+        if (!parsed.ok) { say(statusEls.imp, s.importBad, true); }
         else {
           var added = window.Learned.merge(parsed.ids);
           var total = renderCount(); // то же число, что и в счётчике
           renderList();
-          say(added > 0 ? s.importDone(num(added), num(total)) : s.importNone(num(total)), false);
+          say(statusEls.imp, added > 0 ? s.importDone(num(added), num(total)) : s.importNone(num(total)), false);
         }
         importInput.value = ''; // чтобы тот же файл можно было выбрать снова
       };
-      reader.onerror = function () { say(s.importBad, true); importInput.value = ''; };
+      reader.onerror = function () { say(statusEls.imp, s.importBad, true); importInput.value = ''; };
       reader.readAsText(file);
     });
 
@@ -284,6 +321,7 @@
 
       resetBtn.addEventListener('click', function () {
         if (resetBtn.disabled) return;
+        resetFeedback();
         confirmText.textContent = s.confirmReset(num(renderCount()));
         resetBtn.hidden = true;
         confirmBox.hidden = false;
@@ -296,11 +334,12 @@
       });
 
       confirmYes.addEventListener('click', function () {
+        resetFeedback();
         window.Learned.clear();
         renderCount();
         renderList();
         closeConfirm();
-        say(s.resetDone, false);
+        say(statusEls.reset, s.resetDone, false);
         resetBtn.focus();
       });
 
@@ -310,6 +349,8 @@
     }
 
     window.addEventListener('storage', function () {
+      notice = null;
+      clearStatuses();
       renderCount();
       renderList();
     });

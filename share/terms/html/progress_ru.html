@@ -61,6 +61,7 @@
   <div class="term-card">
     <p class="progress-summary" id="progress-count">…</p>
     <div class="progress-bar" role="presentation"><div class="progress-bar-fill" id="progress-bar-fill"></div></div>
+    <p id="progress-status-top" class="progress-status" role="status" aria-live="polite"></p>
 
     <div class="progress-section">
       <h3>Изученные термины</h3>
@@ -73,6 +74,7 @@
       <h3>Сохранить отметки в файл</h3>
       <p class="learned-note">Скачает файл со списком изученных терминов. Храните его у себя: он пригодится, если очистить браузер или перейти на другое устройство.</p>
       <button id="progress-export-btn" class="learned-btn progress-btn" type="button">Скачать файл</button>
+      <p id="progress-status-export" class="progress-status" role="status" aria-live="polite"></p>
     </div>
 
     <div class="progress-section">
@@ -80,6 +82,7 @@
       <p class="learned-note">Выберите файл, скачанный здесь раньше. Отметки из него добавятся к текущим, ничего не сотрётся.</p>
       <button id="progress-import-btn" class="learned-btn progress-btn" type="button">Выбрать файл</button>
       <input id="progress-import-input" type="file" accept=".json,application/json" hidden>
+      <p id="progress-status-import" class="progress-status" role="status" aria-live="polite"></p>
     </div>
 
     <div class="progress-section">
@@ -93,9 +96,8 @@
           <button id="progress-confirm-no" class="learned-btn progress-btn" type="button">Отмена</button>
         </div>
       </div>
+      <p id="progress-status-reset" class="progress-status" role="status" aria-live="polite"></p>
     </div>
-
-    <p id="progress-status" class="progress-status" role="status" aria-live="polite"></p>
 
     <p class="info-tooltip">Данные хранятся только в этом браузере. Скачивайте файл после изучения новых терминов.</p>
   </div>
