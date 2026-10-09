@@ -92,6 +92,13 @@
   </url>
   <url>
     <loc>https://indapanno.github.io/buddhism/share/terms/html/kusalakamma_ru.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/kusalakamma_ru.html"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/kusalakamma_thai.html"/>
+  </url>
+  <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/kusalakamma_thai.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/kusalakamma_ru.html"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/kusalakamma_thai.html"/>
   </url>
   <url>
     <loc>https://indapanno.github.io/buddhism/share/terms/html/magga_ru.html</loc>
