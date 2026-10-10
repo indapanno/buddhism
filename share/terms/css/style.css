@@ -275,6 +275,7 @@ main {
 .field-text {
   font-size: 0.9rem;
   line-height: 1.5;
+  overflow-wrap: break-word; /* страховка: слово длиннее строки переносится, а не вылезает */
 }
 
 .field-list {
@@ -317,6 +318,9 @@ main {
   border-radius: 8px;
   border: 1px solid var(--border);
 }
+
+/* Длинные адреса в ссылках не должны раздвигать страницу на телефоне */
+main a { overflow-wrap: anywhere; }
 
 .meta-item .field-label { margin-bottom: 0.15rem; }
 .meta-item .field-text { font-size: 0.82rem; }
@@ -403,6 +407,15 @@ main {
   .site-footer { padding: 1.25rem 1.5rem; }
   .term-card { padding: 1.5rem 1.6rem 1.7rem; }
   .meta-grid { grid-template-columns: 1fr 1fr 1fr; }
+}
+
+/* Узкий экран (телефон): колонка должна уметь сжиматься (minmax(0, …)), иначе длинное слово
+   раздвигает карточку; «Атрибуция» — длинные предложения, поэтому в одну колонку.
+   На широких экранах сетка прежняя: колонка с длинным словом сама становится шире. */
+@media (max-width: 479px) {
+  .meta-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .meta-item { min-width: 0; }
+  .group-attribution .meta-grid { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* --- Бургер-меню: кнопка и выезжающая панель --- */
