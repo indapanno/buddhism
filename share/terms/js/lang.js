@@ -17,7 +17,9 @@
 // У карточки термина ведёт на <id>_<язык>.html, у любой
 // страницы навигатора (nav_<язык>.html, nav_<язык>_N.html) — на первую
 // страницу навигатора другого языка (страницы 2+ у языков не соответствуют
-// друг другу).
+// друг другу). Страницы публикаций (publications_<язык>.html, _N и сами статьи
+// из publications/pages/, у которых в имени нет суффикса языка) ведут на первую
+// страницу списка публикаций другого языка: статьи не переводятся.
 
 (function () {
   var LANG_BY_HTML_LANG = { ru: 'ru', th: 'thai' };
@@ -53,6 +55,10 @@
     if (bundles) return dir + 'bundles_' + targetLang + '.html';
     var bundle = filename.match(/^bundle_(\d+)_(?:ru|thai)(?:_\d+)?\.html$/);
     if (bundle) return dir + 'bundle_' + bundle[1] + '_' + targetLang + '.html';
+    // Публикации: список (любая страница) и сами статьи -> список другого языка.
+    if (/^publications_(?:ru|thai)(?:_\d+)?\.html$/.test(filename) || /\/publications\/pages\/[^\/]+\.html$/.test(path)) {
+      return dir + 'publications_' + targetLang + '.html';
+    }
     var card = filename.match(/^(.+)_(ru|thai)\.html$/);
     if (card) return dir + card[1] + '_' + targetLang + '.html';
     return null;
