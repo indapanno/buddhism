@@ -145,6 +145,9 @@ const CALLOUT_CLASSES = ['callout', 'callout--key', 'callout--practice', 'callou
 const TAG_RE = /<!--[\s\S]*?-->|<(\/?)([A-Za-z][A-Za-z0-9]*)((?:\s+[^\s"'<>\/=]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s"'=<>`]+))?)*)\s*(\/?)>/g;
 const ATTR_RE = /([^\s"'<>\/=]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+)))?/g;
 
+// Следы ИИ-ассистентов, которые не должны попасть в статью: «[cite: 2]», «oaicite», «【…】» и т.п.
+const AI_JUNK = /\[(?:cite|cite_start|source)[^\]]*\]|oaicite|contentReference|turn\d+(?:search|view|news|image|file)\d+|【[^】]*】/i;
+
 const escAttr = v => String(v).replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const plain = s => s.replace(/&[A-Za-z#0-9]+;/g, ' ').replace(/\s+/g, ' ').trim();
 
@@ -168,6 +171,8 @@ function processArticle(src, lang, ctx) {
   while ((m = TAG_RE.exec(rest)) !== null) {
     const between = rest.slice(last, m.index);
     if (between.includes('<')) { fail('лишний символ «<» в тексте (используйте &lt;): «' + between.slice(between.indexOf('<'), between.indexOf('<') + 30).replace(/\s+/g, ' ') + '»'); break; }
+    const junk1 = between.match(AI_JUNK);
+    if (junk1) { fail('служебный мусор ИИ в тексте: «' + junk1[0].slice(0, 40) + '»'); break; }
     if (between) addText(between);
     last = TAG_RE.lastIndex;
     if (m[0].startsWith('<!--')) continue;
@@ -254,7 +259,9 @@ function processArticle(src, lang, ctx) {
   }
   const tail = rest.slice(last);
   if (!errors.length) {
+    const junk2 = tail.match(AI_JUNK);
     if (tail.includes('<')) fail('лишний символ «<» в тексте (используйте &lt;)');
+    else if (junk2) fail('служебный мусор ИИ в тексте: «' + junk2[0].slice(0, 40) + '»');
     else if (tail) addText(tail);
   }
   if (!errors.length && stack.length) fail('не закрыт тег <' + stack[stack.length - 1].tag + '>');

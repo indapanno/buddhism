@@ -162,6 +162,11 @@ const count = (s, sub) => s.split(sub).length - 1;
   bad('img с внешним src', '<figure><img src="https://x.y/a.png" alt="а"></figure>' + BODY);
   bad('aside с чужим class', '<aside class="warning"><p>х</p></aside>' + BODY);
   bad('b вместо strong', '<p><b>текст</b></p>' + BODY);
+  bad('служебный мусор [cite: 2]', '<p>Текст статьи[cite: 2].</p>' + BODY);
+  bad('служебный мусор в конце файла', BODY + 'хвост【4:0†source】');
+  bad('служебный мусор oaicite', '<p>Текст :oaicite{index=1}</p>' + BODY);
+  const sq = one('<p>Обычные [квадратные скобки] и [1] в тексте.</p>' + BODY);
+  check('обычные квадратные скобки проходят', sq.errors.length === 0);
   const ok = one('<p>строка<br>вторая, x<sup>2</sup>, H<sub>2</sub>O, <small>мелко</small>, <code>код</code></p>' + BODY + '<!-- комментарий -->');
   check('разрешённые br/sup/sub/small/code и комментарий проходят', ok.errors.length === 0 && ok.read('a-one.html').includes('<br>') && !ok.read('a-one.html').includes('комментарий'));
 }
