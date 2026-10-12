@@ -30,7 +30,7 @@ const S = {
     desc: 'Публикации о буддизме: статьи, которые помогают разобраться в ключевых понятиях учения и в том, как применять их на практике.',
     back1: '← Назад', next1: 'Далее →', pages: 'Страницы', pageWord: 'страница',
     toc: 'Содержание',
-    read: n => 'Время чтения: ' + n + ' мин',
+    more: 'Читать далее',
     callout: { key: 'Ключевая мысль', practice: 'Практика', important: 'Важно' }
   },
   thai: {
@@ -39,7 +39,7 @@ const S = {
     desc: 'บทความเกี่ยวกับพระพุทธศาสนา ช่วยให้เข้าใจแนวคิดสำคัญของคำสอนและการนำไปใช้ในชีวิตจริง',
     back1: '← ย้อนกลับ', next1: 'ถัดไป →', pages: 'หน้า', pageWord: 'หน้า',
     toc: 'สารบัญ',
-    read: n => 'เวลาอ่านประมาณ ' + toThaiNumerals(n) + ' นาที',
+    more: 'อ่านต่อ',
     callout: { key: 'ประเด็นสำคัญ', practice: 'ลงมือปฏิบัติ', important: 'โปรดทราบ' }
   }
 };
@@ -344,7 +344,8 @@ function listPages(lang, items, layout) {
       const li = slice.map(p => '<li><a class="pub-tile" href="' + p.data.html + '">'
         + '<span class="pub-tile-cover"><img src="../covers/' + escapeHtml(p.data.cover) + '" alt="" loading="lazy" width="1200" height="630"></span>'
         + '<span class="pub-tile-body"><span class="pub-tile-title">' + escapeHtml(p.data.headline) + '</span>'
-        + '<span class="pub-tile-lead">' + escapeHtml(p.data.lead) + '</span></span></a></li>').join('');
+        + '<span class="pub-tile-lead">' + escapeHtml(p.data.lead) + '</span>'
+        + '<span class="pub-tile-more">' + st.more + '</span></span></a></li>').join('');
       main = '<ul class="pub-list">' + li + '</ul>' + pagination(lang, page, total);
     }
     main = crumbs(lang, [{ text: st.title }]) + main;
@@ -367,9 +368,6 @@ function listPages(lang, items, layout) {
 function articlePage(lang, pub, art, layout) {
   const st = S[lang];
   const d = pub.data;
-  const minutes = lang === 'thai'
-    ? Math.max(1, Math.ceil(art.text.replace(/\s+/g, '').length / 800))
-    : Math.max(1, Math.ceil(art.text.split(' ').filter(Boolean).length / 180));
   let toc = '';
   if (art.h2s.length >= 3) {
     toc = '<nav class="pub-toc" aria-label="' + st.toc + '"><p class="pub-toc-title">' + st.toc + '</p><ol>'
@@ -379,7 +377,6 @@ function articlePage(lang, pub, art, layout) {
     + '<article class="pub-article">'
     + '<figure class="pub-cover"><img src="../covers/' + escapeHtml(d.cover) + '" alt="' + escAttr(d.headline) + '" width="1200" height="630"></figure>'
     + '<p class="pub-lead">' + escapeHtml(d.lead) + '</p>'
-    + '<p class="pub-meta">' + st.read(minutes) + '</p>'
     + toc
     + '<div class="pub-body">' + art.html + '</div></article>';
   const url = SITE_URL + 'pages/' + d.html;

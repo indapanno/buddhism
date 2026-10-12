@@ -66,6 +66,17 @@
   color: var(--text-secondary);
 }
 
+.pub-tile-more {
+  display: block;
+  margin-top: 0.6rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--link-color);
+}
+
+.pub-tile:hover .pub-tile-more { text-decoration: underline; }
+
 /* Пустой список */
 .pub-empty {
   background: var(--bg-elevated);
@@ -83,17 +94,11 @@
 .pub-cover { border-radius: 12px; margin: 0 0 1rem; }
 
 .pub-lead {
-  margin: 0 0 0.6rem;
+  margin: 0 0 1.4rem;
   font-family: var(--font-display);
   font-size: 1.05rem;
   line-height: 1.6;
   color: var(--text);
-}
-
-.pub-meta {
-  margin: 0 0 1.2rem;
-  font-size: 0.8rem;
-  color: var(--text-secondary);
 }
 
 .pub-toc {
