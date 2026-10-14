@@ -16,6 +16,16 @@
       "later_count": 2
     },
     {
+      "id": "avijja",
+      "term_ru": "Авиджжа",
+      "later_count": 1
+    },
+    {
+      "id": "bhava",
+      "term_ru": "Бхава",
+      "later_count": 1
+    },
+    {
       "id": "cattariariyasaccani",
       "term_ru": "Чаттари ариясаччани",
       "later_count": 1
@@ -41,6 +51,16 @@
       "later_count": 2
     },
     {
+      "id": "jaramarana",
+      "term_ru": "Жара-марана",
+      "later_count": 1
+    },
+    {
+      "id": "jati",
+      "term_ru": "Джати",
+      "later_count": 1
+    },
+    {
       "id": "kamma",
       "term_ru": "Камма",
       "later_count": 1
@@ -63,6 +83,11 @@
     {
       "id": "manokamma",
       "term_ru": "Мано-камма",
+      "later_count": 1
+    },
+    {
+      "id": "namarupa",
+      "term_ru": "Намарупа",
       "later_count": 1
     },
     {
@@ -91,9 +116,19 @@
       "later_count": 1
     },
     {
+      "id": "phassa",
+      "term_ru": "Пхасса",
+      "later_count": 1
+    },
+    {
       "id": "sacca",
       "term_ru": "Сачча",
       "later_count": 2
+    },
+    {
+      "id": "salayatana",
+      "term_ru": "Салаятана",
+      "later_count": 1
     },
     {
       "id": "sammakammanta",
@@ -124,6 +159,21 @@
       "id": "tanha",
       "term_ru": "Танха",
       "later_count": 0
+    },
+    {
+      "id": "upadana",
+      "term_ru": "Упадана",
+      "later_count": 1
+    },
+    {
+      "id": "vedana",
+      "term_ru": "Ведана",
+      "later_count": 2
+    },
+    {
+      "id": "vinnana",
+      "term_ru": "Винняна",
+      "later_count": 1
     }
   ]
 }

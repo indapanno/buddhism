@@ -16,6 +16,16 @@
       "later_count": 2
     },
     {
+      "id": "avijja",
+      "term_thai": "อวิชชา",
+      "later_count": 1
+    },
+    {
+      "id": "bhava",
+      "term_thai": "ภพ",
+      "later_count": 1
+    },
+    {
       "id": "cattariariyasaccani",
       "term_thai": "จัตตาริ อริยสัจจานิ",
       "later_count": 1
@@ -41,6 +51,16 @@
       "later_count": 2
     },
     {
+      "id": "jaramarana",
+      "term_thai": "ชรามรณะ",
+      "later_count": 1
+    },
+    {
+      "id": "jati",
+      "term_thai": "ชาติ",
+      "later_count": 1
+    },
+    {
       "id": "kamma",
       "term_thai": "กรรม",
       "later_count": 1
@@ -63,6 +83,11 @@
     {
       "id": "manokamma",
       "term_thai": "มโนกรรม",
+      "later_count": 1
+    },
+    {
+      "id": "namarupa",
+      "term_thai": "นามรูป",
       "later_count": 1
     },
     {
@@ -91,9 +116,19 @@
       "later_count": 1
     },
     {
+      "id": "phassa",
+      "term_thai": "ผัสสะ",
+      "later_count": 2
+    },
+    {
       "id": "sacca",
       "term_thai": "สัจจะ",
       "later_count": 1
+    },
+    {
+      "id": "salayatana",
+      "term_thai": "สฬายตนะ",
+      "later_count": 2
     },
     {
       "id": "sammakammanta",
@@ -123,6 +158,21 @@
     {
       "id": "tanha",
       "term_thai": "ตัณหา",
+      "later_count": 2
+    },
+    {
+      "id": "upadana",
+      "term_thai": "อุปาทาน",
+      "later_count": 1
+    },
+    {
+      "id": "vedana",
+      "term_thai": "เวทนา",
+      "later_count": 2
+    },
+    {
+      "id": "vinnana",
+      "term_thai": "วิญญาณ",
       "later_count": 2
     }
   ]

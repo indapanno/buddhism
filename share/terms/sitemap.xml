@@ -31,6 +31,26 @@
     <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/ariya_thai.html"/>
   </url>
   <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/avijja_ru.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/avijja_ru.html"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/avijja_thai.html"/>
+  </url>
+  <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/avijja_thai.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/avijja_ru.html"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/avijja_thai.html"/>
+  </url>
+  <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/bhava_ru.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/bhava_ru.html"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/bhava_thai.html"/>
+  </url>
+  <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/bhava_thai.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/bhava_ru.html"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/bhava_thai.html"/>
+  </url>
+  <url>
     <loc>https://indapanno.github.io/buddhism/share/terms/html/cattariariyasaccani_ru.html</loc>
     <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/cattariariyasaccani_ru.html"/>
     <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/cattariariyasaccani_thai.html"/>
@@ -79,6 +99,26 @@
     <loc>https://indapanno.github.io/buddhism/share/terms/html/idappaccayata_thai.html</loc>
     <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/idappaccayata_ru.html"/>
     <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/idappaccayata_thai.html"/>
+  </url>
+  <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/jaramarana_ru.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/jaramarana_ru.html"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/jaramarana_thai.html"/>
+  </url>
+  <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/jaramarana_thai.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/jaramarana_ru.html"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/jaramarana_thai.html"/>
+  </url>
+  <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/jati_ru.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/jati_ru.html"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/jati_thai.html"/>
+  </url>
+  <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/jati_thai.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/jati_ru.html"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/jati_thai.html"/>
   </url>
   <url>
     <loc>https://indapanno.github.io/buddhism/share/terms/html/kamma_ru.html</loc>
@@ -131,6 +171,16 @@
     <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/manokamma_thai.html"/>
   </url>
   <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/namarupa_ru.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/namarupa_ru.html"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/namarupa_thai.html"/>
+  </url>
+  <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/namarupa_thai.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/namarupa_ru.html"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/namarupa_thai.html"/>
+  </url>
+  <url>
     <loc>https://indapanno.github.io/buddhism/share/terms/html/nav_ru.html</loc>
     <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/nav_ru.html"/>
     <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/nav_thai.html"/>
@@ -142,6 +192,9 @@
     <loc>https://indapanno.github.io/buddhism/share/terms/html/nav_ru_3.html</loc>
   </url>
   <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/nav_ru_4.html</loc>
+  </url>
+  <url>
     <loc>https://indapanno.github.io/buddhism/share/terms/html/nav_thai.html</loc>
     <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/nav_ru.html"/>
     <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/nav_thai.html"/>
@@ -151,6 +204,9 @@
   </url>
   <url>
     <loc>https://indapanno.github.io/buddhism/share/terms/html/nav_thai_3.html</loc>
+  </url>
+  <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/nav_thai_4.html</loc>
   </url>
   <url>
     <loc>https://indapanno.github.io/buddhism/share/terms/html/nirodha_ru.html</loc>
@@ -203,6 +259,16 @@
     <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/phalanana_thai.html"/>
   </url>
   <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/phassa_ru.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/phassa_ru.html"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/phassa_thai.html"/>
+  </url>
+  <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/phassa_thai.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/phassa_ru.html"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/phassa_thai.html"/>
+  </url>
+  <url>
     <loc>https://indapanno.github.io/buddhism/share/terms/html/sacca_ru.html</loc>
     <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/sacca_ru.html"/>
     <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/sacca_thai.html"/>
@@ -211,6 +277,16 @@
     <loc>https://indapanno.github.io/buddhism/share/terms/html/sacca_thai.html</loc>
     <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/sacca_ru.html"/>
     <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/sacca_thai.html"/>
+  </url>
+  <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/salayatana_ru.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/salayatana_ru.html"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/salayatana_thai.html"/>
+  </url>
+  <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/salayatana_thai.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/salayatana_ru.html"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/salayatana_thai.html"/>
   </url>
   <url>
     <loc>https://indapanno.github.io/buddhism/share/terms/html/sammakammanta_ru.html</loc>
@@ -271,5 +347,35 @@
     <loc>https://indapanno.github.io/buddhism/share/terms/html/tanha_thai.html</loc>
     <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/tanha_ru.html"/>
     <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/tanha_thai.html"/>
+  </url>
+  <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/upadana_ru.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/upadana_ru.html"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/upadana_thai.html"/>
+  </url>
+  <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/upadana_thai.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/upadana_ru.html"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/upadana_thai.html"/>
+  </url>
+  <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/vedana_ru.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/vedana_ru.html"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/vedana_thai.html"/>
+  </url>
+  <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/vedana_thai.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/vedana_ru.html"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/vedana_thai.html"/>
+  </url>
+  <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/vinnana_ru.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/vinnana_ru.html"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/vinnana_thai.html"/>
+  </url>
+  <url>
+    <loc>https://indapanno.github.io/buddhism/share/terms/html/vinnana_thai.html</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://indapanno.github.io/buddhism/share/terms/html/vinnana_ru.html"/>
+    <xhtml:link rel="alternate" hreflang="th" href="https://indapanno.github.io/buddhism/share/terms/html/vinnana_thai.html"/>
   </url>
 </urlset>
