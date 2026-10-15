@@ -160,7 +160,7 @@ function listPages(lang, items, terms, layout) {
           + '<span class="bundle-meta">' + st.count(names.length) + '</span>'
           + '<span class="bundle-terms">' + shown + '</span></a></li>';
       }).join('');
-      main = '<ul class="term-list">' + li + '</ul>' + pagination(lang, 'bundles_' + lang, page, total);
+      main = '<ul class="term-list bundle-list">' + li + '</ul>' + pagination(lang, 'bundles_' + lang, page, total);
     }
     main = crumbs(lang, [{ text: st.title }]) + main;
     pages.push({ file: fileName('bundles_' + lang, page), html: fill(layout, { title: escapeHtml(st.title + pageSuffix(lang, page)), h1: st.title, intro: st.intro, main }) });
@@ -271,7 +271,7 @@ function build(opts) {
   fs.readdirSync(htmlDir).filter(f => /^bundles?_.*\.html$/.test(f)).forEach(f => fs.unlinkSync(path.join(htmlDir, f)));
   const pages = [];
   LANGS.forEach(lang => {
-    pages.push(...listPages(lang, published[lang], terms, layouts[lang]));
+    pages.push(...listPages(lang, published[lang].slice().sort((x, y) => y.n - x.n), terms, layouts[lang])); // список: новые (больший номер) сверху
     published[lang].forEach(b => pages.push(...bundlePages(lang, b, terms, layouts[lang])));
   });
   stubs.forEach(s => pages.push(stubPage(s.target, s.n, layouts[s.target])));

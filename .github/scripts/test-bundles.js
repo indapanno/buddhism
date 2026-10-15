@@ -115,7 +115,9 @@ check('.gitkeep игнорируется', makeEnv({ '.gitkeep': '' }).errors.le
   const r = makeEnv(files);
   check('список: 10 плиток на 1-й странице', count(r.read('bundles_ru.html'), 'class="bundle-name"') === 10);
   check('список: 11-я на странице 2', r.has('bundles_ru_2.html') && count(r.read('bundles_ru_2.html'), 'class="bundle-name"') === 1 && r.read('bundles_ru.html').includes('bundles_ru_2.html'));
-  check('список: порядок по номеру', r.read('bundles_ru.html').indexOf('bundle_2_ru') < r.read('bundles_ru.html').indexOf('bundle_10_ru'));
+  check('список: новые сверху (по убыванию номера)', r.read('bundles_ru.html').indexOf('bundle_10_ru') < r.read('bundles_ru.html').indexOf('bundle_2_ru'));
+  check('список: 1-я страница начинается с №11, 2-я содержит №1', r.read('bundles_ru.html').indexOf('bundle_11_ru') < r.read('bundles_ru.html').indexOf('bundle_10_ru') && r.read('bundles_ru_2.html').includes('bundle_1_ru.html'));
+  check('список: класс bundle-list', r.read('bundles_ru.html').includes('class="term-list bundle-list"'));
 }
 {
   const r = makeEnv({ 'bundle_1_ru.json': ru(ids(25)) });
@@ -140,8 +142,9 @@ check('.gitkeep игнорируется', makeEnv({ '.gitkeep': '' }).errors.le
   const r = makeEnv({ 'bundle_1_ru.json': ru(null, { description: long }), 'bundle_2_ru.json': ru(null, { description: 'Короткое описание' }) });
   const m = r.read('bundles_ru.html').match(/<span class="bundle-desc">(.*?)<\/span>/g);
   const text = x => x.replace(/<[^>]+>/g, '');
-  check('плитка: длинное описание обрезано с «…»', text(m[0]).length <= 221 && text(m[0]).endsWith('…') && text(m[0]).length > 200, text(m[0]).length);
-  check('плитка: короткое описание целиком, без «…»', text(m[1]) === 'Короткое описание');
+  // порядок в списке: новые сверху, поэтому №2 (короткое) идёт первым, №1 (длинное) вторым
+  check('плитка: длинное описание обрезано с «…»', text(m[1]).length <= 221 && text(m[1]).endsWith('…') && text(m[1]).length > 200, text(m[1]).length);
+  check('плитка: короткое описание целиком, без «…»', text(m[0]) === 'Короткое описание');
   check('страница связки: описание полное', r.read('bundle_1_ru.html').includes(long));
 }
 
