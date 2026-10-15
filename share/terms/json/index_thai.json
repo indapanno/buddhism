@@ -66,8 +66,33 @@
       "later_count": 1
     },
     {
+      "id": "kammabandhu",
+      "term_thai": "กรรมพันธุ",
+      "later_count": 1
+    },
+    {
       "id": "kammacetana",
       "term_thai": "กัมมเจตนา",
+      "later_count": 1
+    },
+    {
+      "id": "kammadayada",
+      "term_thai": "กรรมทายาดา",
+      "later_count": 1
+    },
+    {
+      "id": "kammapatisarana",
+      "term_thai": "กรรมปฏิสรณา",
+      "later_count": 1
+    },
+    {
+      "id": "kammassaka",
+      "term_thai": "กรรมสสกา",
+      "later_count": 1
+    },
+    {
+      "id": "kammayoni",
+      "term_thai": "กรรมโยนิ",
       "later_count": 1
     },
     {
