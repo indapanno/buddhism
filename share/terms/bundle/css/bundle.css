@@ -2,15 +2,6 @@
    Список связок использует классы .term-list / .pagination из style.css;
    здесь — только то, чего там нет. Цвета и шрифты — переменные темы. */
 
-/* Список связок: на узких экранах зазор как у списка публикаций, на широких меньше (24px) */
-.term-list.bundle-list {
-  gap: clamp(1.625rem, 4vw, 2rem);
-}
-
-@media (min-width: 700px) {
-  .term-list.bundle-list { gap: 1.5rem; }
-}
-
 /* Плитка связки: вся плитка — одна ссылка */
 .bundle-name {
   display: block;
