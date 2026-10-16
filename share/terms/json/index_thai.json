@@ -11,6 +11,16 @@
       "later_count": 1
     },
     {
+      "id": "anagami",
+      "term_thai": "อนาคามี",
+      "later_count": 1
+    },
+    {
+      "id": "arahant",
+      "term_thai": "พระอรหันต์",
+      "later_count": 2
+    },
+    {
       "id": "ariya",
       "term_thai": "อริยะ",
       "later_count": 2
@@ -146,9 +156,19 @@
       "later_count": 2
     },
     {
+      "id": "puthujjana",
+      "term_thai": "ปุถุชน",
+      "later_count": 1
+    },
+    {
       "id": "sacca",
       "term_thai": "สัจจะ",
       "later_count": 1
+    },
+    {
+      "id": "sakadagami",
+      "term_thai": "สกทาคามี",
+      "later_count": 2
     },
     {
       "id": "salayatana",
@@ -174,6 +194,11 @@
       "id": "sankhara",
       "term_thai": "สังขาร",
       "later_count": 2
+    },
+    {
+      "id": "sotapanna",
+      "term_thai": "โสดาบัน",
+      "later_count": 1
     },
     {
       "id": "svakkhato",

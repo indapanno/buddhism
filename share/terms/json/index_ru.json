@@ -11,6 +11,16 @@
       "later_count": 1
     },
     {
+      "id": "anagami",
+      "term_ru": "Анагами",
+      "later_count": 1
+    },
+    {
+      "id": "arahant",
+      "term_ru": "Арахант",
+      "later_count": 1
+    },
+    {
       "id": "ariya",
       "term_ru": "Ария",
       "later_count": 2
@@ -146,9 +156,19 @@
       "later_count": 1
     },
     {
+      "id": "puthujjana",
+      "term_ru": "Путудджхана",
+      "later_count": 1
+    },
+    {
       "id": "sacca",
       "term_ru": "Сачча",
       "later_count": 2
+    },
+    {
+      "id": "sakadagami",
+      "term_ru": "Сакадагами",
+      "later_count": 1
     },
     {
       "id": "salayatana",
@@ -174,6 +194,11 @@
       "id": "sankhara",
       "term_ru": "Санкхара",
       "later_count": 2
+    },
+    {
+      "id": "sotapanna",
+      "term_ru": "Сотапанна",
+      "later_count": 1
     },
     {
       "id": "svakkhato",
